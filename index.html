@@ -75,7 +75,7 @@
 const playerId = "02b26fe9-49d1-47e7-afa0-1b5c562ca4e2";
 const secret = "f597facb42096d1abfffec7a73b66903";
 
-fetch(`https://strugly.com/inc/widget.php?widget_type=widget-renew-2&player=${playerId}&secret=${secret}`)
+fetch(`https://strugly.com/inc/widget.php?widget_type=widget-renew-2&player=02b26fe9-49d1-47e7-afa0-1b5c562ca4e2&secret=f597facb42096d1abfffec7a73b66903`)
   .then(res => res.text())
   .then(html => {
     const parser = new DOMParser();
