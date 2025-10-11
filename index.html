@@ -98,23 +98,33 @@
     const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063"; // kendi Faceit API key’in
     const nickname = "KatzRead";
 
+    // Önce player ID ve ELO çek
     fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
       headers: { "Authorization": `Bearer ${apiKey}` }
     })
     .then(res => res.json())
-    .then(data => {
-      const elo = data.games?.csgo?.faceit_elo || "Bilgi Yok";
-      const matches = data.games?.csgo?.matches || "Bilgi Yok";
-      const winRate = data.games?.csgo?.win_rate ? data.games.csgo.win_rate + "%" : "Bilgi Yok";
-
+    .then(playerData => {
+      const elo = playerData.games?.csgo?.faceit_elo || "Bilgi Yok";
       document.getElementById("elo").innerText = "ELO: " + elo;
+
+      const playerId = playerData.player_id;
+      // Sonra CS2 istatistiklerini çek
+      return fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/csgo`, {
+        headers: { "Authorization": `Bearer ${apiKey}` }
+      });
+    })
+    .then(res => res.json())
+    .then(stats => {
+      const matches = stats.lifetime?.Matches || "Bilgi Yok";
+      const winRate = stats.lifetime?.WinRate ? stats.lifetime.WinRate + "%" : "Bilgi Yok";
+
       document.getElementById("matches").innerText = "Toplam Maç: " + matches;
       document.getElementById("winrate").innerText = "Win %: " + winRate;
     })
     .catch(err => {
       document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
-      document.getElementById("matches").innerText = "";
-      document.getElementById("winrate").innerText = "";
+      document.getElementById("matches").innerText = "Toplam Maç: Bilgi Yok";
+      document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
       console.error(err);
     });
   </script>
