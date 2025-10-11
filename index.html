@@ -74,7 +74,7 @@ async function loadWidget() {
     document.getElementById("elo").innerText = "ELO: " + elo;
     const playerId = playerData.player_id;
 
-    const resStats = await fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`, {
+    const resStats = await fetch(`https://open.faceit.com/data/v4/players/${nickname}/stats/cs2`, {
       headers: { "Authorization": `Bearer ${apiKey}` }
     });
     const stats = await resStats.json();
