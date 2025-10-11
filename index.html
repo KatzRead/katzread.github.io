@@ -3,105 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KatzRead Faceit Widget</title>
+  <title>KatzRead | Player Stats</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a2e0e6b6b0.js" crossorigin="anonymous"></script>
   <style>
-    /* Widget stilini buraya ekleyin */
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background-color: #0e0e10;
+      color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #1a1a1d, #232326);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
+      width: 340px;
+      text-align: center;
+    }
+
+    .username {
+      font-size: 1.8rem;
+      color: #ff4d00;
+    }
+
+    .rank {
+      margin-top: 5px;
+      font-size: 1.1rem;
+      color: #aaa;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      font-size: 1.1rem;
+    }
+
+    .stats div {
+      flex: 1;
+      text-align: center;
+    }
+
+    .match-history {
+      margin-top: 15px;
+      font-size: 1.2rem;
+    }
+
+    .match-history span {
+      margin: 0 4px;
+      font-weight: bold;
+    }
+
+    .W { color: #4aff4a; }
+    .L { color: #ff4a4a; }
+
+    .socials {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .socials a {
+      color: #f5f5f5;
+      font-size: 1.6rem;
+      transition: 0.3s;
+    }
+
+    .socials a:hover {
+      color: #ff4d00;
+    }
   </style>
 </head>
 <body>
-  <div class="widget">
-    <h2>KatzRead</h2>
-    <div id="elo">ELO: Yükleniyor...</div>
-    <div id="kd-ratio">K/D Oranı: Yükleniyor...</div>
-    <div id="avg-kills">Avg Kills: Yükleniyor...</div>
-    <div id="avg-deaths">Avg Deaths: Yükleniyor...</div>
-    <div id="winrate">Win %: Yükleniyor...</div>
-    <div id="recent-matches">Son 5 Maç: Yükleniyor...</div>
-    <div id="streak">Streak: Yükleniyor...</div>
+  <div class="card">
+    <div class="username">KatzRead</div>
+    <div class="rank">ELO: 3866 | Global Rank: #799</div>
+
+    <div class="stats">
+      <div><strong>ADR</strong><br>78.0</div>
+      <div><strong>K/D</strong><br>1.21</div>
+      <div><strong>K/R</strong><br>0.74</div>
+      <div><strong>ACE</strong><br>0</div>
+    </div>
+
+    <div class="match-history">
+      <span class="L">L</span>
+      <span class="W">W</span>
+      <span class="L">L</span>
+      <span class="W">W</span>
+      <span class="W">W</span>
+    </div>
+
+    <div class="socials">
+      <a href="https://www.faceit.com/tr/players/KatzRead" target="_blank"><i class="fa-solid fa-bullseye"></i></a>
+      <a href="https://www.twitch.tv/katzread" target="_blank"><i class="fab fa-twitch"></i></a>
+      <a href="https://kick.com/katzread" target="_blank"><i class="fa-solid fa-play"></i></a>
+      <a href="https://steamcommunity.com/id/katzread" target="_blank"><i class="fab fa-steam"></i></a>
+      <a href="https://www.youtube.com/@katzread" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="https://twitter.com/katzread" target="_blank"><i class="fab fa-twitter"></i></a>
+    </div>
   </div>
-
-  <script>
-    const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
-    const nickname = "KatzRead";
-
-    fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
-      headers: { "Authorization": `Bearer ${apiKey}` }
-    })
-    .then(res => res.json())
-    .then(playerData => {
-      const elo = playerData.games?.csgo?.faceit_elo || "Bilgi Yok";
-      document.getElementById("elo").innerText = "ELO: " + elo;
-
-      const playerId = playerData.player_id;
-
-      // CS2 istatistikleri çek
-      fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/csgo`, {
-        headers: { "Authorization": `Bearer ${apiKey}` }
-      })
-      .then(res => res.json())
-      .then(stats => {
-        const matches = stats.lifetime?.Matches || "Bilgi Yok";
-        const winRate = stats.lifetime?.["Win Rate"] || stats.lifetime?.WinRate || "Bilgi Yok";
-        const avgKills = stats.lifetime?.Kills / matches || "Bilgi Yok";
-        const avgDeaths = stats.lifetime?.Deaths / matches || "Bilgi Yok";
-        const kdRatio = avgKills / avgDeaths || "Bilgi Yok";
-
-        document.getElementById("kd-ratio").innerText = "K/D Oranı: " + kdRatio.toFixed(2);
-        document.getElementById("avg-kills").innerText = "Avg Kills: " + avgKills.toFixed(2);
-        document.getElementById("avg-deaths").innerText = "Avg Deaths: " + avgDeaths.toFixed(2);
-        document.getElementById("winrate").innerText = "Win %: " + winRate;
-      });
-
-      // Son 5 maç ve streak
-      fetch(`https://open.faceit.com/data/v4/players/${playerId}/history?game=csgo&offset=0&limit=5`, {
-        headers: { "Authorization": `Bearer ${apiKey}` }
-      })
-      .then(res => res.json())
-      .then(history => {
-        const matches = history.items || [];
-        if (matches.length === 0) {
-          document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-          document.getElementById("streak").innerText = "Streak: Bilgi Yok";
-          return;
-        }
-
-        const results = matches.map(m => {
-          const team1 = m.teams?.faction1?.players || [];
-          const team2 = m.teams?.faction2?.players || [];
-          const playerTeam = team1.some(p => p.player_id === playerId) ? "team1" : "team2";
-          const winner = m.results?.Winner;
-          return (winner === playerTeam) ? "W" : "L";
-        });
-
-        const recentDiv = document.getElementById("recent-matches");
-        recentDiv.innerHTML = "Son 5 Maç: ";
-        results.forEach(r => {
-          const span = document.createElement("span");
-          span.className = r;
-          span.innerText = r;
-          recentDiv.appendChild(span);
-        });
-
-        // Streak hesapla
-        let streak = 0;
-        let current = results[0];
-        for (const r of results) {
-          if (r === current) streak++;
-          else break;
-        }
-        document.getElementById("streak").innerText = `Streak: ${streak} ${current}`;
-      });
-    })
-    .catch(err => {
-      document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
-      document.getElementById("kd-ratio").innerText = "K/D Oranı: Bilgi Yok";
-      document.getElementById("avg-kills").innerText = "Avg Kills: Bilgi Yok";
-      document.getElementById("avg-deaths").innerText = "Avg Deaths: Bilgi Yok";
-      document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
-      document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-      document.getElementById("streak").innerText = "Streak: Bilgi Yok";
-      console.error(err);
-    });
-  </script>
 </body>
 </html>
