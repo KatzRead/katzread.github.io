@@ -3,60 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KatzRead Widget (CS2)</title>
+<title>KatzRead Widget</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-
   body {
-    margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: #0a0a0f;
+    margin:0; font-family:'Orbitron',sans-serif;
+    display:flex; justify-content:center; align-items:center;
+    height:100vh; background:#0a0a0f;
   }
-
   .widget {
     background: rgba(10,10,15,0.95);
-    border: 2px solid #00ffff;
-    border-radius: 15px;
-    padding: 20px;
-    width: 320px;
-    box-shadow: 0 0 20px #00ffff;
-    text-align: center;
-    color: #fff;
+    border:2px solid #00ffff;
+    border-radius:15px;
+    padding:20px;
+    width:320px;
+    box-shadow:0 0 20px #00ffff;
+    text-align:center;
+    color:#fff;
   }
-
-  .widget h2 {
-    margin: 0;
-    font-size: 1.6em;
-    color: #00ffff;
-    text-shadow: 0 0 10px #00ffff;
-  }
-
-  .stat {
-    margin-top: 10px;
-    font-size: 1em;
-  }
-
-  .recent {
-    margin-top: 10px;
-  }
-
+  .widget h2 { margin:0; font-size:1.6em; color:#00ffff; text-shadow:0 0 10px #00ffff; }
+  .stat { margin-top:10px; font-size:1em; }
+  .recent { margin-top:10px; }
   .recent span {
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    line-height: 25px;
-    border-radius: 50%;
-    margin: 0 3px;
-    font-weight: bold;
-    color: #000;
+    display:inline-block; width:25px; height:25px; line-height:25px;
+    border-radius:50%; margin:0 3px; font-weight:bold; color:#000;
   }
-
-  .W { background: #00ff00; }
-  .L { background: #ff3333; }
+  .W { background:#00ff00; }
+  .L { background:#ff3333; }
 </style>
 </head>
 <body>
@@ -75,37 +48,45 @@
 const playerId = "02b26fe9-49d1-47e7-afa0-1b5c562ca4e2";
 const secret = "f597facb42096d1abfffec7a73b66903";
 
-fetch(`https://strugly.com/inc/widget.php?widget_type=widget-renew-2&player=02b26fe9-49d1-47e7-afa0-1b5c562ca4e2&secret=f597facb42096d1abfffec7a73b66903`)
+fetch(`https://strugly.com/inc/widget.php?widget_type=widget-renew-2&player=${playerId}&secret=${secret}`)
   .then(res => res.text())
   .then(html => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
-
-    // Metinlerden verileri yakalamak
     const text = doc.body.innerText;
 
-    const elo = (text.match(/ELO:\s*(\d+)/) || [])[1] || "Bilgi Yok";
-    const kd = (text.match(/K\/D:\s*([\d.]+)/) || [])[1] || "Bilgi Yok";
-    const winrate = (text.match(/Win\s*%\s*[:=]?\s*([\d.]+)/) || [])[1] || "Bilgi Yok";
-    const avgKills = (text.match(/Avg\s*Kills\s*[:=]?\s*([\d.]+)/) || [])[1] || "Bilgi Yok";
-    const avgDeaths = (text.match(/Avg\s*Deaths\s*[:=]?\s*([\d.]+)/) || [])[1] || "Bilgi Yok";
-    const recentMatches = (text.match(/(W|L){3,5}/g) || [])[0] || "";
-
-    // Ekrana yaz
+    // ELO
+    const eloMatch = text.match(/ELO:\s*(\d+)/);
+    const elo = eloMatch ? eloMatch[1] : "Bilgi Yok";
     document.getElementById("elo").innerText = `ELO: ${elo}`;
-    document.getElementById("kd").innerText = `K/D: ${kd}`;
-    document.getElementById("winrate").innerText = `Win %: ${winrate}`;
-    document.getElementById("avgKills").innerText = `Avg Kills: ${avgKills}`;
-    document.getElementById("avgDeaths").innerText = `Avg Deaths: ${avgDeaths}`;
 
-    const recentDiv = document.getElementById("recent-matches");
-    recentDiv.innerHTML = "Son 5 Maç: ";
-    recentMatches.split("").forEach(r => {
-      const span = document.createElement("span");
-      span.className = r;
-      span.innerText = r;
-      recentDiv.appendChild(span);
-    });
+    // Win %, K/D, Avg Kills, Avg Deaths
+    const winMatch = text.match(/Win\s*%[:=]?\s*([\d.]+)/);
+    const kdMatch = text.match(/K\/D[:=]?\s*([\d.]+)/);
+    const avgKillsMatch = text.match(/AVG[:=]?\s*([\d.]+)/);
+    const avgDeathsMatch = text.match(/K\/R[:=]?\s*([\d.]+)/);
+
+    document.getElementById("winrate").innerText = `Win %: ${winMatch ? winMatch[1] : "Bilgi Yok"}`;
+    document.getElementById("kd").innerText = `K/D: ${kdMatch ? kdMatch[1] : "Bilgi Yok"}`;
+    document.getElementById("avgKills").innerText = `Avg Kills: ${avgKillsMatch ? avgKillsMatch[1] : "Bilgi Yok"}`;
+    document.getElementById("avgDeaths").innerText = `Avg Deaths: ${avgDeathsMatch ? avgDeathsMatch[1] : "Bilgi Yok"}`;
+
+    // Son 5 maç
+    const matchSeq = text.match(/[WL]\s*[WL]\s*[WL]\s*[WL]\s*[WL]/);
+    if (matchSeq) {
+      const seq = matchSeq[0].replace(/\s+/g, "");
+      const recentDiv = document.getElementById("recent-matches");
+      recentDiv.innerHTML = "Son 5 Maç: ";
+      seq.split("").forEach(r => {
+        const span = document.createElement("span");
+        span.className = r;
+        span.innerText = r;
+        recentDiv.appendChild(span);
+      });
+    } else {
+      document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+    }
+
   })
   .catch(err => {
     console.error(err);
