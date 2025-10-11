@@ -2,179 +2,160 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>CS2 2D Harita Analizi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KatzRead Widget</title>
 <style>
-  body { background:#222; color:white; font-family:sans-serif; text-align:center; }
-  #mapContainer { position:relative; display:inline-block; }
-  canvas { border:1px solid #555; background: url('mirage_topdown.png'); background-size: cover; cursor:crosshair; }
-  .player { width:15px; height:15px; border-radius:50%; position:absolute; cursor:pointer; text-align:center; font-size:12px; line-height:15px; color:white; }
-  .note { position:absolute; background:rgba(0,0,0,0.6); padding:2px 5px; border-radius:3px; color:white; cursor:pointer; }
-  #controls button, #controls input { margin:5px; padding:5px 10px; }
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+  body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #0a0a0f;
+  }
+
+  .widget {
+    background: rgba(10,10,15,0.95);
+    border: 2px solid #00ffff;
+    border-radius: 15px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 0 20px #00ffff;
+    text-align: center;
+    color: #fff;
+  }
+
+  .widget h2 {
+    margin: 0;
+    font-size: 1.6em;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+  }
+
+  .stat {
+    margin-top: 10px;
+    font-size: 1em;
+  }
+
+  .recent {
+    margin-top: 10px;
+  }
+
+  .recent span {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 50%;
+    margin: 0 3px;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .W { background: #00ff00; }
+  .L { background: #ff3333; }
+
+  .streak {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #ff66ff;
+  }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/heatmapjs@2.0.5/heatmap.min.js"></script>
 </head>
 <body>
-<h1>CS2 2D Harita Analizi</h1>
-<div id="controls">
-  <button onclick="toggleDraw()">Çizim Aç/Kapat</button>
-  <button onclick="addRandomNote()">Not Ekle</button>
-  <button onclick="startReplay()">Round Replay</button>
-  <button onclick="saveRounds()">Round Kaydet</button>
-  <input type="file" onchange="loadRounds(this.files[0])">
-  <br>
-  Round: <input type="range" id="roundSlider" min="0" max="9" value="0" style="width:300px;">
-</div>
 
-<div id="mapContainer">
-  <canvas id="mapCanvas" width="800" height="600"></canvas>
+<div class="widget">
+  <h2>KatzRead</h2>
+  <div class="stat" id="elo">ELO: Yükleniyor...</div>
+  <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+  <div class="stat" id="winrate">Win %: Yükleniyor...</div>
+  <div class="recent" id="recent-matches">Son 5 Maç: Yükleniyor...</div>
+  <div class="streak" id="streak">Streak: Yükleniyor...</div>
 </div>
 
 <script>
-// Canvas ve çizim
-const canvas = document.getElementById('mapCanvas');
-const ctx = canvas.getContext('2d');
-const mapContainer = document.getElementById('mapContainer');
+const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
+const nickname = "KatzRead";
 
-let drawMode = false, drawing = false, lastPos = null;
-let lines = [];
+// Player ID ve ELO çek
+fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
+  headers: { "Authorization": `Bearer ${apiKey}` }
+})
+.then(res => res.json())
+.then(playerData => {
+  const elo = playerData.games?.csgo?.faceit_elo || "Bilgi Yok";
+  document.getElementById("elo").innerText = "ELO: " + elo;
 
-// Heatmap
-const heatmapInstance = h337.create({
-  container: mapContainer,
-  radius: 30,
-  maxOpacity: 0.6,
-  blur: 0.85
-});
+  const playerId = playerData.player_id;
 
-// Takım ve rakip
-let team = [{x:100,y:150,name:'T1'},{x:200,y:300,name:'T2'}];
-let enemies = [{x:500,y:100,name:'E1'},{x:600,y:200,name:'E2'}];
+  // CS2 istatistikleri çek
+  fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/csgo`, {
+    headers: { "Authorization": `Bearer ${apiKey}` }
+  })
+  .then(res => res.json())
+  .then(stats => {
+    const matches = stats.lifetime?.Matches || "Bilgi Yok";
+    const winRate = stats.lifetime?.["Win Rate"] || stats.lifetime?.WinRate || "Bilgi Yok";
+    document.getElementById("matches").innerText = "Toplam Maç: " + matches;
+    document.getElementById("winrate").innerText = "Win %: " + winRate;
+  });
 
-// Drag & Drop
-team.concat(enemies).forEach(p=>{
-  const div = document.createElement('div');
-  div.className='player';
-  div.style.left=p.x+'px';
-  div.style.top=p.y+'px';
-  div.style.background=p.name.startsWith('T')?'blue':'red';
-  div.innerText=p.name;
-  mapContainer.appendChild(div);
-  let offsetX, offsetY;
-
-  div.onmousedown = e => {
-    offsetX = e.offsetX; offsetY = e.offsetY;
-    function moveHandler(e){
-      p.x = e.clientX - canvas.getBoundingClientRect().left - offsetX;
-      p.y = e.clientY - canvas.getBoundingClientRect().top - offsetY;
-      div.style.left = p.x+'px';
-      div.style.top = p.y+'px';
-      draw();
+  // Son 5 maç ve streak
+  fetch(`https://open.faceit.com/data/v4/players/${playerId}/history?game=csgo&offset=0&limit=5`, {
+    headers: { "Authorization": `Bearer ${apiKey}` }
+  })
+  .then(res => res.json())
+  .then(history => {
+    const matches = history.items || [];
+    if(matches.length === 0){
+      document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+      document.getElementById("streak").innerText = "Streak: Bilgi Yok";
+      return;
     }
-    function upHandler(){ window.removeEventListener('mousemove',moveHandler); window.removeEventListener('mouseup',upHandler); }
-    window.addEventListener('mousemove', moveHandler);
-    window.addEventListener('mouseup', upHandler);
-  };
+
+    // Player kendi sonucuna göre W/L
+    const results = matches.map(m => {
+      // Oyuncunun kendi takımını belirle
+      const team1 = m.teams?.faction1?.players || [];
+      const team2 = m.teams?.faction2?.players || [];
+      const playerTeam = team1.some(p => p.player_id === playerId) ? "team1" : "team2";
+      const winner = m.results?.Winner;
+      return (winner === playerTeam) ? "W" : "L";
+    });
+
+    // Son 5 maç renkli göstermek
+    const recentDiv = document.getElementById("recent-matches");
+    recentDiv.innerHTML = "Son 5 Maç: ";
+    results.forEach(r => {
+      const span = document.createElement("span");
+      span.className = r;
+      span.innerText = r;
+      recentDiv.appendChild(span);
+    });
+
+    // Streak hesapla
+    let streak = 0;
+    let current = results[0];
+    for(const r of results){
+      if(r === current) streak++;
+      else break;
+    }
+    document.getElementById("streak").innerText = `Streak: ${streak} ${current}`;
+  });
+
+})
+.catch(err => {
+  document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
+  document.getElementById("matches").innerText = "Toplam Maç: Bilgi Yok";
+  document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
+  document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+  document.getElementById("streak").innerText = "Streak: Bilgi Yok";
+  console.error(err);
 });
-
-// Çizim aracı
-function toggleDraw(){ drawMode = !drawMode; }
-
-canvas.onmousedown = e => { if(drawMode){drawing=true; lastPos={x:e.offsetX,y:e.offsetY};} }
-canvas.onmousemove = e => {
-  if(drawMode && drawing){
-    ctx.strokeStyle='yellow'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(lastPos.x,lastPos.y); ctx.lineTo(e.offsetX,e.offsetY); ctx.stroke();
-    lines.push({x1:lastPos.x,y1:lastPos.y,x2:e.offsetX,y2:e.offsetY});
-    lastPos={x:e.offsetX,y:e.offsetY};
-  }
-}
-canvas.onmouseup = () => { drawing=false; lastPos=null; }
-
-// Not ekleme
-function addRandomNote(){
-  const note = document.createElement('div');
-  note.className='note';
-  note.style.left = Math.random()*750+'px';
-  note.style.top = Math.random()*550+'px';
-  note.innerText = 'Push burada';
-  mapContainer.appendChild(note);
-}
-
-// Round verisi
-let rounds = [
-  {team:[{x:100,y:150},{x:200,y:300}], enemies:[{x:500,y:100},{x:600,y:200}]},
-  {team:[{x:120,y:170},{x:220,y:320}], enemies:[{x:520,y:130},{x:620,y:220}]},
-  {team:[{x:140,y:200},{x:240,y:350}], enemies:[{x:540,y:160},{x:640,y:250}]}
-];
-let currentRound = 0;
-
-// Draw & Heatmap
-function drawRound(round){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  // Heatmap data
-  const dataPoints = [];
-  round.team.concat(round.enemies).forEach(p=>{dataPoints.push({x:p.x,y:p.y,value:1});});
-  heatmapInstance.setData({max:1,data:dataPoints});
-
-  // Oyuncular
-  round.team.forEach(p=>{
-    ctx.fillStyle='blue'; ctx.beginPath(); ctx.arc(p.x,p.y,10,0,Math.PI*2); ctx.fill();
-  });
-  round.enemies.forEach(p=>{
-    ctx.fillStyle='red'; ctx.beginPath(); ctx.arc(p.x,p.y,10,0,Math.PI*2); ctx.fill();
-  });
-
-  // Çizimler
-  lines.forEach(l=>{
-    ctx.strokeStyle='yellow'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(l.x1,l.y1); ctx.lineTo(l.x2,l.y2); ctx.stroke();
-  });
-}
-
-function draw(){ drawRound({team:team,enemies:enemies}); }
-draw();
-
-// Round Replay
-function startReplay(){
-  currentRound=0;
-  function animate(){
-    if(currentRound>=rounds.length) return;
-    drawRound(rounds[currentRound]);
-    document.getElementById('roundSlider').value=currentRound;
-    currentRound++;
-    setTimeout(animate,1000);
-  }
-  animate();
-}
-
-// Slider
-const slider = document.getElementById('roundSlider');
-slider.oninput = ()=>{
-  const r = parseInt(slider.value);
-  if(r<rounds.length){
-    currentRound = r;
-    drawRound(rounds[currentRound]);
-  }
-}
-
-// Round kaydet / yükle
-function saveRounds(){
-  const json = JSON.stringify(rounds);
-  const blob = new Blob([json],{type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href=url; a.download="rounds.json"; a.click();
-}
-
-function loadRounds(file){
-  const reader = new FileReader();
-  reader.onload = e=>{
-    const data = JSON.parse(e.target.result);
-    rounds = data;
-    drawRound(rounds[0]);
-  };
-  reader.readAsText(file);
-}
 </script>
+
 </body>
 </html>
