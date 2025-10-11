@@ -41,6 +41,7 @@
   th { background:#4B4B4B; }
   .W { background:#00ff00; }
   .L { background:#ff3333; }
+  .avg-row { font-weight:bold; background:#333333; }
 </style>
 </head>
 <body>
@@ -75,21 +76,20 @@ async function fetchJSON(url){
 
 async function loadWidget(){
   try {
-    // Oyuncu bilgileri
     const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
     const elo = playerData.games?.cs2?.faceit_elo || "N/A";
     document.getElementById("elo").innerText = "ELO: " + elo;
     const playerId = playerData.player_id;
 
-    // Lifetime istatistik
     const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
     const matches = stats.lifetime?.Matches || "N/A";
     document.getElementById("matches").innerText = "Toplam Maç: " + matches;
 
-    // Son 5 maç detay
     const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=5`);
     const tbody = document.querySelector("#stats-table tbody");
     tbody.innerHTML = "";
+
+    let totalKills = 0, totalDeaths = 0, countMatches = 0;
 
     for(const match of history.items){
       try{
@@ -107,6 +107,11 @@ async function loadWidget(){
         });
         const KD = deaths>0 ? (kills/deaths).toFixed(2) : kills;
         const result = match.matchStats?.Winner ? "W" : "L";
+
+        totalKills += kills;
+        totalDeaths += deaths;
+        countMatches++;
+
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td class="${result}">${result}</td>
@@ -121,6 +126,21 @@ async function loadWidget(){
         tbody.appendChild(tr);
       }
     }
+
+    // Ortalama satırı ekle
+    if(countMatches>0){
+      const avgKD = totalDeaths>0 ? (totalKills/totalDeaths).toFixed(2) : totalKills.toFixed(2);
+      const avgTr = document.createElement("tr");
+      avgTr.className = "avg-row";
+      avgTr.innerHTML = `
+        <td>Ort.</td>
+        <td>${(totalKills/countMatches).toFixed(1)}</td>
+        <td>${(totalDeaths/countMatches).toFixed(1)}</td>
+        <td>${avgKD}</td>
+      `;
+      tbody.appendChild(avgTr);
+    }
+
   }catch(err){
     console.error(err);
     document.getElementById("elo").innerText = "ELO alınamadı";
