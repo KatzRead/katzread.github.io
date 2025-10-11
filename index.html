@@ -18,7 +18,7 @@
   }
 
   .widget {
-    background: rgba(10,10,15,0.9);
+    background: rgba(10,10,15,0.95);
     border: 2px solid #00ffff;
     border-radius: 15px;
     padding: 20px;
@@ -77,80 +77,84 @@
 </div>
 
 <script>
-  const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063"; 
-  const nickname = "KatzRead";
+const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
+const nickname = "KatzRead";
 
-  fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
+// Player ID ve ELO çek
+fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
+  headers: { "Authorization": `Bearer ${apiKey}` }
+})
+.then(res => res.json())
+.then(playerData => {
+  const elo = playerData.games?.csgo?.faceit_elo || "Bilgi Yok";
+  document.getElementById("elo").innerText = "ELO: " + elo;
+
+  const playerId = playerData.player_id;
+
+  // CS2 istatistikleri çek
+  fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/csgo`, {
     headers: { "Authorization": `Bearer ${apiKey}` }
   })
   .then(res => res.json())
-  .then(playerData => {
-    const elo = playerData.games?.csgo?.faceit_elo || "Bilgi Yok";
-    document.getElementById("elo").innerText = "ELO: " + elo;
-
-    const playerId = playerData.player_id;
-
-    // CS2 istatistikleri çek
-    fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/csgo`, {
-      headers: { "Authorization": `Bearer ${apiKey}` }
-    })
-    .then(res => res.json())
-    .then(stats => {
-      const matches = stats.lifetime?.Matches || "Bilgi Yok";
-      const winRate = stats.lifetime?.["Win Rate"] || stats.lifetime?.WinRate || "Bilgi Yok";
-
-      document.getElementById("matches").innerText = "Toplam Maç: " + matches;
-      document.getElementById("winrate").innerText = "Win %: " + winRate;
-    });
-
-    // Son 5 maç ve streak
-    fetch(`https://open.faceit.com/data/v4/players/${playerId}/history?game=csgo&offset=0&limit=5`, {
-      headers: { "Authorization": `Bearer ${apiKey}` }
-    })
-    .then(res => res.json())
-    .then(history => {
-      const matches = history.items || [];
-      if(matches.length === 0) {
-        document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-        document.getElementById("streak").innerText = "Streak: Bilgi Yok";
-        return;
-      }
-
-      const results = matches.map(m => {
-        const team1 = m.teams?.faction1?.players || [];
-        const team2 = m.teams?.faction2?.players || [];
-        const playerTeam = team1.some(p => p.player_id === playerId) ? "team1" : "team2";
-        const winner = m.results?.Winner;
-        return (winner === playerTeam) ? "W" : "L";
-      });
-
-      const recentDiv = document.getElementById("recent-matches");
-      recentDiv.innerHTML = "Son 5 Maç: ";
-      results.forEach(r => {
-        const span = document.createElement("span");
-        span.className = r;
-        span.innerText = r;
-        recentDiv.appendChild(span);
-      });
-
-      // Streak hesapla
-      let streak = 0;
-      let current = results[0];
-      for(const r of results){
-        if(r === current) streak++;
-        else break;
-      }
-      document.getElementById("streak").innerText = `Streak: ${streak} ${current}`;
-    });
-  })
-  .catch(err => {
-    document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
-    document.getElementById("matches").innerText = "Toplam Maç: Bilgi Yok";
-    document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
-    document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-    document.getElementById("streak").innerText = "Streak: Bilgi Yok";
-    console.error(err);
+  .then(stats => {
+    const matches = stats.lifetime?.Matches || "Bilgi Yok";
+    const winRate = stats.lifetime?.["Win Rate"] || stats.lifetime?.WinRate || "Bilgi Yok";
+    document.getElementById("matches").innerText = "Toplam Maç: " + matches;
+    document.getElementById("winrate").innerText = "Win %: " + winRate;
   });
+
+  // Son 5 maç ve streak
+  fetch(`https://open.faceit.com/data/v4/players/${playerId}/history?game=csgo&offset=0&limit=5`, {
+    headers: { "Authorization": `Bearer ${apiKey}` }
+  })
+  .then(res => res.json())
+  .then(history => {
+    const matches = history.items || [];
+    if(matches.length === 0){
+      document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+      document.getElementById("streak").innerText = "Streak: Bilgi Yok";
+      return;
+    }
+
+    // Player kendi sonucuna göre W/L
+    const results = matches.map(m => {
+      // Oyuncunun kendi takımını belirle
+      const team1 = m.teams?.faction1?.players || [];
+      const team2 = m.teams?.faction2?.players || [];
+      const playerTeam = team1.some(p => p.player_id === playerId) ? "team1" : "team2";
+      const winner = m.results?.Winner;
+      return (winner === playerTeam) ? "W" : "L";
+    });
+
+    // Son 5 maç renkli göstermek
+    const recentDiv = document.getElementById("recent-matches");
+    recentDiv.innerHTML = "Son 5 Maç: ";
+    results.forEach(r => {
+      const span = document.createElement("span");
+      span.className = r;
+      span.innerText = r;
+      recentDiv.appendChild(span);
+    });
+
+    // Streak hesapla
+    let streak = 0;
+    let current = results[0];
+    for(const r of results){
+      if(r === current) streak++;
+      else break;
+    }
+    document.getElementById("streak").innerText = `Streak: ${streak} ${current}`;
+  });
+
+})
+.catch(err => {
+  document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
+  document.getElementById("matches").innerText = "Toplam Maç: Bilgi Yok";
+  document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
+  document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+  document.getElementById("streak").innerText = "Streak: Bilgi Yok";
+  console.error(err);
+});
 </script>
 
 </body>
