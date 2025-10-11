@@ -1,190 +1,79 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KatzRead</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: radial-gradient(circle at top, #0a0a0f, #000);
-      color: #e0e0e0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 2.8em;
-      color: #00ffff;
-      text-shadow: 0 0 15px #00ffff;
-    }
-
-    p {
-      font-size: 1.2em;
-      color: #ccc;
-      margin-top: -5px;
-    }
-
-    .links {
-      margin-top: 30px;
-    }
-
-    .links a {
-      display: inline-block;
-      margin: 0 10px;
-      padding: 10px 20px;
-      border: 2px solid #00ffff;
-      border-radius: 8px;
-      color: #00ffff;
-      text-decoration: none;
-      transition: 0.3s;
-      text-transform: none;
-      letter-spacing: 1px;
-    }
-
-    .links a:hover {
-      background: #00ffff;
-      color: #000;
-      box-shadow: 0 0 20px #00ffff;
-    }
-
-    #cs2-stats {
-      margin-top: 25px;
-      text-align: center;
-      color: #00ff99;
-      text-shadow: 0 0 10px #00ff99;
-      font-size: 1.3em;
-    }
-
-    #recent-matches {
-      margin-top: 15px;
-      font-size: 1.1em;
-      color: #00ffff;
-    }
-
-    #streak {
-      margin-top: 10px;
-      font-size: 1.2em;
-      color: #ff66ff;
-      text-shadow: 0 0 10px #ff66ff;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 0.9em;
-      color: #555;
-    }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 2em; }
-      .links a { padding: 8px 14px; margin: 5px; }
-      #cs2-stats { font-size: 1.1em; }
-      #recent-matches { font-size: 1em; }
-      #streak { font-size: 1em; }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>CS2 Harita Analizi</title>
+<style>
+    body { background:#222; color:white; font-family:sans-serif; }
+    canvas { border:1px solid #555; background: url('mirage_topdown.png'); background-size: cover; }
+    #mapContainer { position:relative; }
+    .note { position:absolute; color:white; background:rgba(0,0,0,0.6); padding:2px 5px; border-radius:3px; cursor:pointer; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/heatmapjs@2.0.5/heatmap.min.js"></script>
 </head>
 <body>
-  <h1>👾 KatzRead</h1>
-  <p>CS2 oyuncusu • Lurker • Faceit 3700 ELO</p>
+<h1>CS2 Takım Analizi</h1>
+<div id="mapContainer">
+    <canvas id="mapCanvas" width="800" height="600"></canvas>
+</div>
+<button onclick="addRandomNote()">Not Ekle</button>
+<script>
+const canvas = document.getElementById('mapCanvas');
+const ctx = canvas.getContext('2d');
 
-  <div class="links">
-    <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
-    <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit: KatzRead</a>
-    <a href="https://x.com/katzread" target="_blank">X (KatzRead)</a>
-    <a href="https://kick.com/katzread" target="_blank">Kick: KatzRead</a>
-  </div>
+// Heatmap kurulum
+const heatmapInstance = h337.create({
+  container: document.getElementById('mapContainer'),
+  radius: 30,
+  maxOpacity: 0.6
+});
 
-  <div id="cs2-stats">
-    <p id="elo">ELO: Yükleniyor...</p>
-    <p id="matches">Toplam Maç: Yükleniyor...</p>
-    <p id="winrate">Win %: Yükleniyor...</p>
-    <div id="recent-matches">Son 5 Maç: Yükleniyor...</div>
-    <div id="streak">Streak: Yükleniyor...</div>
-  </div>
+// Örnek round verisi
+const rounds = [
+    {team:[{x:100,y:150},{x:200,y:300}], enemies:[{x:500,y:100},{x:600,y:200}]},
+    {team:[{x:120,y:170},{x:220,y:320}], enemies:[{x:520,y:130},{x:620,y:220}]}
+];
 
-  <script>
-    const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063"; // senin key
-    const nickname = "KatzRead";
+let currentRound = 0;
 
-    fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
-      headers: { "Authorization": `Bearer ${apiKey}` }
-    })
-    .then(res => res.json())
-    .then(playerData => {
-      const elo = playerData.games?.csgo?.faceit_elo || "Bilgi Yok";
-      document.getElementById("elo").innerText = "ELO: " + elo;
-
-      const playerId = playerData.player_id;
-
-      // CS2 istatistikleri çek
-      fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/csgo`, {
-        headers: { "Authorization": `Bearer ${apiKey}` }
-      })
-      .then(res => res.json())
-      .then(stats => {
-        const matches = stats.lifetime?.Matches || "Bilgi Yok";
-        const winRate = stats.lifetime?.["Win Rate"] || stats.lifetime?.WinRate || "Bilgi Yok";
-
-        document.getElementById("matches").innerText = "Toplam Maç: " + matches;
-        document.getElementById("winrate").innerText = "Win %: " + winRate;
-      });
-
-      // Son 5 maç ve streak
-      fetch(`https://open.faceit.com/data/v4/players/${playerId}/history?game=csgo&offset=0&limit=5`, {
-        headers: { "Authorization": `Bearer ${apiKey}` }
-      })
-      .then(res => res.json())
-      .then(history => {
-        const matches = history.items || [];
-        if(matches.length === 0) {
-          document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-          document.getElementById("streak").innerText = "Streak: Bilgi Yok";
-          return;
-        }
-
-        // Her maçta kazanan takımı kontrol et ve W/L belirle
-        const results = matches.map(m => {
-          // playerId hangi takımda?
-          const team1 = m.teams?.faction1?.players || [];
-          const team2 = m.teams?.faction2?.players || [];
-          const playerTeam = team1.some(p => p.player_id === playerId) ? "team1" : "team2";
-          const winner = m.results?.Winner;
-          return (winner === playerTeam) ? "W" : "L";
-        });
-
-        document.getElementById("recent-matches").innerText = "Son 5 Maç: " + results.join(" | ");
-
-        // Streak hesapla
-        let streak = 0;
-        let current = results[0];
-        for(const r of results){
-          if(r === current) streak++;
-          else break;
-        }
-        document.getElementById("streak").innerText = `Streak: ${streak} ${current}`;
-      });
-
-    })
-    .catch(err => {
-      document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
-      document.getElementById("matches").innerText = "Toplam Maç: Bilgi Yok";
-      document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
-      document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-      document.getElementById("streak").innerText = "Streak: Bilgi Yok";
-      console.error(err);
+// Oyuncu çizme
+function drawRound(round){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    round.team.forEach(p=>{
+        ctx.fillStyle='blue';
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,10,0,Math.PI*2);
+        ctx.fill();
+        heatmapInstance.addData({x:p.x, y:p.y, value:1});
     });
-  </script>
+    round.enemies.forEach(p=>{
+        ctx.fillStyle='red';
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,10,0,Math.PI*2);
+        ctx.fill();
+        heatmapInstance.addData({x:p.x, y:p.y, value:1});
+    });
+}
 
-  
-  <footer>© 2025 KatzRead</footer>
+// Round animasyonu
+function animateRounds(){
+    if(currentRound >= rounds.length) return;
+    drawRound(rounds[currentRound]);
+    currentRound++;
+    setTimeout(animateRounds, 1000);
+}
+
+animateRounds();
+
+// Not ekleme
+function addRandomNote(){
+    const note = document.createElement('div');
+    note.className = 'note';
+    note.style.left = Math.random()*700+'px';
+    note.style.top = Math.random()*500+'px';
+    note.innerText = 'Push burada';
+    document.getElementById('mapContainer').appendChild(note);
+}
+</script>
 </body>
 </html>
