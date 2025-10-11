@@ -13,7 +13,7 @@
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
     background:#0a0a0f;
   }
 
@@ -39,8 +39,6 @@
   table { width:100%; margin-top:10px; border-collapse: collapse; }
   th, td { border:1px solid #00ffff; padding:5px; text-align:center; }
   th { background:#4B4B4B; }
-  .W { background:#00ff00; }
-  .L { background:#ff3333; }
   .avg-row { font-weight:bold; background:#1a1a1a; color:#00ffff; }
 </style>
 </head>
@@ -53,7 +51,7 @@
   <table id="stats-table">
     <thead>
       <tr>
-        <th>Son 5 Maç</th>
+        <th>Maç</th>
         <th>Kills</th>
         <th>Deaths</th>
         <th>K/D</th>
@@ -70,6 +68,7 @@
 <script>
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
+const MATCH_LIMIT = 30;
 
 async function fetchJSON(url){
   const res = await fetch(url, { headers:{ Authorization:"Bearer "+apiKey } });
@@ -78,20 +77,23 @@ async function fetchJSON(url){
 
 async function loadWidget(){
   try {
+    // Oyuncu bilgisi
     const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
     const elo = playerData.games?.cs2?.faceit_elo || "N/A";
     document.getElementById("elo").innerText = "ELO: " + elo;
     const playerId = playerData.player_id;
 
+    // Toplam maç
     const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
     const matches = stats.lifetime?.Matches || "N/A";
     document.getElementById("matches").innerText = "Toplam Maç: " + matches;
 
-    const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=5`);
+    // Son 30 maç
+    const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
     const tbody = document.querySelector("#stats-table tbody");
     tbody.innerHTML = "";
 
-    let totalKills = 0, totalDeaths = 0, totalADR = 0, totalHS = 0, countMatches = 0;
+    let totalKills=0, totalDeaths=0, totalADR=0, totalHS=0, countMatches=0;
 
     for(const match of history.items){
       try{
@@ -121,12 +123,11 @@ async function loadWidget(){
         }
 
         const KD = deaths>0 ? (kills/deaths).toFixed(2) : kills;
-        const hsPercent = kills>0 ? ((hsSum/kills)*100).toFixed(1) + "%" : "-";
-        const result = match.matchStats?.Winner ? "W" : "L";
+        const hsPercent = kills>0 ? ((hsSum/kills)*100).toFixed(1)+"%" : "-";
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td class="${result}">${result}</td>
+          <td>${match.match_id}</td>
           <td>${kills}</td>
           <td>${deaths}</td>
           <td>${KD}</td>
@@ -148,7 +149,7 @@ async function loadWidget(){
       const avgDeaths = (totalDeaths/countMatches).toFixed(1);
       const avgKD = totalDeaths>0 ? (totalKills/totalDeaths).toFixed(2) : totalKills.toFixed(2);
       const avgADR = (totalADR/countMatches).toFixed(1);
-      const avgHS = totalKills>0 ? ((totalHS/totalKills)*100).toFixed(1) + "%" : "-";
+      const avgHS = totalKills>0 ? ((totalHS/totalKills)*100).toFixed(1)+"%" : "-";
 
       const avgTr = document.createElement("tr");
       avgTr.className = "avg-row";
@@ -161,11 +162,6 @@ async function loadWidget(){
         <td>${avgHS}</td>
       `;
       tbody.appendChild(avgTr);
-    } else {
-      const avgTr = document.createElement("tr");
-      avgTr.className = "avg-row";
-      avgTr.innerHTML = `<td colspan="6">Ortalama veri yok</td>`;
-      tbody.appendChild(avgTr);
     }
 
   }catch(err){
@@ -177,6 +173,7 @@ async function loadWidget(){
   }
 }
 
+// Sayfa yüklendiğinde çalıştır
 loadWidget();
 </script>
 
