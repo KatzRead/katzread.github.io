@@ -3,14 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KatzRead Widget</title>
+<title>KatzRead CS2 Widget</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
   body {
-    margin:0; font-family:'Orbitron',sans-serif;
-    display:flex; justify-content:center; align-items:center;
-    height:100vh; background:#0a0a0f;
+    margin:0;
+    font-family:'Orbitron',sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:#0a0a0f;
   }
+
   .widget {
     background: rgba(10,10,15,0.95);
     border:2px solid #00ffff;
@@ -21,11 +27,19 @@
     text-align:center;
     color:#fff;
   }
-  .widget h2 { margin:0; font-size:1.6em; color:#00ffff; text-shadow:0 0 10px #00ffff; }
+
+  .widget h2 {
+    margin:0;
+    font-size:1.6em;
+    color:#00ffff;
+    text-shadow:0 0 10px #00ffff;
+  }
+
   .stat { margin-top:10px; font-size:1em; }
   .recent { margin-top:10px; }
   .recent span {
-    display:inline-block; width:25px; height:25px; line-height:25px;
+    display:inline-block;
+    width:25px; height:25px; line-height:25px;
     border-radius:50%; margin:0 3px; font-weight:bold; color:#000;
   }
   .W { background:#00ff00; }
@@ -37,61 +51,59 @@
 <div class="widget">
   <h2>KatzRead</h2>
   <div class="stat" id="elo">ELO: Yükleniyor...</div>
-  <div class="stat" id="winrate">Win %: Yükleniyor...</div>
-  <div class="stat" id="kd">K/D: Yükleniyor...</div>
-  <div class="stat" id="avgKills">Avg Kills: Yükleniyor...</div>
-  <div class="stat" id="avgDeaths">Avg Deaths: Yükleniyor...</div>
-  <div class="recent" id="recent-matches">Son 5 Maç: Yükleniyor...</div>
+  <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+  <div class="stat" id="winrate">Win %: Bilgi Yok</div>
+  <div class="stat" id="kd-ratio">K/D: Bilgi Yok</div>
+  <div class="stat" id="avg-kills">Avg Kills: Bilgi Yok</div>
+  <div class="stat" id="avg-deaths">Avg Deaths: Bilgi Yok</div>
+  <div class="recent" id="recent-matches">Son 5 Maç: Bilgi Yok</div>
 </div>
 
 <script>
-const playerId = "02b26fe9-49d1-47e7-afa0-1b5c562ca4e2";
-const secret = "f597facb42096d1abfffec7a73b66903";
+const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
+const nickname = "KatzRead";
 
-fetch(`https://strugly.com/inc/widget.php?widget_type=widget-renew-2&player=${playerId}&secret=${secret}`)
-  .then(res => res.text())
-  .then(html => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const text = doc.body.innerText;
+async function loadWidget() {
+  try {
+    const resPlayer = await fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
+      headers: { "Authorization": `Bearer ${apiKey}` }
+    });
+    const playerData = await resPlayer.json();
 
-    // ELO
-    const eloMatch = text.match(/ELO:\s*(\d+)/);
-    const elo = eloMatch ? eloMatch[1] : "Bilgi Yok";
-    document.getElementById("elo").innerText = `ELO: ${elo}`;
+    const elo = playerData.games?.cs2?.faceit_elo || "Bilgi Yok";
+    document.getElementById("elo").innerText = "ELO: " + elo;
+    const playerId = playerData.player_id;
 
-    // Win %, K/D, Avg Kills, Avg Deaths
-    const winMatch = text.match(/Win\s*%[:=]?\s*([\d.]+)/);
-    const kdMatch = text.match(/K\/D[:=]?\s*([\d.]+)/);
-    const avgKillsMatch = text.match(/AVG[:=]?\s*([\d.]+)/);
-    const avgDeathsMatch = text.match(/K\/R[:=]?\s*([\d.]+)/);
+    const resStats = await fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`, {
+      headers: { "Authorization": `Bearer ${apiKey}` }
+    });
+    const stats = await resStats.json();
 
-    document.getElementById("winrate").innerText = `Win %: ${winMatch ? winMatch[1] : "Bilgi Yok"}`;
-    document.getElementById("kd").innerText = `K/D: ${kdMatch ? kdMatch[1] : "Bilgi Yok"}`;
-    document.getElementById("avgKills").innerText = `Avg Kills: ${avgKillsMatch ? avgKillsMatch[1] : "Bilgi Yok"}`;
-    document.getElementById("avgDeaths").innerText = `Avg Deaths: ${avgDeathsMatch ? avgDeathsMatch[1] : "Bilgi Yok"}`;
+    const matches = stats.lifetime?.Matches || "Bilgi Yok";
+    document.getElementById("matches").innerText = "Toplam Maç: " + matches;
 
-    // Son 5 maç
-    const matchSeq = text.match(/[WL]\s*[WL]\s*[WL]\s*[WL]\s*[WL]/);
-    if (matchSeq) {
-      const seq = matchSeq[0].replace(/\s+/g, "");
-      const recentDiv = document.getElementById("recent-matches");
-      recentDiv.innerHTML = "Son 5 Maç: ";
-      seq.split("").forEach(r => {
-        const span = document.createElement("span");
-        span.className = r;
-        span.innerText = r;
-        recentDiv.appendChild(span);
-      });
-    } else {
-      document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-    }
+    // Win %, K/D, Avg Kills, Avg Deaths henüz API'den gelmiyor
+    document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
+    document.getElementById("kd-ratio").innerText = "K/D: Bilgi Yok";
+    document.getElementById("avg-kills").innerText = "Avg Kills: Bilgi Yok";
+    document.getElementById("avg-deaths").innerText = "Avg Deaths: Bilgi Yok";
 
-  })
-  .catch(err => {
+    // Son 5 maç placeholder
+    document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+
+  } catch (err) {
     console.error(err);
-    document.querySelectorAll(".stat, #recent-matches").forEach(el => el.innerText = "Bilgi Yok");
-  });
+    document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
+    document.getElementById("matches").innerText = "Toplam Maç: Bilgi Yok";
+    document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
+    document.getElementById("kd-ratio").innerText = "K/D: Bilgi Yok";
+    document.getElementById("avg-kills").innerText = "Avg Kills: Bilgi Yok";
+    document.getElementById("avg-deaths").innerText = "Avg Deaths: Bilgi Yok";
+    document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+  }
+}
+
+loadWidget();
 </script>
 
 </body>
