@@ -3,47 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KatzRead CS2 Widget</title>
+<title>KatzRead Widget (CS2)</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
   body {
-    margin:0;
-    font-family:'Orbitron',sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    background:#0a0a0f;
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #0a0a0f;
   }
 
   .widget {
     background: rgba(10,10,15,0.95);
-    border:2px solid #00ffff;
-    border-radius:15px;
-    padding:20px;
-    width:320px;
-    box-shadow:0 0 20px #00ffff;
-    text-align:center;
-    color:#fff;
+    border: 2px solid #00ffff;
+    border-radius: 15px;
+    padding: 20px;
+    width: 320px;
+    box-shadow: 0 0 20px #00ffff;
+    text-align: center;
+    color: #fff;
   }
 
   .widget h2 {
-    margin:0;
-    font-size:1.6em;
-    color:#00ffff;
-    text-shadow:0 0 10px #00ffff;
+    margin: 0;
+    font-size: 1.6em;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
   }
 
-  .stat { margin-top:10px; font-size:1em; }
-  .recent { margin-top:10px; }
-  .recent span {
-    display:inline-block;
-    width:25px; height:25px; line-height:25px;
-    border-radius:50%; margin:0 3px; font-weight:bold; color:#000;
+  .stat {
+    margin-top: 10px;
+    font-size: 1em;
   }
-  .W { background:#00ff00; }
-  .L { background:#ff3333; }
+
+  .recent {
+    margin-top: 10px;
+  }
+
+  .recent span {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 50%;
+    margin: 0 3px;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .W { background: #00ff00; }
+  .L { background: #ff3333; }
 </style>
 </head>
 <body>
@@ -51,59 +64,53 @@
 <div class="widget">
   <h2>KatzRead</h2>
   <div class="stat" id="elo">ELO: Yükleniyor...</div>
-  <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
-  <div class="stat" id="winrate">Win %: Bilgi Yok</div>
-  <div class="stat" id="kd-ratio">K/D: Bilgi Yok</div>
-  <div class="stat" id="avg-kills">Avg Kills: Bilgi Yok</div>
-  <div class="stat" id="avg-deaths">Avg Deaths: Bilgi Yok</div>
-  <div class="recent" id="recent-matches">Son 5 Maç: Bilgi Yok</div>
+  <div class="stat" id="winrate">Win %: Yükleniyor...</div>
+  <div class="stat" id="kd">K/D: Yükleniyor...</div>
+  <div class="stat" id="avgKills">Avg Kills: Yükleniyor...</div>
+  <div class="stat" id="avgDeaths">Avg Deaths: Yükleniyor...</div>
+  <div class="recent" id="recent-matches">Son 5 Maç: Yükleniyor...</div>
 </div>
 
 <script>
-const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
-const nickname = "KatzRead";
+const playerId = "02b26fe9-49d1-47e7-afa0-1b5c562ca4e2";
+const secret = "f597facb42096d1abfffec7a73b66903";
 
-async function loadWidget() {
-  try {
-    const resPlayer = await fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
-      headers: { "Authorization": `Bearer ${apiKey}` }
+fetch(`https://strugly.com/inc/widget.php?widget_type=widget-renew-2&player=${playerId}&secret=${secret}`)
+  .then(res => res.text())
+  .then(html => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Metinlerden verileri yakalamak
+    const text = doc.body.innerText;
+
+    const elo = (text.match(/ELO:\s*(\d+)/) || [])[1] || "Bilgi Yok";
+    const kd = (text.match(/K\/D:\s*([\d.]+)/) || [])[1] || "Bilgi Yok";
+    const winrate = (text.match(/Win\s*%\s*[:=]?\s*([\d.]+)/) || [])[1] || "Bilgi Yok";
+    const avgKills = (text.match(/Avg\s*Kills\s*[:=]?\s*([\d.]+)/) || [])[1] || "Bilgi Yok";
+    const avgDeaths = (text.match(/Avg\s*Deaths\s*[:=]?\s*([\d.]+)/) || [])[1] || "Bilgi Yok";
+    const recentMatches = (text.match(/(W|L){3,5}/g) || [])[0] || "";
+
+    // Ekrana yaz
+    document.getElementById("elo").innerText = `ELO: ${elo}`;
+    document.getElementById("kd").innerText = `K/D: ${kd}`;
+    document.getElementById("winrate").innerText = `Win %: ${winrate}`;
+    document.getElementById("avgKills").innerText = `Avg Kills: ${avgKills}`;
+    document.getElementById("avgDeaths").innerText = `Avg Deaths: ${avgDeaths}`;
+
+    const recentDiv = document.getElementById("recent-matches");
+    recentDiv.innerHTML = "Son 5 Maç: ";
+    recentMatches.split("").forEach(r => {
+      const span = document.createElement("span");
+      span.className = r;
+      span.innerText = r;
+      recentDiv.appendChild(span);
     });
-    const playerData = await resPlayer.json();
-
-    const elo = playerData.games?.cs2?.faceit_elo || "Bilgi Yok";
-    document.getElementById("elo").innerText = "ELO: " + elo;
-    const playerId = playerData.player_id;
-
-    const resStats = await fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`, {
-      headers: { "Authorization": `Bearer ${apiKey}` }
-    });
-    const stats = await resStats.json();
-
-    const matches = stats.lifetime?.Matches || "Bilgi Yok";
-    document.getElementById("matches").innerText = "Toplam Maç: " + matches;
-
-    // Win %, K/D, Avg Kills, Avg Deaths henüz API'den gelmiyor
-    document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
-    document.getElementById("kd-ratio").innerText = "K/D: Bilgi Yok";
-    document.getElementById("avg-kills").innerText = "Avg Kills: Bilgi Yok";
-    document.getElementById("avg-deaths").innerText = "Avg Deaths: Bilgi Yok";
-
-    // Son 5 maç placeholder
-    document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-
-  } catch (err) {
+  })
+  .catch(err => {
     console.error(err);
-    document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
-    document.getElementById("matches").innerText = "Toplam Maç: Bilgi Yok";
-    document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
-    document.getElementById("kd-ratio").innerText = "K/D: Bilgi Yok";
-    document.getElementById("avg-kills").innerText = "Avg Kills: Bilgi Yok";
-    document.getElementById("avg-deaths").innerText = "Avg Deaths: Bilgi Yok";
-    document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-  }
-}
-
-loadWidget();
+    document.querySelectorAll(".stat, #recent-matches").forEach(el => el.innerText = "Bilgi Yok");
+  });
 </script>
 
 </body>
