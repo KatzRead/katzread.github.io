@@ -44,7 +44,6 @@
   }
   .W { background:#00ff00; }
   .L { background:#ff3333; }
-  .streak { margin-top:10px; font-size:1em; color:#ff66ff; }
 </style>
 </head>
 <body>
@@ -58,7 +57,6 @@
   <div class="stat" id="avg-kills">Avg Kills: Bilgi Yok</div>
   <div class="stat" id="avg-deaths">Avg Deaths: Bilgi Yok</div>
   <div class="recent" id="recent-matches">Son 5 Maç: Bilgi Yok</div>
-  <div class="streak" id="streak">Streak: Bilgi Yok</div>
 </div>
 
 <script>
@@ -90,9 +88,8 @@ async function loadWidget() {
     document.getElementById("avg-kills").innerText = "Avg Kills: Bilgi Yok";
     document.getElementById("avg-deaths").innerText = "Avg Deaths: Bilgi Yok";
 
-    // Son 5 maç ve streak, placeholder gösterecek
+    // Son 5 maç placeholder
     document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-    document.getElementById("streak").innerText = "Streak: Bilgi Yok";
 
   } catch (err) {
     console.error(err);
@@ -103,7 +100,6 @@ async function loadWidget() {
     document.getElementById("avg-kills").innerText = "Avg Kills: Bilgi Yok";
     document.getElementById("avg-deaths").innerText = "Avg Deaths: Bilgi Yok";
     document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-    document.getElementById("streak").innerText = "Streak: Bilgi Yok";
   }
 }
 
