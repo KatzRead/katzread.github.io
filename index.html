@@ -22,7 +22,7 @@
     border:2px solid #00ffff;
     border-radius:10px;
     padding:15px;
-    width:480px;
+    width:520px;
     box-shadow:0 0 15px #00ffff;
     text-align:center;
     color:#fff;
@@ -41,6 +41,8 @@
   th, td { border:1px solid #00ffff; padding:4px; text-align:center; }
   th { background:#4B4B4B; font-size:12px; }
   .avg-row { font-weight:bold; background:#1a1a1a; color:#00ffff; }
+  .W { color:#00ff00; font-weight:bold; }
+  .L { color:#ff3333; font-weight:bold; }
 </style>
 </head>
 <body>
@@ -53,6 +55,7 @@
     <thead>
       <tr>
         <th>#</th>
+        <th>W/L</th>
         <th>Kills</th>
         <th>Deaths</th>
         <th>K/D</th>
@@ -61,7 +64,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td colspan="6">Yükleniyor...</td></tr>
+      <tr><td colspan="7">Yükleniyor...</td></tr>
     </tbody>
   </table>
 </div>
@@ -98,6 +101,22 @@ async function loadWidget(){
       try{
         const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
         let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
+        let playerTeamId = null;
+        let matchWinnerTeamId = null;
+
+        // Oyuncunun hangi takımda olduğunu bul
+        matchData.teams.forEach(t=>{
+          t.players.forEach(p=>{
+            if(p.nickname === nickname) playerTeamId = t.team_id;
+          });
+          if(t.winner) matchWinnerTeamId = t.team_id; // kazanan takım
+        });
+
+        // W/L belirleme
+        let win = "-";
+        if(playerTeamId && matchWinnerTeamId){
+          win = (playerTeamId === matchWinnerTeamId) ? "W" : "L";
+        }
 
         // Oyuncu istatistikleri
         matchData.rounds?.forEach(r=>{
@@ -128,6 +147,7 @@ async function loadWidget(){
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${i+1}</td>
+          <td class="${win}">${win}</td>
           <td>${kills}</td>
           <td>${deaths}</td>
           <td>${KD}</td>
@@ -138,7 +158,7 @@ async function loadWidget(){
 
       }catch(e){
         const tr = document.createElement("tr");
-        tr.innerHTML = `<td colspan="6">Veri yok</td>`;
+        tr.innerHTML = `<td colspan="7">Veri yok</td>`;
         tbody.appendChild(tr);
       }
     }
@@ -155,6 +175,7 @@ async function loadWidget(){
       avgTr.className = "avg-row";
       avgTr.innerHTML = `
         <td>Ortalama</td>
+        <td>-</td>
         <td>${avgKills}</td>
         <td>${avgDeaths}</td>
         <td>${avgKD}</td>
@@ -169,7 +190,7 @@ async function loadWidget(){
     document.getElementById("elo").innerText = "ELO alınamadı";
     document.getElementById("matches").innerText = "Toplam Maç: N/A";
     const tbody = document.querySelector("#stats-table tbody");
-    tbody.innerHTML = `<tr><td colspan="6">Veri alınamadı</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7">Veri alınamadı</td></tr>`;
   }
 }
 
