@@ -22,7 +22,7 @@
     border:2px solid #00ffff;
     border-radius:15px;
     padding:20px;
-    width:480px;
+    width:580px;
     box-shadow:0 0 20px #00ffff;
     text-align:center;
     color:#fff;
@@ -58,10 +58,11 @@
         <th>Deaths</th>
         <th>K/D</th>
         <th>ADR</th>
+        <th>HS%</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td colspan="5">Yükleniyor...</td></tr>
+      <tr><td colspan="6">Yükleniyor...</td></tr>
     </tbody>
   </table>
 </div>
@@ -90,12 +91,12 @@ async function loadWidget(){
     const tbody = document.querySelector("#stats-table tbody");
     tbody.innerHTML = "";
 
-    let totalKills = 0, totalDeaths = 0, totalADR = 0, countMatches = 0;
+    let totalKills = 0, totalDeaths = 0, totalADR = 0, totalHS = 0, countMatches = 0;
 
     for(const match of history.items){
       try{
         const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
-        let kills=0, deaths=0, adrSum=0, roundsPlayed=0;
+        let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
 
         matchData.rounds?.forEach(r=>{
           r.teams.forEach(t=>{
@@ -104,6 +105,7 @@ async function loadWidget(){
                 kills += Number(p.player_stats.Kills||0);
                 deaths += Number(p.player_stats.Deaths||0);
                 adrSum += Number(p.player_stats.ADR||0);
+                hsSum += Number(p.player_stats.Headshots||0);
                 roundsPlayed += 1;
               }
             });
@@ -111,14 +113,15 @@ async function loadWidget(){
         });
 
         if(roundsPlayed>0){
-          const avgADR = adrSum/roundsPlayed;
           totalKills += kills;
           totalDeaths += deaths;
-          totalADR += avgADR;
+          totalADR += adrSum/roundsPlayed;
+          totalHS += hsSum;
           countMatches++;
         }
 
         const KD = deaths>0 ? (kills/deaths).toFixed(2) : kills;
+        const hsPercent = kills>0 ? ((hsSum/kills)*100).toFixed(1) + "%" : "-";
         const result = match.matchStats?.Winner ? "W" : "L";
 
         const tr = document.createElement("tr");
@@ -128,22 +131,24 @@ async function loadWidget(){
           <td>${deaths}</td>
           <td>${KD}</td>
           <td>${roundsPlayed>0 ? (adrSum/roundsPlayed).toFixed(1) : "-"}</td>
+          <td>${hsPercent}</td>
         `;
         tbody.appendChild(tr);
 
       }catch(e){
         const tr = document.createElement("tr");
-        tr.innerHTML = `<td colspan="5">Veri yok</td>`;
+        tr.innerHTML = `<td colspan="6">Veri yok</td>`;
         tbody.appendChild(tr);
       }
     }
 
-    // Ortalama satırı ekle
+    // Ortalama satırı
     if(countMatches>0){
       const avgKills = (totalKills/countMatches).toFixed(1);
       const avgDeaths = (totalDeaths/countMatches).toFixed(1);
       const avgKD = totalDeaths>0 ? (totalKills/totalDeaths).toFixed(2) : totalKills.toFixed(2);
       const avgADR = (totalADR/countMatches).toFixed(1);
+      const avgHS = totalKills>0 ? ((totalHS/totalKills)*100).toFixed(1) + "%" : "-";
 
       const avgTr = document.createElement("tr");
       avgTr.className = "avg-row";
@@ -153,12 +158,13 @@ async function loadWidget(){
         <td>${avgDeaths}</td>
         <td>${avgKD}</td>
         <td>${avgADR}</td>
+        <td>${avgHS}</td>
       `;
       tbody.appendChild(avgTr);
     } else {
       const avgTr = document.createElement("tr");
       avgTr.className = "avg-row";
-      avgTr.innerHTML = `<td colspan="5">Ortalama veri yok</td>`;
+      avgTr.innerHTML = `<td colspan="6">Ortalama veri yok</td>`;
       tbody.appendChild(avgTr);
     }
 
@@ -167,7 +173,7 @@ async function loadWidget(){
     document.getElementById("elo").innerText = "ELO alınamadı";
     document.getElementById("matches").innerText = "Toplam Maç: N/A";
     const tbody = document.querySelector("#stats-table tbody");
-    tbody.innerHTML = `<tr><td colspan="5">Veri alınamadı</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6">Veri alınamadı</td></tr>`;
   }
 }
 
