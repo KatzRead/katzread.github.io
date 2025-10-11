@@ -63,6 +63,19 @@
       font-size: 1.3em;
     }
 
+    #recent-matches {
+      margin-top: 15px;
+      font-size: 1.1em;
+      color: #00ffff;
+    }
+
+    #streak {
+      margin-top: 10px;
+      font-size: 1.2em;
+      color: #ff66ff;
+      text-shadow: 0 0 10px #ff66ff;
+    }
+
     footer {
       position: absolute;
       bottom: 20px;
@@ -74,6 +87,8 @@
       h1 { font-size: 2em; }
       .links a { padding: 8px 14px; margin: 5px; }
       #cs2-stats { font-size: 1.1em; }
+      #recent-matches { font-size: 1em; }
+      #streak { font-size: 1em; }
     }
   </style>
 </head>
@@ -92,13 +107,15 @@
     <p id="elo">ELO: Yükleniyor...</p>
     <p id="matches">Toplam Maç: Yükleniyor...</p>
     <p id="winrate">Win %: Yükleniyor...</p>
+    <div id="recent-matches">Son 5 Maç: Yükleniyor...</div>
+    <div id="streak">Streak: Yükleniyor...</div>
   </div>
 
   <script>
-    const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063"; // kendi Faceit API key’in
+    const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063"; // senin key
     const nickname = "KatzRead";
 
-    // Önce player ID ve ELO çek
+    // Player ID ve ELO çek
     fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
       headers: { "Authorization": `Bearer ${apiKey}` }
     })
@@ -108,23 +125,54 @@
       document.getElementById("elo").innerText = "ELO: " + elo;
 
       const playerId = playerData.player_id;
-      // Sonra CS2 istatistiklerini çek
-      return fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/csgo`, {
-        headers: { "Authorization": `Bearer ${apiKey}` }
-      });
-    })
-    .then(res => res.json())
-    .then(stats => {
-      const matches = stats.lifetime?.Matches || "Bilgi Yok";
-      const winRate = stats.lifetime?.WinRate ? stats.lifetime.WinRate + "%" : "Bilgi Yok";
 
-      document.getElementById("matches").innerText = "Toplam Maç: " + matches;
-      document.getElementById("winrate").innerText = "Win %: " + winRate;
+      // CS2 istatistikleri çek
+      fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/csgo`, {
+        headers: { "Authorization": `Bearer ${apiKey}` }
+      })
+      .then(res => res.json())
+      .then(stats => {
+        const matches = stats.lifetime?.Matches || "Bilgi Yok";
+        const winRate = stats.lifetime?.WinRate ? stats.lifetime.WinRate + "%" : "Bilgi Yok";
+
+        document.getElementById("matches").innerText = "Toplam Maç: " + matches;
+        document.getElementById("winrate").innerText = "Win %: " + winRate;
+      });
+
+      // Son 5 maç ve streak
+      fetch(`https://open.faceit.com/data/v4/players/${playerId}/history?game=csgo&offset=0&limit=5`, {
+        headers: { "Authorization": `Bearer ${apiKey}` }
+      })
+      .then(res => res.json())
+      .then(history => {
+        const matches = history.items || [];
+        if(matches.length === 0) {
+          document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+          document.getElementById("streak").innerText = "Streak: Bilgi Yok";
+          return;
+        }
+
+        // Son 5 maç W/L
+        const results = matches.map(m => m.results?.Winner === true ? "W" : "L");
+        document.getElementById("recent-matches").innerText = "Son 5 Maç: " + results.join(" | ");
+
+        // Streak hesapla
+        let streak = 0;
+        let current = results[0] === "W" ? "W" : "L";
+        for(const r of results) {
+          if(r === current) streak++;
+          else break;
+        }
+        document.getElementById("streak").innerText = `Streak: ${streak} ${current}`;
+      });
+
     })
     .catch(err => {
       document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
       document.getElementById("matches").innerText = "Toplam Maç: Bilgi Yok";
       document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
+      document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+      document.getElementById("streak").innerText = "Streak: Bilgi Yok";
       console.error(err);
     });
   </script>
