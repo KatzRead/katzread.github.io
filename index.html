@@ -41,7 +41,7 @@
   th { background:#4B4B4B; }
   .W { background:#00ff00; }
   .L { background:#ff3333; }
-  .avg-row { font-weight:bold; background:#333333; }
+  .avg-row { font-weight:bold; background:#1a1a1a; color:#00ffff; }
 </style>
 </head>
 <body>
@@ -95,7 +95,7 @@ async function loadWidget(){
       try{
         const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
         let kills=0, deaths=0;
-        matchData.rounds.forEach(r=>{
+        matchData.rounds?.forEach(r=>{
           r.teams.forEach(t=>{
             t.players.forEach(p=>{
               if(p.nickname===nickname){
@@ -105,12 +105,15 @@ async function loadWidget(){
             });
           });
         });
+
+        if(kills+deaths>0){ // sadece geçerli maçları say
+          totalKills += kills;
+          totalDeaths += deaths;
+          countMatches++;
+        }
+
         const KD = deaths>0 ? (kills/deaths).toFixed(2) : kills;
         const result = match.matchStats?.Winner ? "W" : "L";
-
-        totalKills += kills;
-        totalDeaths += deaths;
-        countMatches++;
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -120,6 +123,7 @@ async function loadWidget(){
           <td>${KD}</td>
         `;
         tbody.appendChild(tr);
+
       }catch(e){
         const tr = document.createElement("tr");
         tr.innerHTML = `<td colspan="4">Veri yok</td>`;
@@ -129,15 +133,23 @@ async function loadWidget(){
 
     // Ortalama satırı ekle
     if(countMatches>0){
+      const avgKills = (totalKills/countMatches).toFixed(1);
+      const avgDeaths = (totalDeaths/countMatches).toFixed(1);
       const avgKD = totalDeaths>0 ? (totalKills/totalDeaths).toFixed(2) : totalKills.toFixed(2);
+
       const avgTr = document.createElement("tr");
       avgTr.className = "avg-row";
       avgTr.innerHTML = `
-        <td>Ort.</td>
-        <td>${(totalKills/countMatches).toFixed(1)}</td>
-        <td>${(totalDeaths/countMatches).toFixed(1)}</td>
+        <td>Ortalama</td>
+        <td>${avgKills}</td>
+        <td>${avgDeaths}</td>
         <td>${avgKD}</td>
       `;
+      tbody.appendChild(avgTr);
+    } else {
+      const avgTr = document.createElement("tr");
+      avgTr.className = "avg-row";
+      avgTr.innerHTML = `<td colspan="4">Ortalama veri yok</td>`;
       tbody.appendChild(avgTr);
     }
 
