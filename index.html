@@ -16,7 +16,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       text-align: center;
     }
 
@@ -45,7 +45,7 @@
       color: #00ffff;
       text-decoration: none;
       transition: 0.3s;
-      text-transform: uppercase;
+      text-transform: none;
       letter-spacing: 1px;
     }
 
@@ -53,6 +53,14 @@
       background: #00ffff;
       color: #000;
       box-shadow: 0 0 20px #00ffff;
+    }
+
+    #cs2-stats {
+      margin-top: 25px;
+      text-align: center;
+      color: #00ff99;
+      text-shadow: 0 0 10px #00ff99;
+      font-size: 1.3em;
     }
 
     footer {
@@ -65,6 +73,7 @@
     @media (max-width: 600px) {
       h1 { font-size: 2em; }
       .links a { padding: 8px 14px; margin: 5px; }
+      #cs2-stats { font-size: 1.1em; }
     }
   </style>
 </head>
@@ -74,10 +83,41 @@
 
   <div class="links">
     <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
-    <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
-    <a href="https://x.com/katzread" target="_blank">Twitter</a>
-    <a href="https://kick.com/katzread" target="_blank">Kick</a>
+    <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit: KatzRead</a>
+    <a href="https://x.com/katzread" target="_blank">X (KatzRead)</a>
+    <a href="https://kick.com/katzread" target="_blank">Kick: KatzRead</a>
   </div>
+
+  <div id="cs2-stats">
+    <p id="elo">ELO: Yükleniyor...</p>
+    <p id="matches">Toplam Maç: Yükleniyor...</p>
+    <p id="winrate">Win %: Yükleniyor...</p>
+  </div>
+
+  <script>
+    const apiKey = "749f9ad8-cb83-4efd-b51e-006a1feacef1"; // kendi Faceit API key’in
+    const nickname = "KatzRead";
+
+    fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
+      headers: { "Authorization": `Bearer ${apiKey}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      const elo = data.games?.csgo?.faceit_elo || "Bilgi Yok";
+      const matches = data.games?.csgo?.matches || "Bilgi Yok";
+      const winRate = data.games?.csgo?.win_rate ? data.games.csgo.win_rate + "%" : "Bilgi Yok";
+
+      document.getElementById("elo").innerText = "ELO: " + elo;
+      document.getElementById("matches").innerText = "Toplam Maç: " + matches;
+      document.getElementById("winrate").innerText = "Win %: " + winRate;
+    })
+    .catch(err => {
+      document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
+      document.getElementById("matches").innerText = "";
+      document.getElementById("winrate").innerText = "";
+      console.error(err);
+    });
+  </script>
 
   <footer>© 2025 KatzRead</footer>
 </body>
