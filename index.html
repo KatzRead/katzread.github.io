@@ -101,36 +101,11 @@ async function loadWidget(){
       try{
         const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
         let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
-        let win=false;
 
-        // Oyuncunun takımını belirle
-        let playerTeam = null;
-        matchData.rounds?.forEach(r=>{
-          r.teams.forEach(t=>{
-            t.players.forEach(p=>{
-              if(p.nickname===nickname){
-                playerTeam = t;
-              }
-            });
-          });
-        });
-
-        if(playerTeam){
-          // Tüm roundlarda toplam skorları al
-          let playerTeamScore=0, otherTeamScore=0;
-          matchData.rounds.forEach(r=>{
-            const teamScores = r.teams.map(t=>{
-              let sum=0;
-              t.players.forEach(p=>{
-                sum += Number(p.player_stats.Kills||0);
-              });
-              return sum;
-            });
-            playerTeamScore += teamScores[r.teams.indexOf(playerTeam)] || 0;
-            const otherIdx = r.teams.indexOf(playerTeam)===0 ? 1 : 0;
-            otherTeamScore += teamScores[otherIdx] || 0;
-          });
-          win = playerTeamScore > otherTeamScore;
+        // W/L belirleme
+        let win = "L"; // default L
+        if(match.rounds_result && match.rounds_result.length>0){
+          win = match.rounds_result.every(r => r.result==="win") ? "W" : "L";
         }
 
         // Oyuncu istatistikleri
@@ -162,7 +137,7 @@ async function loadWidget(){
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${i+1}</td>
-          <td class="${win ? 'W' : 'L'}">${win ? 'W' : 'L'}</td>
+          <td class="${win}">${win}</td>
           <td>${kills}</td>
           <td>${deaths}</td>
           <td>${KD}</td>
