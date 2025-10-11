@@ -3,106 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Faceit CS2 Dashboard</title>
+<title>KatzRead CS2 Widget</title>
 <style>
-  body { font-family: 'Orbitron', sans-serif; background:#0a0a0f; color:#fff; display:flex; flex-direction:column; align-items:center; padding:20px;}
-  .player-card { background:rgba(10,10,15,0.95); border:2px solid #00ffff; border-radius:15px; padding:15px; margin:10px; width:400px; box-shadow:0 0 20px #00ffff;}
-  h2 { color:#00ffff; text-shadow:0 0 10px #00ffff; }
-  table { width:100%; border-collapse:collapse; margin-top:10px; }
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+  body {
+    margin:0;
+    font-family:'Orbitron',sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:#0a0a0f;
+  }
+
+  .widget {
+    background: rgba(10,10,15,0.95);
+    border:2px solid #00ffff;
+    border-radius:15px;
+    padding:20px;
+    width:400px;
+    box-shadow:0 0 20px #00ffff;
+    text-align:center;
+    color:#fff;
+  }
+
+  .widget h2 {
+    margin:0;
+    font-size:1.6em;
+    color:#00ffff;
+    text-shadow:0 0 10px #00ffff;
+  }
+
+  .stat { margin-top:10px; font-size:1em; }
+  table { width:100%; margin-top:10px; border-collapse: collapse; }
   th, td { border:1px solid #00ffff; padding:5px; text-align:center; }
   th { background:#4B4B4B; }
-  .good { background:#C0FFC0; }
-  .bad { background:#FFC0C0; }
+  .W { background:#00ff00; }
+  .L { background:#ff3333; }
 </style>
 </head>
 <body>
-<h1>Faceit CS2 Dashboard</h1>
-<div id="dashboard"></div>
+
+<div class="widget">
+  <h2>KatzRead</h2>
+  <div class="stat" id="elo">ELO: Yükleniyor...</div>
+  <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+  <table id="stats-table">
+    <thead>
+      <tr>
+        <th>Son 5 Maç</th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>K/D</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="4">Yükleniyor...</td></tr>
+    </tbody>
+  </table>
+</div>
 
 <script>
-const API_KEY = "dc63f5ce-1360-4c87-882a-c3c988115063";
-const PLAYERS = ["-boZZo", "hey666", "SprinT-", "maxy0y0", "KatzRead"];
-const GAME = "cs2";
-const HEDEF = 5;
+const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
+const nickname = "KatzRead";
 
-// Yardımcı fonksiyon: fetch JSON
-async function fetchJSON(url) {
-  const res = await fetch(url, { headers: { Authorization: "Bearer " + API_KEY } });
+async function fetchJSON(url){
+  const res = await fetch(url, { headers:{ Authorization:"Bearer "+apiKey } });
   return await res.json();
 }
 
-// Oyuncu ID'lerini al
-async function getPlayerIds() {
-  const ids = {};
-  for(const player of PLAYERS){
-    try{
-      const data = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${player}&game=${GAME}`);
-      ids[player] = data.player_id;
-    }catch(e){ ids[player] = null; }
-  }
-  return ids;
-}
+async function loadWidget(){
+  try {
+    // Oyuncu bilgileri
+    const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
+    const elo = playerData.games?.cs2?.faceit_elo || "N/A";
+    document.getElementById("elo").innerText = "ELO: " + elo;
+    const playerId = playerData.player_id;
 
-// Son 5 maç ve avg istatistikleri
-async function getPlayerStats(player, playerId){
-  if(!playerId) return null;
+    // Lifetime istatistik
+    const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
+    const matches = stats.lifetime?.Matches || "N/A";
+    document.getElementById("matches").innerText = "Toplam Maç: " + matches;
 
-  const statsData = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/${GAME}`);
-  const lifetimeMatches = statsData.lifetime?.Matches || 0;
+    // Son 5 maç detay
+    const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=5`);
+    const tbody = document.querySelector("#stats-table tbody");
+    tbody.innerHTML = "";
 
-  const historyData = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=${GAME}&limit=5`);
-  const matches = historyData.items || [];
-
-  const recent = [];
-  for(const match of matches){
-    try{
-      const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
-      let kills=0, deaths=0;
-      matchData.rounds.forEach(r=>{
-        r.teams.forEach(t=>{
-          t.players.forEach(p=>{
-            if(p.nickname===player){
-              kills += Number(p.player_stats.Kills||0);
-              deaths += Number(p.player_stats.Deaths||0);
-            }
+    for(const match of history.items){
+      try{
+        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
+        let kills=0, deaths=0;
+        matchData.rounds.forEach(r=>{
+          r.teams.forEach(t=>{
+            t.players.forEach(p=>{
+              if(p.nickname===nickname){
+                kills += Number(p.player_stats.Kills||0);
+                deaths += Number(p.player_stats.Deaths||0);
+              }
+            });
           });
         });
-      });
-      const KD = deaths>0 ? (kills/deaths).toFixed(2) : kills;
-      recent.push({result:match.matchStats?.Winner?"W":"L", kills, deaths, KD});
-    }catch(e){ recent.push({result:"N/A", kills:"-", deaths:"-", KD:"-"}); }
-  }
-
-  return {matches:lifetimeMatches, recent};
-}
-
-// Dashboard oluştur
-async function loadDashboard(){
-  const playerIds = await getPlayerIds();
-  const dashboard = document.getElementById("dashboard");
-
-  for(const player of PLAYERS){
-    const playerId = playerIds[player];
-    const stats = await getPlayerStats(player, playerId);
-
-    const card = document.createElement("div");
-    card.className = "player-card";
-    card.innerHTML = `<h2>${player}</h2>
-      <p>Toplam Maç: ${stats?.matches||"N/A"}</p>
-      <table>
-        <tr><th>Son 5 Maç</th><th>Kills</th><th>Deaths</th><th>K/D</th></tr>
-        ${stats?.recent.map(m=>`<tr>
-          <td class="${m.result==="W"?"good":m.result==="L"?"bad":""}">${m.result}</td>
-          <td>${m.kills}</td>
-          <td>${m.deaths}</td>
-          <td>${m.KD}</td>
-        </tr>`).join("")}
-      </table>`;
-    dashboard.appendChild(card);
+        const KD = deaths>0 ? (kills/deaths).toFixed(2) : kills;
+        const result = match.matchStats?.Winner ? "W" : "L";
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="${result}">${result}</td>
+          <td>${kills}</td>
+          <td>${deaths}</td>
+          <td>${KD}</td>
+        `;
+        tbody.appendChild(tr);
+      }catch(e){
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="4">Veri yok</td>`;
+        tbody.appendChild(tr);
+      }
+    }
+  }catch(err){
+    console.error(err);
+    document.getElementById("elo").innerText = "ELO alınamadı";
+    document.getElementById("matches").innerText = "Toplam Maç: N/A";
+    const tbody = document.querySelector("#stats-table tbody");
+    tbody.innerHTML = `<tr><td colspan="4">Veri alınamadı</td></tr>`;
   }
 }
 
-loadDashboard();
+loadWidget();
 </script>
+
 </body>
 </html>
