@@ -2,78 +2,135 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>CS2 Harita Analizi</title>
+<title>CS2 2D Harita Analizi</title>
 <style>
-    body { background:#222; color:white; font-family:sans-serif; }
-    canvas { border:1px solid #555; background: url('mirage_topdown.png'); background-size: cover; }
-    #mapContainer { position:relative; }
-    .note { position:absolute; color:white; background:rgba(0,0,0,0.6); padding:2px 5px; border-radius:3px; cursor:pointer; }
+  body { background:#222; color:white; font-family:sans-serif; }
+  #mapContainer { position:relative; width:800px; margin:auto; }
+  canvas { border:1px solid #555; background: url('mirage_topdown.png'); background-size: cover; cursor:crosshair; }
+  .player { width:15px; height:15px; border-radius:50%; position:absolute; cursor:pointer; text-align:center; font-size:12px; line-height:15px; color:white; }
+  #controls { margin:10px auto; text-align:center; }
+  button { margin:5px; padding:5px 10px; }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/heatmapjs@2.0.5/heatmap.min.js"></script>
 </head>
 <body>
-<h1>CS2 Takım Analizi</h1>
-<div id="mapContainer">
-    <canvas id="mapCanvas" width="800" height="600"></canvas>
+<h1 style="text-align:center;">CS2 2D Harita Analizi</h1>
+
+<div id="controls">
+  <button onclick="startReplay()">Round Replay</button>
+  <button onclick="toggleDraw()">Çizim Aç/Kapat</button>
+  <button onclick="addRandomNote()">Not Ekle</button>
 </div>
-<button onclick="addRandomNote()">Not Ekle</button>
+
+<div id="mapContainer">
+  <canvas id="mapCanvas" width="800" height="600"></canvas>
+</div>
+
 <script>
+// Canvas ve çizim
 const canvas = document.getElementById('mapCanvas');
 const ctx = canvas.getContext('2d');
+const mapContainer = document.getElementById('mapContainer');
 
-// Heatmap kurulum
-const heatmapInstance = h337.create({
-  container: document.getElementById('mapContainer'),
-  radius: 30,
-  maxOpacity: 0.6
+let drawMode = false, drawing = false, lastPos = null;
+let lines = [];
+
+// Takım ve rakip verisi
+let team = [{x:100,y:150,name:'T1'},{x:200,y:300,name:'T2'}];
+let enemies = [{x:500,y:100,name:'E1'},{x:600,y:200,name:'E2'}];
+
+// Drag & Drop pozisyon
+team.concat(enemies).forEach(p=>{
+  const div = document.createElement('div');
+  div.className='player';
+  div.style.left=p.x+'px';
+  div.style.top=p.y+'px';
+  div.style.background=p.name.startsWith('T')?'blue':'red';
+  div.innerText=p.name;
+  mapContainer.appendChild(div);
+  let offsetX, offsetY;
+
+  div.onmousedown = e => {
+    offsetX = e.offsetX; offsetY = e.offsetY;
+    function moveHandler(e){
+      p.x = e.clientX - canvas.getBoundingClientRect().left - offsetX;
+      p.y = e.clientY - canvas.getBoundingClientRect().top - offsetY;
+      div.style.left = p.x+'px';
+      div.style.top = p.y+'px';
+      draw();
+    }
+    function upHandler(){ window.removeEventListener('mousemove',moveHandler); window.removeEventListener('mouseup',upHandler); }
+    window.addEventListener('mousemove', moveHandler);
+    window.addEventListener('mouseup', upHandler);
+  };
 });
 
-// Örnek round verisi
-const rounds = [
-    {team:[{x:100,y:150},{x:200,y:300}], enemies:[{x:500,y:100},{x:600,y:200}]},
-    {team:[{x:120,y:170},{x:220,y:320}], enemies:[{x:520,y:130},{x:620,y:220}]}
-];
+// Çizim aracı
+function toggleDraw(){ drawMode = !drawMode; }
 
-let currentRound = 0;
-
-// Oyuncu çizme
-function drawRound(round){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    round.team.forEach(p=>{
-        ctx.fillStyle='blue';
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,10,0,Math.PI*2);
-        ctx.fill();
-        heatmapInstance.addData({x:p.x, y:p.y, value:1});
-    });
-    round.enemies.forEach(p=>{
-        ctx.fillStyle='red';
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,10,0,Math.PI*2);
-        ctx.fill();
-        heatmapInstance.addData({x:p.x, y:p.y, value:1});
-    });
+canvas.onmousedown = e => { if(drawMode){drawing=true; lastPos={x:e.offsetX,y:e.offsetY};} }
+canvas.onmousemove = e => {
+  if(drawMode && drawing){
+    ctx.strokeStyle='yellow'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(lastPos.x,lastPos.y); ctx.lineTo(e.offsetX,e.offsetY); ctx.stroke();
+    lines.push({x1:lastPos.x,y1:lastPos.y,x2:e.offsetX,y2:e.offsetY});
+    lastPos={x:e.offsetX,y:e.offsetY};
+  }
 }
-
-// Round animasyonu
-function animateRounds(){
-    if(currentRound >= rounds.length) return;
-    drawRound(rounds[currentRound]);
-    currentRound++;
-    setTimeout(animateRounds, 1000);
-}
-
-animateRounds();
+canvas.onmouseup = () => { drawing=false; lastPos=null; }
 
 // Not ekleme
 function addRandomNote(){
-    const note = document.createElement('div');
-    note.className = 'note';
-    note.style.left = Math.random()*700+'px';
-    note.style.top = Math.random()*500+'px';
-    note.innerText = 'Push burada';
-    document.getElementById('mapContainer').appendChild(note);
+  const note = document.createElement('div');
+  note.className = 'note';
+  note.style.left = Math.random()*750+'px';
+  note.style.top = Math.random()*550+'px';
+  note.style.position='absolute';
+  note.style.background='rgba(0,0,0,0.6)';
+  note.style.padding='2px 5px';
+  note.style.borderRadius='3px';
+  note.style.color='white';
+  note.innerText = 'Push burada';
+  mapContainer.appendChild(note);
 }
+
+// Round Replay
+const rounds = [
+  {team:[{x:100,y:150},{x:200,y:300}], enemies:[{x:500,y:100},{x:600,y:200}]},
+  {team:[{x:120,y:170},{x:220,y:320}], enemies:[{x:520,y:130},{x:620,y:220}]}
+];
+
+let currentRound = 0;
+function drawRound(round){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  round.team.forEach(p=>{
+    ctx.fillStyle='blue';
+    ctx.beginPath(); ctx.arc(p.x,p.y,10,0,Math.PI*2); ctx.fill();
+  });
+  round.enemies.forEach(p=>{
+    ctx.fillStyle='red';
+    ctx.beginPath(); ctx.arc(p.x,p.y,10,0,Math.PI*2); ctx.fill();
+  });
+  // Çizimler
+  lines.forEach(l=>{
+    ctx.strokeStyle='yellow'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(l.x1,l.y1); ctx.lineTo(l.x2,l.y2); ctx.stroke();
+  });
+}
+
+function startReplay(){
+  currentRound=0;
+  function animate(){
+    if(currentRound>=rounds.length) return;
+    drawRound(rounds[currentRound]);
+    currentRound++;
+    setTimeout(animate,1000);
+  }
+  animate();
+}
+
+// Başlangıçta çizimi göster
+function draw(){ drawRound({team:team,enemies:enemies}); }
+draw();
 </script>
 </body>
 </html>
