@@ -1,161 +1,107 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KatzRead Widget</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-
-  body {
-    margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: #0a0a0f;
-  }
-
-  .widget {
-    background: rgba(10,10,15,0.95);
-    border: 2px solid #00ffff;
-    border-radius: 15px;
-    padding: 20px;
-    width: 300px;
-    box-shadow: 0 0 20px #00ffff;
-    text-align: center;
-    color: #fff;
-  }
-
-  .widget h2 {
-    margin: 0;
-    font-size: 1.6em;
-    color: #00ffff;
-    text-shadow: 0 0 10px #00ffff;
-  }
-
-  .stat {
-    margin-top: 10px;
-    font-size: 1em;
-  }
-
-  .recent {
-    margin-top: 10px;
-  }
-
-  .recent span {
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    line-height: 25px;
-    border-radius: 50%;
-    margin: 0 3px;
-    font-weight: bold;
-    color: #000;
-  }
-
-  .W { background: #00ff00; }
-  .L { background: #ff3333; }
-
-  .streak {
-    margin-top: 10px;
-    font-size: 1em;
-    color: #ff66ff;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KatzRead Faceit Widget</title>
+  <style>
+    /* Widget stilini buraya ekleyin */
+  </style>
 </head>
 <body>
+  <div class="widget">
+    <h2>KatzRead</h2>
+    <div id="elo">ELO: Yükleniyor...</div>
+    <div id="kd-ratio">K/D Oranı: Yükleniyor...</div>
+    <div id="avg-kills">Avg Kills: Yükleniyor...</div>
+    <div id="avg-deaths">Avg Deaths: Yükleniyor...</div>
+    <div id="winrate">Win %: Yükleniyor...</div>
+    <div id="recent-matches">Son 5 Maç: Yükleniyor...</div>
+    <div id="streak">Streak: Yükleniyor...</div>
+  </div>
 
-<div class="widget">
-  <h2>KatzRead</h2>
-  <div class="stat" id="elo">ELO: Yükleniyor...</div>
-  <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
-  <div class="stat" id="winrate">Win %: Yükleniyor...</div>
-  <div class="recent" id="recent-matches">Son 5 Maç: Yükleniyor...</div>
-  <div class="streak" id="streak">Streak: Yükleniyor...</div>
-</div>
+  <script>
+    const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
+    const nickname = "KatzRead";
 
-<script>
-const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
-const nickname = "KatzRead";
+    fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
+      headers: { "Authorization": `Bearer ${apiKey}` }
+    })
+    .then(res => res.json())
+    .then(playerData => {
+      const elo = playerData.games?.csgo?.faceit_elo || "Bilgi Yok";
+      document.getElementById("elo").innerText = "ELO: " + elo;
 
-// Player ID ve ELO çek
-fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
-  headers: { "Authorization": `Bearer ${apiKey}` }
-})
-.then(res => res.json())
-.then(playerData => {
-  const elo = playerData.games?.csgo?.faceit_elo || "Bilgi Yok";
-  document.getElementById("elo").innerText = "ELO: " + elo;
+      const playerId = playerData.player_id;
 
-  const playerId = playerData.player_id;
+      // CS2 istatistikleri çek
+      fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/csgo`, {
+        headers: { "Authorization": `Bearer ${apiKey}` }
+      })
+      .then(res => res.json())
+      .then(stats => {
+        const matches = stats.lifetime?.Matches || "Bilgi Yok";
+        const winRate = stats.lifetime?.["Win Rate"] || stats.lifetime?.WinRate || "Bilgi Yok";
+        const avgKills = stats.lifetime?.Kills / matches || "Bilgi Yok";
+        const avgDeaths = stats.lifetime?.Deaths / matches || "Bilgi Yok";
+        const kdRatio = avgKills / avgDeaths || "Bilgi Yok";
 
-  // CS2 istatistikleri çek
-  fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/csgo`, {
-    headers: { "Authorization": `Bearer ${apiKey}` }
-  })
-  .then(res => res.json())
-  .then(stats => {
-    const matches = stats.lifetime?.Matches || "Bilgi Yok";
-    const winRate = stats.lifetime?.["Win Rate"] || stats.lifetime?.WinRate || "Bilgi Yok";
-    document.getElementById("matches").innerText = "Toplam Maç: " + matches;
-    document.getElementById("winrate").innerText = "Win %: " + winRate;
-  });
+        document.getElementById("kd-ratio").innerText = "K/D Oranı: " + kdRatio.toFixed(2);
+        document.getElementById("avg-kills").innerText = "Avg Kills: " + avgKills.toFixed(2);
+        document.getElementById("avg-deaths").innerText = "Avg Deaths: " + avgDeaths.toFixed(2);
+        document.getElementById("winrate").innerText = "Win %: " + winRate;
+      });
 
-  // Son 5 maç ve streak
-  fetch(`https://open.faceit.com/data/v4/players/${playerId}/history?game=csgo&offset=0&limit=5`, {
-    headers: { "Authorization": `Bearer ${apiKey}` }
-  })
-  .then(res => res.json())
-  .then(history => {
-    const matches = history.items || [];
-    if(matches.length === 0){
+      // Son 5 maç ve streak
+      fetch(`https://open.faceit.com/data/v4/players/${playerId}/history?game=csgo&offset=0&limit=5`, {
+        headers: { "Authorization": `Bearer ${apiKey}` }
+      })
+      .then(res => res.json())
+      .then(history => {
+        const matches = history.items || [];
+        if (matches.length === 0) {
+          document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+          document.getElementById("streak").innerText = "Streak: Bilgi Yok";
+          return;
+        }
+
+        const results = matches.map(m => {
+          const team1 = m.teams?.faction1?.players || [];
+          const team2 = m.teams?.faction2?.players || [];
+          const playerTeam = team1.some(p => p.player_id === playerId) ? "team1" : "team2";
+          const winner = m.results?.Winner;
+          return (winner === playerTeam) ? "W" : "L";
+        });
+
+        const recentDiv = document.getElementById("recent-matches");
+        recentDiv.innerHTML = "Son 5 Maç: ";
+        results.forEach(r => {
+          const span = document.createElement("span");
+          span.className = r;
+          span.innerText = r;
+          recentDiv.appendChild(span);
+        });
+
+        // Streak hesapla
+        let streak = 0;
+        let current = results[0];
+        for (const r of results) {
+          if (r === current) streak++;
+          else break;
+        }
+        document.getElementById("streak").innerText = `Streak: ${streak} ${current}`;
+      });
+    })
+    .catch(err => {
+      document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
+      document.getElementById("kd-ratio").innerText = "K/D Oranı: Bilgi Yok";
+      document.getElementById("avg-kills").innerText = "Avg Kills: Bilgi Yok";
+      document.getElementById("avg-deaths").innerText = "Avg Deaths: Bilgi Yok";
+      document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
       document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
       document.getElementById("streak").innerText = "Streak: Bilgi Yok";
-      return;
-    }
-
-    // Player kendi sonucuna göre W/L
-    const results = matches.map(m => {
-      // Oyuncunun kendi takımını belirle
-      const team1 = m.teams?.faction1?.players || [];
-      const team2 = m.teams?.faction2?.players || [];
-      const playerTeam = team1.some(p => p.player_id === playerId) ? "team1" : "team2";
-      const winner = m.results?.Winner;
-      return (winner === playerTeam) ? "W" : "L";
+      console.error(err);
     });
-
-    // Son 5 maç renkli göstermek
-    const recentDiv = document.getElementById("recent-matches");
-    recentDiv.innerHTML = "Son 5 Maç: ";
-    results.forEach(r => {
-      const span = document.createElement("span");
-      span.className = r;
-      span.innerText = r;
-      recentDiv.appendChild(span);
-    });
-
-    // Streak hesapla
-    let streak = 0;
-    let current = results[0];
-    for(const r of results){
-      if(r === current) streak++;
-      else break;
-    }
-    document.getElementById("streak").innerText = `Streak: ${streak} ${current}`;
-  });
-
-})
-.catch(err => {
-  document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
-  document.getElementById("matches").innerText = "Toplam Maç: Bilgi Yok";
-  document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
-  document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
-  document.getElementById("streak").innerText = "Streak: Bilgi Yok";
-  console.error(err);
-});
-</script>
-
+  </script>
 </body>
 </html>
