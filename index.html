@@ -1,115 +1,43 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KatzRead | Player Stats</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a2e0e6b6b0.js" crossorigin="anonymous"></script>
-  <style>
-    body {
-      font-family: 'Rajdhani', sans-serif;
-      background-color: #0e0e10;
-      color: #f5f5f5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .card {
-      background: linear-gradient(145deg, #1a1a1d, #232326);
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
-      width: 340px;
-      text-align: center;
-    }
-
-    .username {
-      font-size: 1.8rem;
-      color: #ff4d00;
-    }
-
-    .rank {
-      margin-top: 5px;
-      font-size: 1.1rem;
-      color: #aaa;
-    }
-
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-      font-size: 1.1rem;
-    }
-
-    .stats div {
-      flex: 1;
-      text-align: center;
-    }
-
-    .match-history {
-      margin-top: 15px;
-      font-size: 1.2rem;
-    }
-
-    .match-history span {
-      margin: 0 4px;
-      font-weight: bold;
-    }
-
-    .W { color: #4aff4a; }
-    .L { color: #ff4a4a; }
-
-    .socials {
-      margin-top: 25px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
-
-    .socials a {
-      color: #f5f5f5;
-      font-size: 1.6rem;
-      transition: 0.3s;
-    }
-
-    .socials a:hover {
-      color: #ff4d00;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>CS2 Analiz</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-  <div class="card">
-    <div class="username">KatzRead</div>
-    <div class="rank">ELO: 3866 | Global Rank: #799</div>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">CS2 Oyuncu Analizi</h1>
+        
+        <input id="playerName" type="text" placeholder="Oyuncu Adı Girin" 
+               class="p-2 rounded text-black w-full mb-4">
+        <button onclick="getStats()" class="bg-blue-500 px-4 py-2 rounded">Ara</button>
 
-    <div class="stats">
-      <div><strong>ADR</strong><br>78.0</div>
-      <div><strong>K/D</strong><br>1.21</div>
-      <div><strong>K/R</strong><br>0.74</div>
-      <div><strong>ACE</strong><br>0</div>
+        <div id="stats" class="mt-6">
+            <canvas id="kdChart"></canvas>
+        </div>
     </div>
 
-    <div class="match-history">
-      <span class="L">L</span>
-      <span class="W">W</span>
-      <span class="L">L</span>
-      <span class="W">W</span>
-      <span class="W">W</span>
-    </div>
+<script>
+async function getStats() {
+    const player = document.getElementById("playerName").value;
+    // API çağrısı örneği (backend tarafından hazırlanmalı)
+    const data = await fetch(`/api/player/${player}`).then(res => res.json());
 
-    <div class="socials">
-      <a href="https://www.faceit.com/tr/players/KatzRead" target="_blank"><i class="fa-solid fa-bullseye"></i></a>
-      <a href="https://www.twitch.tv/katzread" target="_blank"><i class="fab fa-twitch"></i></a>
-      <a href="https://kick.com/katzread" target="_blank"><i class="fa-solid fa-play"></i></a>
-      <a href="https://steamcommunity.com/id/katzread" target="_blank"><i class="fab fa-steam"></i></a>
-      <a href="https://www.youtube.com/@katzread" target="_blank"><i class="fab fa-youtube"></i></a>
-      <a href="https://twitter.com/katzread" target="_blank"><i class="fab fa-twitter"></i></a>
-    </div>
-  </div>
+    const ctx = document.getElementById('kdChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: data.maps,
+            datasets: [{
+                label: 'K/D Oranı',
+                data: data.kd,
+                backgroundColor: 'rgba(59, 130, 246, 0.5)',
+            }]
+        }
+    });
+}
+</script>
 </body>
 </html>
