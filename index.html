@@ -6,6 +6,7 @@
 <title>KatzRead CS2 Widget</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
   body {
     margin:0;
     font-family:'Orbitron',sans-serif;
@@ -15,6 +16,7 @@
     height:100vh;
     background:#0a0a0f;
   }
+
   .widget {
     background: rgba(10,10,15,0.95);
     border:2px solid #00ffff;
@@ -25,12 +27,14 @@
     text-align:center;
     color:#fff;
   }
+
   .widget h2 {
     margin:0;
     font-size:1.6em;
     color:#00ffff;
     text-shadow:0 0 10px #00ffff;
   }
+
   .stat { margin-top:10px; font-size:1em; }
   .recent { margin-top:10px; }
   .recent span {
@@ -46,68 +50,56 @@
 
 <div class="widget">
   <h2>KatzRead</h2>
-  <div class="stat" id="elo">ELO: Bilgi Yok</div>
+  <div class="stat" id="elo">ELO: Yükleniyor...</div>
   <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
-  <div class="stat" id="winrate">Win %: Yükleniyor...</div>
-  <div class="stat" id="kd-ratio">K/D: Yükleniyor...</div>
-  <div class="stat" id="avg-kills">Avg Kills: Yükleniyor...</div>
-  <div class="stat" id="avg-deaths">Avg Deaths: Yükleniyor...</div>
-  <div class="recent" id="recent-matches">Son 5 Maç: Yükleniyor...</div>
+  <div class="stat" id="winrate">Win %: Bilgi Yok</div>
+  <div class="stat" id="kd-ratio">K/D: Bilgi Yok</div>
+  <div class="stat" id="avg-kills">Avg Kills: Bilgi Yok</div>
+  <div class="stat" id="avg-deaths">Avg Deaths: Bilgi Yok</div>
+  <div class="recent" id="recent-matches">Son 5 Maç: Bilgi Yok</div>
 </div>
 
 <script>
-const faceitKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
-const csstatsKey = "YOUR_CSSTATS_API_KEY"; // CSStats.gg API anahtarını buraya yaz
+const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
-
-// Faceit toplam maç
-async function getFaceitMatches() {
-  const res = await fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
-    headers: { Authorization: `Bearer ${faceitKey}` }
-  });
-  const player = await res.json();
-  const playerId = player.player_id;
-  const statsRes = await fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`, {
-    headers: { Authorization: `Bearer ${faceitKey}` }
-  });
-  const stats = await statsRes.json();
-  return stats.lifetime?.Matches || "Bilgi Yok";
-}
-
-// CSStats.gg verileri
-async function getCS2Stats(steamId) {
-  const res = await fetch(`https://api.csstats.gg/player/${steamId}?key=${csstatsKey}`);
-  const data = await res.json();
-  return {
-    kd: data.kd?.toFixed(2) || "Bilgi Yok",
-    winrate: data.winRate ? data.winRate + "%" : "Bilgi Yok",
-    avgKills: data.avgKills?.toFixed(1) || "Bilgi Yok",
-    avgDeaths: data.avgDeaths?.toFixed(1) || "Bilgi Yok",
-    recent: data.lastMatches?.slice(0,5).map(m => m.result) || []
-  };
-}
 
 async function loadWidget() {
   try {
-    document.getElementById("matches").innerText = "Toplam Maç: " + await getFaceitMatches();
-    const cs2Stats = await getCS2Stats("STEAM_1:0:XXXXXX"); // kendi Steam ID64'ünü yaz
-
-    document.getElementById("kd-ratio").innerText = "K/D: " + cs2Stats.kd;
-    document.getElementById("winrate").innerText = "Win %: " + cs2Stats.winrate;
-    document.getElementById("avg-kills").innerText = "Avg Kills: " + cs2Stats.avgKills;
-    document.getElementById("avg-deaths").innerText = "Avg Deaths: " + cs2Stats.avgDeaths;
-
-    const container = document.getElementById("recent-matches");
-    container.innerHTML = "Son 5 Maç: ";
-    cs2Stats.recent.forEach(r => {
-      const span = document.createElement("span");
-      span.className = r === "Win" ? "W" : "L";
-      span.innerText = r[0];
-      container.appendChild(span);
+    const resPlayer = await fetch(`https://open.faceit.com/data/v4/players?nickname=${nickname}`, {
+      headers: { "Authorization": `Bearer ${apiKey}` }
     });
+    const playerData = await resPlayer.json();
 
-  } catch (e) {
-    console.error(e);
+    const elo = playerData.games?.cs2?.faceit_elo || "Bilgi Yok";
+    document.getElementById("elo").innerText = "ELO: " + elo;
+    const playerId = playerData.player_id;
+
+    const resStats = await fetch(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`, {
+      headers: { "Authorization": `Bearer ${apiKey}` }
+    });
+    const stats = await resStats.json();
+
+    const matches = stats.lifetime?.Matches || "Bilgi Yok";
+    document.getElementById("matches").innerText = "Toplam Maç: " + matches;
+
+    // Win %, K/D, Avg Kills, Avg Deaths henüz API'den gelmiyor
+    document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
+    document.getElementById("kd-ratio").innerText = "K/D: Bilgi Yok";
+    document.getElementById("avg-kills").innerText = "Avg Kills: Bilgi Yok";
+    document.getElementById("avg-deaths").innerText = "Avg Deaths: Bilgi Yok";
+
+    // Son 5 maç placeholder
+    document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("elo").innerText = "ELO bilgisi alınamadı";
+    document.getElementById("matches").innerText = "Toplam Maç: Bilgi Yok";
+    document.getElementById("winrate").innerText = "Win %: Bilgi Yok";
+    document.getElementById("kd-ratio").innerText = "K/D: Bilgi Yok";
+    document.getElementById("avg-kills").innerText = "Avg Kills: Bilgi Yok";
+    document.getElementById("avg-deaths").innerText = "Avg Deaths: Bilgi Yok";
+    document.getElementById("recent-matches").innerText = "Son 5 Maç: Bilgi Yok";
   }
 }
 
