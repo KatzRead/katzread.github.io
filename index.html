@@ -65,11 +65,45 @@ th{ background:#4B4B4B; font-size:12px; }
 .equip-card:hover{ background: rgba(0,255,255,0.2); box-shadow:0 0 12px var(--theme-color)aa; transform:scale(1.05); }
 .equip-card img{ width:80px; height:auto; margin-bottom:6px; }
 
-/* ALT PANEL */
-#settings-bar { position: fixed; bottom:0; left:0; width:100%; background: rgba(0,0,0,0.8); border-top:2px solid var(--theme-color); display:flex; justify-content:center; align-items:center; gap:20px; padding:8px 0; z-index:10000; flex-wrap:wrap; }
-.settings-group { display:flex; align-items:center; gap:6px; color: var(--theme-color); font-weight:bold; }
-#settings-bar input, #settings-bar select{ padding:3px 6px; border-radius:6px; border:1px solid var(--theme-color); background:#111; color:#fff; }
-#settings-bar select option{ background:#111; color:#fff; }
+/* Gelişmiş Alt Panel Efektleri */
+#settings-bar {
+  animation: fadeInBar 1.2s ease forwards, neonPulse 3s infinite ease-in-out;
+  box-shadow: 0 0 10px var(--theme-color)33, 0 0 20px var(--theme-color)11;
+  transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+  opacity: 0; /* fade-in başlarken görünmez */
+}
+
+#settings-bar:hover {
+  box-shadow: 0 0 20px var(--theme-color), 0 0 40px var(--theme-color)aa;
+  transform: translateY(-4px);
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* Fade-in Animasyonu */
+@keyframes fadeInBar {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Neon Nabız (Pulse) Efekti */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 8px var(--theme-color)44, 0 0 18px var(--theme-color)22;
+  }
+  50% {
+    box-shadow: 0 0 15px var(--theme-color), 0 0 35px var(--theme-color)66;
+  }
+}
+
+/* İçerik öğeleri için de parlama */
+#settings-bar .settings-group {
+  transition: text-shadow 0.3s, color 0.3s;
+}
+
+#settings-bar .settings-group:hover {
+  color: #fff;
+  text-shadow: 0 0 10px var(--theme-color), 0 0 20px var(--theme-color);
+}
 
 /* Crosshair */
 #crosshair {
