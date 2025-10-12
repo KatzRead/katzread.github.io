@@ -10,7 +10,7 @@
 
 :root { 
   --theme-color: #00ffff; 
-  --theme-rgb: 0,255,255; 
+  --theme-rgb: 0,255,255; /* Varsayılan RGB */
 }
 
 * { cursor: none !important; }
@@ -68,21 +68,57 @@ th{ background:#4B4B4B; font-size:12px; }
 .avg-row{ font-weight:bold; background:#1a1a1a; color: var(--theme-color); }
 
 /* Hakkımda flex düzeni */
-.about-section { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 20px; max-width: 800px; margin: 40px auto; padding: 20px; background: rgba(0,10,20,0.5); border: 1px solid var(--theme-color); border-radius: 16px; box-shadow: 0 0 15px var(--theme-color)66; }
-.about-photo { position: relative; width: 180px; height: 180px; border-radius: 50%; flex-shrink: 0; }
-.about-photo img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid var(--theme-color); z-index: 2; position: relative; box-shadow:0 0 8px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color); animation: glow 1.5s infinite alternate; transition: transform 0.3s, box-shadow 0.3s; }
-.about-photo img:hover { transform: scale(1.05); box-shadow:0 0 12px var(--theme-color),0 0 25px var(--theme-color),0 0 40px var(--theme-color); }
-.about-photo .aura { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; background: radial-gradient(circle, var(--theme-color) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; transform: translate(-50%, -50%) scale(0.8); animation: neonPulse 2s infinite ease-in-out; z-index: 1; filter: blur(12px); mix-blend-mode: screen; }
-@keyframes neonPulse { 0%,100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.8; } 50% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+.about-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: rgba(0,10,20,0.5);
+  border: 1px solid var(--theme-color);
+  border-radius: 16px;
+  box-shadow: 0 0 15px var(--theme-color)66;
+}
+.about-photo {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--theme-color);
+  z-index: 2;
+  position: relative;
+  box-shadow:0 0 8px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color);
+  animation: glow 1.5s infinite alternate;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.about-photo img:hover { transform: scale(1.05); box-shadow:0 0 12px var(--theme-color),0 0 25px var(--theme-color),0 0 40px var(--theme-color);}
+.about-photo .aura {
+  position: absolute; top: 50%; left: 50%; width: 100%; height: 100%;
+  background: radial-gradient(circle, var(--theme-color) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%; transform: translate(-50%, -50%) scale(0.8);
+  animation: neonPulse 2s infinite ease-in-out; z-index: 1; filter: blur(12px); mix-blend-mode: screen;
+}
+@keyframes neonPulse {0%,100%{transform: translate(-50%, -50%) scale(0.85); opacity:0.8;}50%{transform: translate(-50%, -50%) scale(1); opacity:1;}}
 .about-text { flex: 1; min-width: 220px; color: #ccc; line-height: 1.6; font-size: 1.05em; }
 .about-text h2 { color: var(--theme-color); font-size: 1.8em; text-shadow: 0 0 10px var(--theme-color); margin-bottom: 10px; }
-@media(max-width: 600px) { .about-section { flex-direction: column; text-align: center; } .about-text { margin-top: 15px; } }
+@media(max-width: 600px){.about-section{flex-direction: column;text-align: center;}.about-text { margin-top: 15px; }}
 
 /* Diğer CSS (sekme, ekipman, crosshair, panel vb.) */
 .section-box { max-width:800px; margin:40px auto; background: rgba(0,10,20,0.5); border:1px solid var(--theme-color); border-radius:16px; box-shadow:0 0 15px var(--theme-color)66; padding:30px; }
 .section-box h2{ color:var(--theme-color); font-size:1.8em; text-shadow:0 0 10px var(--theme-color); margin-bottom:15px; }
 .section-box p{ color:#ccc; line-height:1.6; font-size:1.05em; }
 .highlight{ color: var(--theme-color); text-shadow:0 0 8px var(--theme-color); font-weight:bold; }
+
 .equip-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-top:15px; }
 .equip-card{ background: rgba(0,255,255,0.08); border:1px solid var(--theme-color); padding:12px; border-radius:10px; transition:0.3s; color:#e0e0e0; font-size:0.95em; text-align:center; }
 .equip-card:hover{ background: rgba(0,255,255,0.2); box-shadow:0 0 12px var(--theme-color)aa; transform:scale(1.05); }
@@ -131,20 +167,19 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
       <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
     </div>
     <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
-  </div>
-  
-  <div class="widget" id="katzWidget">
-    <h2>KatzRead</h2>
-    <div class="stat" id="elo">ELO: Yükleniyor...</div>
-    <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
-    <table id="stats-table">
-      <thead>
-        <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="5">Yükleniyor...</td></tr>
-      </tbody>
-    </table>
+    <div class="widget" id="katzWidget">
+      <h2>KatzRead</h2>
+      <div class="stat" id="elo">ELO: Yükleniyor...</div>
+      <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+      <table id="stats-table">
+        <thead>
+          <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="5">Yükleniyor...</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -173,22 +208,10 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
   <div class="section-box">
     <h2>Ekipmanlarım</h2>
     <div class="equip-grid">
-      <div class="equip-card">
-        <img src="mouse.png" alt="Mouse">
-        <div>Logitech G Pro X</div>
-      </div>
-      <div class="equip-card">
-        <img src="keyboard.png" alt="Keyboard">
-        <div>SteelSeries Apex 7</div>
-      </div>
-      <div class="equip-card">
-        <img src="headset.png" alt="Headset">
-        <div>HyperX Cloud II</div>
-      </div>
-      <div class="equip-card">
-        <img src="monitor.png" alt="Monitor">
-        <div>BenQ Zowie XL2546</div>
-      </div>
+      <div class="equip-card"><img src="mouse.png" alt="Mouse"><div>Logitech G Pro X</div></div>
+      <div class="equip-card"><img src="keyboard.png" alt="Keyboard"><div>SteelSeries Apex 7</div></div>
+      <div class="equip-card"><img src="headset.png" alt="Headset"><div>HyperX Cloud II</div></div>
+      <div class="equip-card"><img src="monitor.png" alt="Monitor"><div>BenQ Zowie XL2546</div></div>
     </div>
   </div>
 </div>
@@ -210,7 +233,7 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
 </div>
 
 <script>
-// Tab geçişleri
+/* Sekme */
 const tabs=document.querySelectorAll('.tab-btn');
 const contents=document.querySelectorAll('.tab-content');
 tabs.forEach(btn=>btn.addEventListener('click',()=>{
@@ -220,17 +243,17 @@ tabs.forEach(btn=>btn.addEventListener('click',()=>{
   document.getElementById(btn.dataset.tab).classList.add('active');
 }));
 
-// Crosshair
+/* Crosshair */
 const crosshair=document.getElementById("crosshair");
 document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; crosshair.style.top=e.clientY+"px";});
 ["mousemove","mousedown","mouseup"].forEach(evt=>{document.addEventListener(evt,()=>{document.body.style.cursor="none";});});
 
-// Settings bar
+/* Settings Bar */
 const settingsBar = document.getElementById("settings-bar");
 settingsBar.addEventListener("mouseenter", () => { settingsBar.classList.add("open"); });
 settingsBar.addEventListener("mouseleave", () => { settingsBar.classList.remove("open"); });
 
-// Tema rengi
+/* Tema Rengi */
 const themeInput = document.getElementById("themeColor");
 themeInput.addEventListener("input", (e) => {
   const color = e.target.value;
@@ -243,28 +266,31 @@ themeInput.addEventListener("input", (e) => {
   logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 });
 
-// Faceit Widget
+/* Faceit Widget */
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
 const MATCH_LIMIT = 30;
-
 const toggleBtn = document.getElementById("toggleBtn");
 const widgetDiv = document.getElementById("katzWidget");
+let widgetLoaded = false;
 
 toggleBtn.addEventListener("click", () => {
   if(widgetDiv.style.display === "none" || widgetDiv.style.display === ""){
     widgetDiv.style.display = "block";
-    loadWidget();
+    if(!widgetLoaded){
+      loadWidget();
+      widgetLoaded = true;
+    }
   } else { 
     widgetDiv.style.display = "none"; 
   }
 });
 
 setInterval(()=>{ 
-  if(widgetDiv.style.display==="block"){ 
+  if(widgetDiv.style.display==="block" && widgetLoaded){ 
     loadWidget(); 
   } 
-},30000);
+}, 30000);
 
 async function fetchJSON(url){
   const res = await fetch(url,{ headers:{ Authorization: "Bearer "+apiKey } });
@@ -280,7 +306,6 @@ async function loadWidget(){
     const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
     const matches = stats.lifetime?.Matches || "N/A";
     document.getElementById("matches").innerText = "Toplam Maç: "+matches;
-
     const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
     const tbody = document.querySelector("#stats-table tbody");
     tbody.innerHTML="";
@@ -313,11 +338,7 @@ async function loadWidget(){
           totalKills+=kills; totalDeaths+=deaths; totalADR+=(adrSum/roundsPlayed); totalHS+=kills>0?(hsSum/kills)*100:0;
           totalRounds+=roundsPlayed; matchCount++;
         }
-      }catch{ 
-        const tr=document.createElement("tr"); 
-        tr.innerHTML=`<td colspan="5">Veri yok</td>`; 
-        tbody.appendChild(tr); 
-      }
+      }catch{ const tr=document.createElement("tr"); tr.innerHTML=`<td colspan="5">Veri yok</td>`; tbody.appendChild(tr); }
     }
 
     if(matchCount>0){
