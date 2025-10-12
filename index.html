@@ -7,31 +7,48 @@
 <link rel="icon" type="image/x-icon" href="logo.svg">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-
-  /* Tüm tarayıcı imlecini gizle */
+ 
   body {
-    cursor: none;
     margin: 0;
     font-family: 'Orbitron', sans-serif;
     background: radial-gradient(circle at top, #0a0a0f, #000);
     color: #e0e0e0;
     text-align: center;
     min-height: 100vh;
+    cursor: none; /* default imleci gizle */
   }
 
-  /* Özel crosshair */
+  /* Crosshair */
   #crosshair {
     position: fixed;
     top: 50%;
     left: 50%;
     width: 40px;
     height: 40px;
+    pointer-events: none;
     transform: translate(-50%, -50%);
-    pointer-events: none; /* tıklamayı geçersiz kılmıyor */
     z-index: 9999;
-    background: url('crosshair.png') center center no-repeat; /* buraya Xantaress crosshair PNG'ni koy */
-    background-size: contain;
   }
+  #crosshair div {
+    position: absolute;
+    background: #00ffff;
+  }
+  #crosshair .top, #crosshair .bottom {
+    width: 2px;
+    height: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  #crosshair .top { top: 0; }
+  #crosshair .bottom { bottom: 0; }
+  #crosshair .left, #crosshair .right {
+    width: 15px;
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  #crosshair .left { left: 0; }
+  #crosshair .right { right: 0; }
 
   /* Başlık ve linkler */
   .header {
@@ -45,7 +62,10 @@
     border-radius: 10%;
     padding: 5px;
     background: rgba(0,255,255,0.2);
-    box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff, 0 0 25px #00ffff;
+    box-shadow:
+      0 0 5px #00ffff,
+      0 0 15px #00ffff,
+      0 0 25px #00ffff;
     animation: glow 1.5s infinite;
     transition: transform 0.3s, box-shadow 0.3s;
     display: block;
@@ -53,16 +73,25 @@
 
   @keyframes glow {
     0%, 100% {
-      box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff, 0 0 25px #00ffff;
+      box-shadow:
+        0 0 5px #00ffff,
+        0 0 15px #00ffff,
+        0 0 25px #00ffff;
     }
     50% {
-      box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 35px #00ffff;
+      box-shadow:
+        0 0 10px #00ffff,
+        0 0 20px #00ffff,
+        0 0 35px #00ffff;
     }
   }
 
   .header-logo:hover {
     transform: scale(1.2);
-    box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff, 0 0 50px #00ffff;
+    box-shadow:
+      0 0 15px #00ffff,
+      0 0 30px #00ffff,
+      0 0 50px #00ffff;
   }
 
   h1 {
@@ -152,17 +181,6 @@
 
   .avg-row { font-weight: bold; background: #1a1a1a; color: #00ffff; }
 
-  /* Scroll kaldırıldı, tbody normal */
-  .widget table tbody {
-    display: table;
-    width: 100%;
-  }
-  .widget table thead, .widget table tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-  }
-
   @media (max-width: 600px) {
     h1 { font-size: 2em; }
     .links a { padding: 8px 14px; margin: 5px; }
@@ -171,9 +189,6 @@
 </style>
 </head>
 <body>
-
-<!-- Özel crosshair -->
-<div id="crosshair"></div>
 
 <div class="header">
   <img src="katz.png" alt="KatzRead Logo" class="header-logo">
@@ -213,6 +228,14 @@
       <tr><td colspan="5">Yükleniyor...</td></tr>
     </tbody>
   </table>
+</div>
+
+<!-- Crosshair -->
+<div id="crosshair">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="left"></div>
+  <div class="right"></div>
 </div>
 
 <footer>© 2025 KatzRead</footer>
@@ -302,6 +325,13 @@ async function loadWidget(){
     tbody.innerHTML = `<tr><td colspan="5">Veri alınamadı</td></tr>`;
   }
 }
+
+// Mouse ile crosshair hareketi
+document.addEventListener("mousemove", e=>{
+  const cross = document.getElementById("crosshair");
+  cross.style.left = e.clientX + "px";
+  cross.style.top = e.clientY + "px";
+});
 </script>
 
 </body>
