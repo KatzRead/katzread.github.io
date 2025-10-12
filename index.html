@@ -10,9 +10,7 @@
 
 :root { --theme-color: #00ffff; }
 
-* {
-  cursor: none !important; /* Tüm öğelerde imleci gizle */
-}
+* { cursor: none !important; }
 
 body {
   margin:0; font-family:'Orbitron',sans-serif;
@@ -70,98 +68,6 @@ th{ background:#4B4B4B; font-size:12px; }
 .equip-card:hover{ background: rgba(0,255,255,0.2); box-shadow:0 0 12px var(--theme-color)aa; transform:scale(1.05); }
 .equip-card img{ width:80px; height:auto; margin-bottom:6px; }
 
-/* Sağ tarafta hover ile açılan panel */
-#settings-bar {
-  position: fixed;
-  top: 100px;               /* Panelin üstten uzaklığı */
-  right: 0;                 /* Sağ tarafa yapışık */
-  width: 40px;              /* Başlangıçta ince çubuk */
-  height: auto;             /* İçeriğe göre yükseklik */
-  background: rgba(0,0,0,0.35);
-  backdrop-filter: blur(12px);
-  border-radius: 16px 0 0 16px; /* Sol kenar yuvarlatılmış */
-  border: 2px solid var(--theme-color);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-  z-index: 10000;
-  transition: width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: -2px 0 10px var(--theme-color)44;
-}
-
-/* Hover olunca panel genişler */
-#settings-bar:hover {
-  width: 220px;               /* Açıldığında genişlik */
-  background: rgba(0,0,0,0.6);
-  box-shadow: -2px 0 25px var(--theme-color), -2px 0 50px var(--theme-color)aa;
-}
-
-/* İçerik görünürlüğü */
-#settings-bar .settings-group {
-  opacity: 0;
-  transform: translateX(20px); /* Başlangıçta biraz sağda gizli */
-  margin: 10px 0;
-  width: 90%;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-/* Hover ile içerik açılır */
-#settings-bar:hover .settings-group {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Fade-in */
-@keyframes fadeInBar {
-  from { opacity: 0; transform: translate(-50%, 30px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-/* Neon pulse */
-@keyframes neonPulse {
-  0%, 100% {
-    box-shadow: 0 0 8px var(--theme-color)44, 0 0 18px var(--theme-color)22;
-  }
-  50% {
-    box-shadow: 0 0 18px var(--theme-color), 0 0 40px var(--theme-color)66;
-  }
-}
-
-/* Hover efektleri */
-#settings-bar:hover {
-  transform: translate(-50%, -4px);
-  box-shadow: 0 0 25px var(--theme-color), 0 0 50px var(--theme-color)aa;
-  background: rgba(0, 0, 0, 0.6);
-}
-
-/* İçerik öğeleri neon glow hover */
-#settings-bar .settings-group {
-  color: var(--theme-color);
-  font-weight: bold;
-  transition: color 0.3s, text-shadow 0.3s;
-}
-
-#settings-bar .settings-group:hover {
-  color: #fff;
-  text-shadow: 0 0 12px var(--theme-color), 0 0 25px var(--theme-color);
-}
-
-/* Input ve select stilleri */
-#settings-bar input, #settings-bar select {
-  background: rgba(0,0,0,0.5);
-  border: 1px solid var(--theme-color);
-  border-radius: 8px;
-  color: #fff;
-  padding: 4px 8px;
-  transition: 0.3s;
-}
-
-#settings-bar input:hover, #settings-bar select:hover {
-  border-color: #fff;
-  box-shadow: 0 0 8px var(--theme-color);
-}
-
 /* Crosshair */
 #crosshair {
   position: fixed; width:24px; height:24px; pointer-events:none;
@@ -177,6 +83,53 @@ th{ background:#4B4B4B; font-size:12px; }
 
 /* Partikül Arka Plan */
 canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+
+/* Sağ Hover Panel */
+#settings-bar {
+  position: fixed;
+  top: 100px;
+  right: 0;
+  width: 40px; /* Kapalı hali */
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(12px);
+  border-radius: 16px 0 0 16px;
+  border: 2px solid var(--theme-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  z-index: 10000;
+  transition: width 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: -2px 0 10px var(--theme-color)44;
+}
+#settings-bar.open {
+  width: 220px;
+  background: rgba(0,0,0,0.6);
+  box-shadow: -2px 0 25px var(--theme-color), -2px 0 50px var(--theme-color)aa;
+}
+#settings-bar .settings-group {
+  opacity: 0;
+  transform: translateX(20px);
+  margin: 10px 0;
+  width: 90%;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+#settings-bar.open .settings-group {
+  opacity: 1;
+  transform: translateX(0);
+}
+#settings-bar input, #settings-bar select {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--theme-color);
+  border-radius: 8px;
+  color: #fff;
+  padding: 4px 8px;
+  transition: 0.3s;
+}
+#settings-bar input:hover, #settings-bar select:hover {
+  border-color: #fff;
+  box-shadow: 0 0 8px var(--theme-color);
+}
 </style>
 </head>
 <body>
@@ -340,10 +293,15 @@ try{
 const crosshair=document.getElementById("crosshair");
 document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; crosshair.style.top=e.clientY+"px";});
 
-/* Imleç Gizleme: Mouse hareket, click vs */
+/* Imleç Gizleme */
 ["mousemove","mousedown","mouseup"].forEach(evt=>{
   document.addEventListener(evt,()=>{document.body.style.cursor="none";});
 });
+
+/* Sağ Hover Panel */
+const settingsBar = document.getElementById("settings-bar");
+settingsBar.addEventListener("mouseenter", () => { settingsBar.classList.add("open"); });
+settingsBar.addEventListener("mouseleave", () => { settingsBar.classList.remove("open"); });
 </script>
 </body>
 </html>
