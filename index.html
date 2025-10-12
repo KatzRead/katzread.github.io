@@ -6,158 +6,151 @@
 <title>KatzRead</title>
 <link rel="icon" type="image/x-icon" href="logo.svg">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
-  /* --- Genel --- */
-  body {
-    margin:0;
-    font-family:'Orbitron',sans-serif;
-    background: radial-gradient(circle at top, #0a0a0f, #001a33);
-    color:#e0e0e0;
-    text-align:center;
-    min-height:100vh;
-    cursor:none;
-    overflow-x:hidden;
-    position:relative;
-  }
+/* --- Genel --- */
+body {
+  margin:0;
+  font-family:'Orbitron',sans-serif;
+  background: radial-gradient(circle at top, #0a0a0f, #001a33);
+  color:#e0e0e0;
+  text-align:center;
+  min-height:100vh;
+  cursor:none;
+  overflow-x:hidden;
+  position:relative;
+}
 
-  a, button, input, select, textarea, img, #toggleBtn {
-    cursor:none !important;
-  }
+a, button, input, select, textarea, img, #toggleBtn {
+  cursor:none !important;
+}
 
-  /* --- Header --- */
-  .header { padding-top:30px; z-index:10; position:relative; }
+/* --- Header --- */
+.header { padding-top:30px; z-index:10; position:relative; }
+.header-logo {
+  width:120px;
+  margin:0 auto 12px auto;
+  border-radius:12%;
+  padding:5px;
+  background: rgba(0,255,255,0.2);
+  box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff, 0 0 25px #00ffff;
+  animation: glow 1.5s infinite;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display:block;
+}
+@keyframes glow {
+  0%,100% { box-shadow:0 0 5px #00ffff,0 0 15px #00ffff,0 0 25px #00ffff; }
+  50% { box-shadow:0 0 10px #00ffff,0 0 20px #00ffff,0 0 35px #00ffff; }
+}
+.header-logo:hover { transform: scale(1.2) rotate(5deg); box-shadow:0 0 20px #00ffff,0 0 40px #00ffff,0 0 60px #00ffff; }
 
-  .header-logo {
-    width:120px;
-    margin:0 auto 12px auto;
-    border-radius:12%;
-    padding:5px;
-    background: rgba(0,255,255,0.2);
-    box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff, 0 0 25px #00ffff;
-    animation: glow 1.5s infinite;
-    transition: transform 0.3s, box-shadow 0.3s;
-    display:block;
-  }
-  @keyframes glow {
-    0%,100% { box-shadow: 0 0 5px #00ffff,0 0 15px #00ffff,0 0 25px #00ffff; }
-    50% { box-shadow:0 0 10px #00ffff,0 0 20px #00ffff,0 0 35px #00ffff; }
-  }
-  .header-logo:hover {
-    transform: scale(1.2) rotate(5deg);
-    box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff;
-  }
+h1 { font-size:2.8em; color:#00ffff; text-shadow:0 0 5px #00ffff,0 0 15px #00ffff; margin:0; }
+p { font-size:1.2em; color:#ccc; margin-top:5px; }
 
-  h1 {
-    font-size:2.8em;
-    color:#00ffff;
-    text-shadow:0 0 5px #00ffff,0 0 15px #00ffff;
-    margin:0;
-  }
+.links { margin-top:20px; z-index:10; }
+.links a {
+  display:inline-block;
+  margin:0 10px;
+  padding:10px 20px;
+  border:2px solid #00ffff;
+  border-radius:12px;
+  color:#00ffff;
+  text-decoration:none;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  transition: all 0.3s ease;
+}
+.links a:hover { background:#00ffff; color:#000; box-shadow:0 0 25px #00ffff,0 0 50px #00ffff inset; transform: translateY(-2px); }
 
-  p { font-size:1.2em; color:#ccc; margin-top:5px; }
+footer { font-size:0.9em; color:#555; margin-top:40px; }
 
-  .links { margin-top:20px; z-index:10; }
-  .links a {
-    display:inline-block;
-    margin:0 10px;
-    padding:10px 20px;
-    border:2px solid #00ffff;
-    border-radius:12px;
-    color:#00ffff;
-    text-decoration:none;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    transition: all 0.3s ease;
-  }
-  .links a:hover {
-    background:#00ffff;
-    color:#000;
-    box-shadow:0 0 25px #00ffff,0 0 50px #00ffff inset;
-    transform: translateY(-2px);
-  }
+#toggleBtn { width:150px; transition: transform 0.2s; margin:20px auto; display:block; z-index:10; }
+#toggleBtn:hover { transform: scale(1.1) rotate(3deg); }
 
-  footer { font-size:0.9em; color:#555; margin-top:40px; }
+/* --- Widget --- */
+.widget {
+  display:none;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+  border: 2px solid #00ffff;
+  border-radius:16px;
+  padding:20px;
+  width:90%;
+  max-width:480px;
+  margin:20px auto;
+  box-shadow:0 0 20px #00ffff66;
+  color:#fff;
+  font-size:14px;
+  transition:0.4s ease, transform 0.3s ease;
+}
+.widget:hover { transform: scale(1.02); }
 
-  #toggleBtn {
-    width:150px;
-    transition: transform 0.2s;
-    margin:20px auto;
-    display:block;
-    z-index:10;
-  }
-  #toggleBtn:hover { transform: scale(1.1) rotate(3deg); }
+/* --- Widget Kart --- */
+.widget-card {
+  background: rgba(0,255,255,0.08);
+  border: 1px solid #00ffff55;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 8px 0;
+  color: #e0e0e0;
+  font-size: 0.95em;
+  transition: 0.3s ease, transform 0.3s ease;
+}
+.widget-card:hover {
+  background: rgba(0,255,255,0.2);
+  box-shadow: 0 0 12px #00ffffaa;
+  transform: scale(1.03);
+}
+.widget-card .title { font-weight:bold; color:#00ffff; margin-bottom:4px; }
+.widget-card .stats { font-size:0.85em; color:#ccc; }
 
-  /* --- Widget --- */
-  .widget {
-    display:none;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(8px);
-    border: 2px solid #00ffff;
-    border-radius:16px;
-    padding:20px;
-    width:90%;
-    max-width:480px;
-    margin:20px auto;
-    box-shadow:0 0 20px #00ffff66;
-    color:#fff;
-    font-size:14px;
-    transition:0.4s ease, transform 0.3s ease;
-  }
-  .widget:hover { transform: scale(1.02); }
+/* --- Scroll Animasyonları --- */
+.fade-in { opacity:0; transform: translateY(30px); transition: all 0.8s ease-out; }
+.fade-in.show { opacity:1; transform: translateY(0); }
 
-  .widget h2 { margin:0; font-size:1.3em; color:#00ffff; text-shadow:0 0 8px #00ffff; }
-  .stat { margin-top:8px; font-size:0.95em; }
+/* --- Crosshair --- */
+#crosshair { position:fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%,-50%); z-index:9999; }
+#crosshair div { position:absolute; background:#00ffff; box-shadow:0 0 5px #00ffff,0 0 15px #00ffff; transition: all 0.1s ease; }
+#crosshair .top, .bottom { width:2px; height:8px; }
+#crosshair .left, .right { width:8px; height:2px; }
+#crosshair .top { top:0; left:50%; transform:translateX(-50%); }
+#crosshair .bottom { bottom:0; left:50%; transform:translateX(-50%); }
+#crosshair .left { left:0; top:50%; transform:translateY(-50%); }
+#crosshair .right { right:0; top:50%; transform:translateY(-50%); }
 
-  table { width:100%; margin-top:8px; border-collapse: collapse; font-size:13px; }
-  th, td { border:1px solid #00ffff; padding:4px; text-align:center; }
-  th { background:#1a1a1a; font-size:12px; }
-  #stats-table tbody tr:hover { background: rgba(0,255,255,0.1); box-shadow: 0 0 8px #00ffff; }
-  .avg-row { font-weight:bold; background: rgba(0,255,255,0.15); text-shadow:0 0 4px #00ffff; }
+/* --- Kişisel Bölümler --- */
+.about-section, .contact {
+  max-width:800px;
+  margin:60px auto;
+  text-align:center;
+  padding:30px;
+  background: rgba(0,10,20,0.5);
+  border:2px solid #00ffff;
+  border-radius:16px;
+  box-shadow:0 0 20px #00ffff66;
+  transition: transform 0.3s ease;
+}
+.about-section:hover, .contact:hover { transform: scale(1.01); }
 
-  /* --- Crosshair --- */
-  #crosshair { position:fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%,-50%); z-index:9999; }
-  #crosshair div { position:absolute; background:#00ffff; box-shadow:0 0 5px #00ffff,0 0 15px #00ffff; transition: all 0.1s ease; }
-  #crosshair .top, .bottom { width:2px; height:8px; }
-  #crosshair .left, .right { width:8px; height:2px; }
-  #crosshair .top { top:0; left:50%; transform:translateX(-50%); }
-  #crosshair .bottom { bottom:0; left:50%; transform:translateX(-50%); }
-  #crosshair .left { left:0; top:50%; transform:translateY(-50%); }
-  #crosshair .right { right:0; top:50%; transform:translateY(-50%); }
+.about-section h2, .contact h2 { color:#00ffff; font-size:1.8em; text-shadow:0 0 10px #00ffff; margin-bottom:15px; }
+.about-section p { color:#ccc; line-height:1.6; font-size:1.05em; }
+.highlight { color:#00ffff; text-shadow:0 0 8px #00ffff; font-weight:bold; }
 
-  /* --- Kişisel Bölümler --- */
-  .about-section, .contact {
-    max-width:800px;
-    margin:60px auto;
-    text-align:center;
-    padding:30px;
-    background: rgba(0,10,20,0.5);
-    border:2px solid #00ffff;
-    border-radius:16px;
-    box-shadow:0 0 20px #00ffff66;
-    transition: transform 0.3s ease;
-  }
-  .about-section:hover, .contact:hover { transform: scale(1.01); }
+.contact-btn { display:inline-block; background:#00ffff; color:#000; padding:10px 25px; border-radius:12px; text-decoration:none; font-weight:bold; box-shadow:0 0 15px #00ffff; transition:0.3s; }
+.contact-btn:hover { background:#000; color:#00ffff; box-shadow:0 0 25px #00ffff; }
 
-  .about-section h2, .contact h2 { color:#00ffff; font-size:1.8em; text-shadow:0 0 10px #00ffff; margin-bottom:15px; }
-  .about-section p { color:#ccc; line-height:1.6; font-size:1.05em; }
-  .highlight { color:#00ffff; text-shadow:0 0 8px #00ffff; font-weight:bold; }
+.socials { margin-top:15px; }
+.socials a { margin:0 8px; color:#00ffff; text-decoration:none; transition:0.3s; }
+.socials a:hover { text-shadow:0 0 8px #00ffff; }
 
-  .contact-btn { display:inline-block; background:#00ffff; color:#000; padding:10px 25px; border-radius:12px; text-decoration:none; font-weight:bold; box-shadow:0 0 15px #00ffff; transition:0.3s; }
-  .contact-btn:hover { background:#000; color:#00ffff; box-shadow:0 0 25px #00ffff; }
+/* --- Partikül Canvas --- */
+canvas#particle-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 
-  .socials { margin-top:15px; }
-  .socials a { margin:0 8px; color:#00ffff; text-decoration:none; transition:0.3s; }
-  .socials a:hover { text-shadow:0 0 8px #00ffff; }
-
-  /* --- Partikül Canvas --- */
-  canvas#particle-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
-
-  @media (max-width:600px){
-    h1{ font-size:2em; }
-    .links a{ padding:8px 14px; margin:5px; }
-    .header-logo{ width:60px; }
-  }
+@media (max-width:600px){
+  h1{ font-size:2em; }
+  .links a{ padding:8px 14px; margin:5px; }
+  .header-logo{ width:60px; }
+}
 </style>
 </head>
 <body>
@@ -168,7 +161,6 @@
   <img src="katz.png" alt="KatzRead Logo" class="header-logo">
   <h1>KatzRead</h1>
   <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
-
   <div class="links">
     <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
     <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
@@ -184,22 +176,15 @@
   <h2>KatzRead</h2>
   <div class="stat" id="elo">ELO: Yükleniyor...</div>
   <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
-  <table id="stats-table">
-    <thead>
-      <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
-    </thead>
-    <tbody>
-      <tr><td colspan="5">Yükleniyor...</td></tr>
-    </tbody>
-  </table>
+  <div id="stats-table"></div>
 </div>
 
-<section class="about-section">
+<section class="about-section fade-in">
   <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. <strong><span class="highlight">FUT Turkuaz</span></strong> takımında oynuyorum.
   Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum. Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
 </section>
 
-<section class="contact">
+<section class="contact fade-in">
   <p>İşbirliği veya takım teklifleri için:</p>
   <a href="mailto:katzread@gmail.com" class="contact-btn">📧 katzread@gmail.com</a>
 </section>
@@ -209,42 +194,23 @@
 <div id="crosshair"><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div>
 
 <script>
-/* --- Crosshair --- */
+// --- Crosshair ---
 const crosshair = document.getElementById('crosshair');
-document.addEventListener('mousemove', e => {
-  crosshair.style.left = e.clientX + 'px';
-  crosshair.style.top = e.clientY + 'px';
-});
+document.addEventListener('mousemove', e => { crosshair.style.left = e.clientX+'px'; crosshair.style.top = e.clientY+'px'; });
 
-/* --- Partiküller --- */
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-window.addEventListener('resize',resizeCanvas);
-resizeCanvas();
-
+// --- Partiküller ---
+const canvas=document.getElementById('particle-canvas');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
 let particles=[];
-let particleCount = window.innerWidth<600 ? 50 : 100;
-for(let i=0;i<particleCount;i++){
-  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5});
-}
-
-document.addEventListener('mousemove', e=>{
-  particles.forEach(p=>{
-    let dist=Math.hypot(e.clientX-p.x,e.clientY-p.y);
-    if(dist<80){
-      p.dx+=(p.x-e.clientX)*0.0005;
-      p.dy+=(p.y-e.clientY)*0.0005;
-    }
-  });
-});
-
+for(let i=0;i<100;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5});}
 function animateParticles(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   particles.forEach(p=>{
     p.x+=p.dx; p.y+=p.dy;
-    if(p.x<0||p.x>canvas.width) p.dx*=-1;
-    if(p.y<0||p.y>canvas.height) p.dy*=-1;
+    if(p.x<0||p.x>canvas.width)p.dx*=-1;
+    if(p.y<0||p.y>canvas.height)p.dy*=-1;
     ctx.fillStyle="#00ffff22";
     ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
   });
@@ -252,85 +218,75 @@ function animateParticles(){
 }
 animateParticles();
 
-/* --- Faceit Widget --- */
-const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
-const nickname = "KatzRead";
-const MATCH_LIMIT = 30;
-const toggleBtn = document.getElementById("toggleBtn");
-const widgetDiv = document.getElementById("katzWidget");
+// --- Scroll Animasyonu ---
+const faders=document.querySelectorAll('.fade-in');
+const appearOptions={threshold:0.2};
+const appearOnScroll=new IntersectionObserver((entries, observer)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){entry.target.classList.add('show');observer.unobserve(entry.target);}
+  });
+}, appearOptions);
+faders.forEach(f=>appearOnScroll.observe(f));
 
-toggleBtn.addEventListener("click",()=>{
-  widgetDiv.style.display=(widgetDiv.style.display==="block")?"none":"block";
-  if(widgetDiv.style.display==="block") loadWidget();
-});
+// --- Faceit Widget ---
+const apiKey="dc63f5ce-1360-4c87-882a-c3c988115063";
+const nickname="KatzRead";
+const MATCH_LIMIT=30;
+const toggleBtn=document.getElementById("toggleBtn");
+const widgetDiv=document.getElementById("katzWidget");
 
-setInterval(()=>{ if(widgetDiv.style.display==="block") loadWidget(); },30000);
+toggleBtn.addEventListener("click",()=>{if(widgetDiv.style.display===""||widgetDiv.style.display==="none"){widgetDiv.style.display="block"; loadWidget();}else{widgetDiv.style.display="none";}});
 
-async function fetchJSON(url){
-  const res = await fetch(url,{ headers:{ Authorization:"Bearer "+apiKey } });
-  return await res.json();
-}
+setInterval(()=>{if(widgetDiv.style.display==="block"){loadWidget();}},30000);
+
+async function fetchJSON(url){const res=await fetch(url,{headers:{Authorization:"Bearer "+apiKey}});return await res.json();}
 
 async function loadWidget(){
   try{
-    const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
-    const elo = playerData.games?.cs2?.faceit_elo || "N/A";
-    document.getElementById("elo").innerText = "ELO: "+elo;
-    const playerId = playerData.player_id;
-    const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
-    const matches = stats.lifetime?.Matches || "N/A";
-    document.getElementById("matches").innerText = "Toplam Maç: "+matches;
-    const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
-    const tbody = document.querySelector("#stats-table tbody");
-    tbody.innerHTML="";
-    let totalKills=0,totalDeaths=0,totalADR=0,totalHS=0,totalRounds=0,matchCount=0;
+    const playerData=await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
+    const elo=playerData.games?.cs2?.faceit_elo||"N/A";
+    document.getElementById("elo").innerText="ELO: "+elo;
+    const playerId=playerData.player_id;
+    const stats=await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
+    const matches=stats.lifetime?.Matches||"N/A";
+    document.getElementById("matches").innerText="Toplam Maç: "+matches;
 
-    for(let i=0;i<history.items.length;i++){
-      const match = history.items[i];
+    const history=await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
+    const container=document.getElementById("stats-table"); container.innerHTML="";
+    for(let match of history.items){
       try{
-        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
+        const matchData=await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
         let kills=0,deaths=0,adrSum=0,hsSum=0,roundsPlayed=0;
         matchData.rounds?.forEach(r=>{
           r.teams.forEach(t=>{
             t.players.forEach(p=>{
-              if(p.nickname===nickname){
-                kills+=Number(p.player_stats.Kills||0);
-                deaths+=Number(p.player_stats.Deaths||0);
-                adrSum+=Number(p.player_stats.ADR||0);
-                hsSum+=Number(p.player_stats.Headshots||0);
-                roundsPlayed++;
-              }
+              if(p.nickname===nickname){kills+=Number(p.player_stats.Kills||0); deaths+=Number(p.player_stats.Deaths||0); adrSum+=Number(p.player_stats.ADR||0); hsSum+=Number(p.player_stats.Headshots||0); roundsPlayed++;}
             });
           });
         });
         if(roundsPlayed>0){
-          const KD = deaths>0?(kills/deaths).toFixed(2):kills;
-          const hsPercent = kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
-          const tr=document.createElement("tr");
-          tr.innerHTML=`<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum/roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;
-          tbody.appendChild(tr);
-          totalKills+=kills; totalDeaths+=deaths; totalADR+=(adrSum/roundsPlayed); totalHS+=kills>0?(hsSum/kills)*100:0;
-          totalRounds+=roundsPlayed; matchCount++;
+          const KD=deaths>0?(kills/deaths).toFixed(2):kills;
+          const hsPercent=kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
+          const card=document.createElement('div');
+          card.classList.add('widget-card','fade-in');
+          card.innerHTML=`<div class="title">Maç ID: ${match.match_id}</div><div class="stats">Kills: ${kills} | Deaths: ${deaths} | K/D: ${KD} | ADR: ${(adrSum/roundsPlayed).toFixed(1)} | HS%: ${hsPercent}</div>`;
+          container.appendChild(card);
+          appearOnScroll.observe(card);
         }
-      }catch{ const tr=document.createElement("tr"); tr.innerHTML=`<td colspan="5">Veri yok</td>`; tbody.appendChild(tr); }
+      }catch{
+        const card=document.createElement('div');
+        card.classList.add('widget-card','fade-in');
+        card.innerHTML=`<div class="stats">Veri yok</div>`;
+        container.appendChild(card);
+        appearOnScroll.observe(card);
+      }
     }
-
-    if(matchCount>0){
-      const avgKills=(totalKills/matchCount).toFixed(1);
-      const avgDeaths=(totalDeaths/matchCount).toFixed(1);
-      const avgKD=(totalKills/totalDeaths).toFixed(2);
-      const avgADR=(totalADR/matchCount).toFixed(1);
-      const avgHS=(totalHS/matchCount).toFixed(1)+"%";
-      const avgRow=document.createElement("tr");
-      avgRow.classList.add("avg-row");
-      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 2px #00ffff;border-top:2px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
-      tbody.appendChild(avgRow);
-    }
-
   }catch{
     document.getElementById("elo").innerText="ELO alınamadı";
     document.getElementById("matches").innerText="Toplam Maç: N/A";
-    document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
+    const container=document.getElementById("stats-table");
+    container.innerHTML=`<div class="widget-card fade-in">Veri alınamadı</div>`;
+    document.querySelectorAll('.fade-in').forEach(f=>appearOnScroll.observe(f));
   }
 }
 </script>
