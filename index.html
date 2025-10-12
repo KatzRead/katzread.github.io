@@ -19,34 +19,56 @@
 
   /* Başlık ve linkler */
   .header {
-    padding-top: 20px;
+    padding-top: 30px;
   }
 
-  /* Logo animasyonu */
+  /* Logo */
+  .header-logo {
+    width: 80px;
+    margin: 0 auto 12px auto;
+    border-radius: 50%;
+    padding: 5px;
+    background: rgba(255,0,0,0.2);
+    box-shadow:
+      0 0 10px red,
+      0 0 25px red,
+      0 0 40px red,
+      0 0 60px red;
+    animation: glow 1.5s infinite;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
   @keyframes glow {
     0%, 100% {
-      filter: drop-shadow(0 0 8px red) drop-shadow(0 0 15px red);
+      box-shadow:
+        0 0 10px red,
+        0 0 25px red,
+        0 0 40px red,
+        0 0 60px red;
     }
     50% {
-      filter: drop-shadow(0 0 15px red) drop-shadow(0 0 25px red);
+      box-shadow:
+        0 0 20px red,
+        0 0 40px red,
+        0 0 60px red,
+        0 0 80px red;
     }
-  }
-
-  .header-logo {
-    width: 60px;
-    margin-bottom: 10px;
-    animation: glow 1.5s infinite;
-    transition: transform 0.3s;
   }
 
   .header-logo:hover {
-    transform: scale(1.1);
+    transform: scale(1.2);
+    box-shadow:
+      0 0 30px red,
+      0 0 60px red,
+      0 0 90px red,
+      0 0 120px red;
   }
 
   h1 {
     font-size: 2.8em;
     color: #00ffff;
     text-shadow: 0 0 15px #00ffff;
+    margin: 8px 0;
   }
 
   p { font-size: 1.2em; color: #ccc; margin-top: -5px; }
@@ -127,8 +149,6 @@
   th { background: #4B4B4B; font-size: 12px; }
 
   .avg-row { font-weight: bold; background: #1a1a1a; color: #00ffff; }
-  .W { color: #00ff00; font-weight: bold; }
-  .L { color: #ff3333; font-weight: bold; }
 
   /* Scroll kaldırıldı, tbody normal */
   .widget table tbody {
@@ -150,7 +170,7 @@
 <body>
 
 <div class="header">
-  <img src="katz.png" alt="KatzRead Logo" class="header-logo">
+  <img src="logo.png" alt="KatzRead Logo" class="header-logo">
   <h1>👾 KatzRead</h1>
   <p>CS2 oyuncusu • Lurker • FUT Turkuaz</p>
 
