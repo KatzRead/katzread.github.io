@@ -10,6 +10,10 @@
 
 :root { --theme-color: #00ffff; }
 
+* {
+  cursor: none !important; /* Tüm öğelerde imleci gizle */
+}
+
 body {
   margin:0; font-family:'Orbitron',sans-serif;
   background: radial-gradient(circle at top, #0a0a0f, #000);
@@ -66,7 +70,7 @@ th{ background:#4B4B4B; font-size:12px; }
 .equip-card:hover{ background: rgba(0,255,255,0.2); box-shadow:0 0 12px var(--theme-color)aa; transform:scale(1.05); }
 .equip-card img{ width:80px; height:auto; margin-bottom:6px; }
 
-/* ALT PANEL Sadeleşmiş ve Küçültülmüş */
+/* Gelişmiş Modern Alt Panel */
 #settings-bar {
   position: fixed;
   bottom: 0;
@@ -74,26 +78,48 @@ th{ background:#4B4B4B; font-size:12px; }
   transform: translateX(-50%);
   width: 95%;
   max-width: 900px;
-  padding: 6px 12px;
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 12px;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
   border: 2px solid var(--theme-color);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
   z-index: 10000;
-  box-shadow: 0 0 6px var(--theme-color)33;
+  
+  opacity: 0; /* fade-in başlangıcı */
+  animation: fadeInBar 1s ease forwards, neonPulse 3s infinite ease-in-out;
+  box-shadow: 0 0 10px var(--theme-color)44, 0 0 20px var(--theme-color)22;
   transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
 }
 
-#settings-bar:hover {
-  transform: translate(-50%, -2px);
-  box-shadow: 0 0 12px var(--theme-color)55;
-  background: rgba(0, 0, 0, 0.35);
+/* Fade-in */
+@keyframes fadeInBar {
+  from { opacity: 0; transform: translate(-50%, 30px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
 
+/* Neon pulse */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 8px var(--theme-color)44, 0 0 18px var(--theme-color)22;
+  }
+  50% {
+    box-shadow: 0 0 18px var(--theme-color), 0 0 40px var(--theme-color)66;
+  }
+}
+
+/* Hover efektleri */
+#settings-bar:hover {
+  transform: translate(-50%, -4px);
+  box-shadow: 0 0 25px var(--theme-color), 0 0 50px var(--theme-color)aa;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* İçerik öğeleri neon glow hover */
 #settings-bar .settings-group {
   color: var(--theme-color);
   font-weight: bold;
@@ -102,22 +128,36 @@ th{ background:#4B4B4B; font-size:12px; }
 
 #settings-bar .settings-group:hover {
   color: #fff;
-  text-shadow: 0 0 8px var(--theme-color);
+  text-shadow: 0 0 12px var(--theme-color), 0 0 25px var(--theme-color);
 }
 
+/* Input ve select stilleri */
 #settings-bar input, #settings-bar select {
-  background: rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.5);
   border: 1px solid var(--theme-color);
-  border-radius: 6px;
+  border-radius: 8px;
   color: #fff;
-  padding: 2px 6px;
+  padding: 4px 8px;
   transition: 0.3s;
 }
 
 #settings-bar input:hover, #settings-bar select:hover {
   border-color: #fff;
-  box-shadow: 0 0 6px var(--theme-color);
+  box-shadow: 0 0 8px var(--theme-color);
 }
+
+/* Crosshair */
+#crosshair {
+  position: fixed; width:24px; height:24px; pointer-events:none;
+  top:0; left:0; transform:translate(-50%, -50%); z-index:9999;
+}
+#crosshair div { position:absolute; background: var(--theme-color); }
+#crosshair .top, #crosshair .bottom { width:2px; height:8px; }
+#crosshair .left, #crosshair .right { width:8px; height:2px; }
+#crosshair .top { top:0; left:50%; transform:translateX(-50%);}
+#crosshair .bottom { bottom:0; left:50%; transform:translateX(-50%);}
+#crosshair .left { left:0; top:50%; transform:translateY(-50%);}
+#crosshair .right { right:0; top:50%; transform:translateY(-50%); }
 
 /* Partikül Arka Plan */
 canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
@@ -175,7 +215,7 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
 <div id="settings" class="tab-content">
   <div class="section-box">
     <h2>Ayarlar</h2>
-    <p>Buradan tema rengi ve arka plan efektini değiştirebilirsiniz. Crosshair artık kaldırılmıştır.</p>
+    <p>Buradan tema rengi ve arka plan efektini değiştirebilirsiniz. Crosshair aç/kapa ve renk ayarı da burada uygulanacaktır.</p>
   </div>
 </div>
 
@@ -204,6 +244,14 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
   </div>
 </div>
 
+<!-- Crosshair -->
+<div id="crosshair">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
+
 <footer>© 2025 KatzRead</footer>
 
 <!-- ALT PANEL -->
@@ -218,6 +266,13 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
       <option value="particles">Partikül</option>
       <option value="gradient">Gradient</option>
       <option value="solid">Düz Renk</option>
+    </select>
+  </div>
+  <div class="settings-group">
+    <label for="crosshairToggle">Crosshair:</label>
+    <select id="crosshairToggle">
+      <option value="on">Açık</option>
+      <option value="off">Kapalı</option>
     </select>
   </div>
 </div>
@@ -279,6 +334,15 @@ try{
   }
 }catch(e){console.error(e);}
 }
+
+/* Crosshair Takip */
+const crosshair=document.getElementById("crosshair");
+document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; crosshair.style.top=e.clientY+"px";});
+
+/* Imleç Gizleme: Mouse hareket, click vs */
+["mousemove","mousedown","mouseup"].forEach(evt=>{
+  document.addEventListener(evt,()=>{document.body.style.cursor="none";});
+});
 </script>
 </body>
 </html>
