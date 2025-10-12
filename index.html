@@ -20,19 +20,15 @@
     padding-top: 20px;
   }
 
-  button {
-    padding:10px 20px;
-    font-size:16px;
-    border:none;
-    border-radius:8px;
-    background:#00ffff;
-    color:#000;
+  /* Faceit logosu */
+  #toggleBtn {
+    width:100px;
     cursor:pointer;
-    font-family:'Orbitron',sans-serif;
-    font-weight:bold;
+    transition: transform 0.2s;
   }
-
-  button:hover { background:#00cccc; }
+  #toggleBtn:hover {
+    transform: scale(1.1);
+  }
 
   .widget {
     display:none; /* Başlangıçta gizli */
@@ -65,7 +61,9 @@
 </head>
 <body>
 
-<button id="toggleBtn">KatzRead Widget Aç</button>
+<!-- Faceit logosu buton -->
+<img id="toggleBtn" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Faceit_logo.svg/1200px-Faceit_logo.svg.png" 
+     alt="Faceit Logo">
 
 <div class="widget" id="katzWidget">
   <h2>KatzRead</h2>
@@ -94,13 +92,13 @@ const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
 const MATCH_LIMIT = 30;
 
-// Widget aç/kapa butonu
 const toggleBtn = document.getElementById("toggleBtn");
 const widgetDiv = document.getElementById("katzWidget");
+
 toggleBtn.addEventListener("click", () => {
   if(widgetDiv.style.display==="none"){
     widgetDiv.style.display="block";
-    loadWidget(); // Butona basınca veri çek
+    loadWidget();
   } else {
     widgetDiv.style.display="none";
   }
@@ -135,12 +133,11 @@ async function loadWidget(){
         let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
 
         // W/L belirleme
-        let win = "L"; // default L
+        let win = "L"; 
         if(match.rounds_result && match.rounds_result.length>0){
           win = match.rounds_result.every(r => r.result==="win") ? "W" : "L";
         }
 
-        // Oyuncu istatistikleri
         matchData.rounds?.forEach(r=>{
           r.teams.forEach(t=>{
             t.players.forEach(p=>{
@@ -185,7 +182,6 @@ async function loadWidget(){
       }
     }
 
-    // Ortalama satırı
     if(countMatches>0){
       const avgKills = (totalKills/countMatches).toFixed(1);
       const avgDeaths = (totalDeaths/countMatches).toFixed(1);
