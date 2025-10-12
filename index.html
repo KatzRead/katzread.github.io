@@ -35,7 +35,6 @@ body {
 @keyframes glow { 0%,100%{box-shadow:0 0 5px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color);} 50%{box-shadow:0 0 10px var(--theme-color),0 0 20px var(--theme-color),0 0 35px var(--theme-color);} }
 .header-logo:hover { transform: scale(1.2); }
 
-/* Başlık */
 h1{ font-size:2.8em; color:var(--theme-color); text-shadow:0 0 15px var(--theme-color); margin:0; }
 p{ font-size:1.2em; color:#ccc; margin-top:5px; }
 
@@ -55,27 +54,113 @@ footer{ font-size:0.9em; color:#555; margin-top:40px; }
 table{ width:100%; margin-top:8px; border-collapse: collapse; font-size:13px; }
 th, td{ border:1px solid var(--theme-color); padding:4px; text-align:center; }
 th{ background:#4B4B4B; font-size:12px; }
-.avg-row{ font-weight:bold; background:#1a1a1a; color: var(--theme-color); font-size:1.05em; text-align:center; border-top:2px solid var(--theme-color); padding-top:6px; }
+.avg-row{ font-weight:bold; background:#1a1a1a; color: var(--theme-color); }
 
 /* Hakkımda flex düzeni */
-.about-section { display:flex; flex-wrap: wrap; align-items:center; justify-content:center; gap:20px; max-width:800px; margin:40px auto; padding:20px; background: rgba(0,10,20,0.5); border:1px solid var(--theme-color); border-radius:16px; box-shadow: 0 0 15px var(--theme-color)66; }
+.about-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: rgba(0,10,20,0.5);
+  border: 1px solid var(--theme-color);
+  border-radius: 16px;
+  box-shadow: 0 0 15px var(--theme-color)66;
+}
 
 /* Sol taraf: Fotoğraf */
-.about-photo { position: relative; width:180px; height:180px; border-radius:50%; flex-shrink:0; }
-.about-photo img { width:100%; height:100%; border-radius:50%; object-fit:cover; border:2px solid var(--theme-color); z-index:2; position:relative; box-shadow:0 0 8px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color); animation: glow 1.5s infinite alternate; transition: transform 0.3s, box-shadow 0.3s; }
-.about-photo img:hover { transform: scale(1.05); box-shadow:0 0 12px var(--theme-color),0 0 25px var(--theme-color),0 0 40px var(--theme-color); }
+.about-photo {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 
-.about-photo .aura { position:absolute; top:50%; left:50%; width:100%; height:100%; background:radial-gradient(circle, var(--theme-color) 0%, rgba(0,0,0,0) 70%); border-radius:50%; transform:translate(-50%, -50%) scale(0.8); animation:neonPulse 2s infinite ease-in-out; z-index:1; filter: blur(12px); mix-blend-mode: screen; }
-@keyframes neonPulse { 0%,100% { transform: translate(-50%, -50%) scale(0.85); opacity:0.8; } 50% { transform: translate(-50%, -50%) scale(1); opacity:1; } }
+/* Neon efekti ve hover */
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--theme-color);
+  z-index: 2;
+  position: relative;
+  box-shadow:
+    0 0 8px var(--theme-color),
+    0 0 15px var(--theme-color),
+    0 0 25px var(--theme-color);
+  animation: glow 1.5s infinite alternate;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Hover animasyonu: fotoğraf üzerine gelince patlayan neon */
+.about-photo img:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 12px var(--theme-color),
+    0 0 25px var(--theme-color),
+    0 0 40px var(--theme-color);
+}
+
+/* Aura efekti */
+.about-photo .aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, var(--theme-color) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  animation: neonPulse 2s infinite ease-in-out;
+  z-index: 1;
+  filter: blur(12px);
+  mix-blend-mode: screen;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 8px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color); }
+  50% { box-shadow: 0 0 12px var(--theme-color),0 0 20px var(--theme-color),0 0 30px var(--theme-color); }
+  100% { box-shadow: 0 0 8px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color); }
+}
+
+@keyframes neonPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
 
 /* Sağ taraf: Metin */
-.about-text { flex:1; min-width:220px; color:#ccc; line-height:1.6; font-size:1.05em; }
-.about-text h2 { color: var(--theme-color); font-size:1.8em; text-shadow:0 0 10px var(--theme-color); margin-bottom:10px; }
+.about-text {
+  flex: 1;
+  min-width: 220px;
+  color: #ccc;
+  line-height: 1.6;
+  font-size: 1.05em;
+}
+
+/* Başlık */
+.about-text h2 {
+  color: var(--theme-color);
+  font-size: 1.8em;
+  text-shadow: 0 0 10px var(--theme-color);
+  margin-bottom: 10px;
+}
 
 /* Responsive */
-@media(max-width:600px) { .about-section { flex-direction:column; text-align:center; } .about-text { margin-top:15px; }
+@media(max-width: 600px) {
+  .about-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  .about-text { margin-top: 15px; }
+}
 
-/* Diğer CSS */
+/* Diğer CSS (sekme, ekipman, crosshair, panel vb.) */
 .section-box { max-width:800px; margin:40px auto; background: rgba(0,10,20,0.5); border:1px solid var(--theme-color); border-radius:16px; box-shadow:0 0 15px var(--theme-color)66; padding:30px; }
 .section-box h2{ color:var(--theme-color); font-size:1.8em; text-shadow:0 0 10px var(--theme-color); margin-bottom:15px; }
 .section-box p{ color:#ccc; line-height:1.6; font-size:1.05em; }
@@ -86,7 +171,10 @@ th{ background:#4B4B4B; font-size:12px; }
 .equip-card:hover{ background: rgba(0,255,255,0.2); box-shadow:0 0 12px var(--theme-color)aa; transform:scale(1.05); }
 .equip-card img{ width:80px; height:auto; margin-bottom:6px; }
 
-#crosshair { position: fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%, -50%); z-index:9999; }
+#crosshair {
+  position: fixed; width:24px; height:24px; pointer-events:none;
+  top:0; left:0; transform:translate(-50%, -50%); z-index:9999;
+}
 #crosshair div { position:absolute; background: var(--theme-color); }
 #crosshair .top, #crosshair .bottom { width:2px; height:8px; }
 #crosshair .left, #crosshair .right { width:8px; height:2px; }
@@ -97,12 +185,52 @@ th{ background:#4B4B4B; font-size:12px; }
 
 canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 
-#settings-bar { position: fixed; top: 100px; right: 0; width: 40px; height: 50px; background: rgba(0,0,0,0.35); backdrop-filter: blur(1px); border-radius: 16px 0 0 16px; border: 1px solid var(--theme-color); display: flex; flex-direction: column; align-items: center; overflow: hidden; z-index: 10000; transition: width 0.4s ease, background 0.4s ease, box-shadow 0.4s ease; box-shadow: -2px 0 10px var(--theme-color)44; }
-#settings-bar.open { width: 220px; background: rgba(0,0,0,0.6); box-shadow: -2px 0 25px var(--theme-color), -2px 0 50px var(--theme-color)aa; }
-#settings-bar .settings-group { opacity: 0; transform: translateX(20px); margin: 10px 0; width: 80%; transition: opacity 0.4s ease, transform 0.4s ease; }
-#settings-bar.open .settings-group { opacity: 1; transform: translateX(0); }
-#settings-bar input, #settings-bar select { background: rgba(0,0,0,0.5); border: 1px solid var(--theme-color); border-radius: 8px; color: #fff; padding: 4px 8px; transition: 0.3s; }
-#settings-bar input:hover, #settings-bar select:hover { border-color: #fff; box-shadow: 0 0 8px var(--theme-color); }
+#settings-bar {
+  position: fixed;
+  top: 100px;
+  right: 0;
+  width: 40px;
+  height: 50px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(1px);
+  border-radius: 16px 0 0 16px;
+  border: 1px solid var(--theme-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  z-index: 10000;
+  transition: width 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: -2px 0 10px var(--theme-color)44;
+}
+#settings-bar.open {
+  width: 220px;
+  background: rgba(0,0,0,0.6);
+  box-shadow: -2px 0 25px var(--theme-color), -2px 0 50px var(--theme-color)aa;
+}
+#settings-bar .settings-group {
+  opacity: 0;
+  transform: translateX(20px);
+  margin: 10px 0;
+  width: 80%;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+#settings-bar.open .settings-group {
+  opacity: 1;
+  transform: translateX(0);
+}
+#settings-bar input, #settings-bar select {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--theme-color);
+  border-radius: 8px;
+  color: #fff;
+  padding: 4px 8px;
+  transition: 0.3s;
+}
+#settings-bar input:hover, #settings-bar select:hover {
+  border-color: #fff;
+  box-shadow: 0 0 8px var(--theme-color);
+}
 </style>
 </head>
 <body>
@@ -144,7 +272,6 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
     </div>
   </div>
 </div>
-
 <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
 
 <div class="widget" id="katzWidget">
@@ -233,50 +360,92 @@ const themeInput = document.getElementById("themeColor");
 themeInput.addEventListener("input", (e) => {
   const color = e.target.value;
   document.documentElement.style.setProperty("--theme-color", color);
-
-  // Logo glow ve hover güncelle
-  const logo = document.querySelector(".header-logo");
-  logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 });
-
-/* Faceit Widget */
+  /* Faceit Widget */
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
-const MATCH_LIMIT = 5;
+const MATCH_LIMIT = 30;
+const toggleBtn = document.getElementById("toggleBtn");
+const widgetDiv = document.getElementById("katzWidget");
 
-const toggleBtn=document.getElementById("toggleBtn");
-const widget=document.getElementById("katzWidget");
-toggleBtn.addEventListener("click",()=>{widget.style.display=widget.style.display==="block"?"none":"block";});
+toggleBtn.addEventListener("click", () => {
+  if(widgetDiv.style.display === "none" || widgetDiv.style.display === ""){
+    widgetDiv.style.display = "block";
+    loadWidget();
+  } else { widgetDiv.style.display = "none"; }
+});
 
-/* Örnek veri ile tablo oluşturma ve AVG satırı */
-function loadWidget() {
-  const tbody=document.querySelector("#stats-table tbody");
-  tbody.innerHTML="";
-  const matches=[
-    {kills:22,deaths:18,kd:1.22,adr:95,hs:45},
-    {kills:18,deaths:20,kd:0.9,adr:88,hs:42},
-    {kills:25,deaths:16,kd:1.56,adr:102,hs:48},
-    {kills:20,deaths:19,kd:1.05,adr:90,hs:40},
-    {kills:23,deaths:17,kd:1.35,adr:99,hs:46}
-  ];
-  let total={kills:0,deaths:0,kd:0,adr:0,hs:0};
-  matches.forEach(m=>{
-    const row=document.createElement("tr");
-    row.innerHTML=`<td>${m.kills}</td><td>${m.deaths}</td><td>${m.kd}</td><td>${m.adr}</td><td>${m.hs}</td>`;
-    tbody.appendChild(row);
-    total.kills+=m.kills; total.deaths+=m.deaths; total.kd+=m.kd; total.adr+=m.adr; total.hs+=m.hs;
-  });
-  const avgRow=document.createElement("tr");
-  avgRow.classList.add("avg-row");
-  const avgKills=(total.kills/matches.length).toFixed(1);
-  const avgDeaths=(total.deaths/matches.length).toFixed(1);
-  const avgKD=(total.kd/matches.length).toFixed(2);
-  const avgADR=(total.adr/matches.length).toFixed(1);
-  const avgHS=(total.hs/matches.length).toFixed(1);
-  avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:var(--theme-color);font-size:1.05em;border-top:2px solid var(--theme-color);padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
-  tbody.appendChild(avgRow);
+/* Otomatik yenileme */
+setInterval(()=>{ if(widgetDiv.style.display==="block"){ loadWidget(); } },30000);
+
+async function fetchJSON(url){
+  const res = await fetch(url,{ headers:{ Authorization: "Bearer "+apiKey } });
+  return await res.json();
 }
-loadWidget();
+
+async function loadWidget(){
+  try{
+    const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
+    const elo = playerData.games?.cs2?.faceit_elo || "N/A";
+    document.getElementById("elo").innerText = "ELO: "+elo;
+    const playerId = playerData.player_id;
+    const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
+    const matches = stats.lifetime?.Matches || "N/A";
+    document.getElementById("matches").innerText = "Toplam Maç: "+matches;
+    const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
+    const tbody = document.querySelector("#stats-table tbody");
+    tbody.innerHTML="";
+    let totalKills=0,totalDeaths=0,totalADR=0,totalHS=0,totalRounds=0,matchCount=0;
+
+    for(let i=0;i<history.items.length;i++){
+      const match = history.items[i];
+      try{
+        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
+        let kills=0,deaths=0,adrSum=0,hsSum=0,roundsPlayed=0;
+        matchData.rounds?.forEach(r=>{
+          r.teams.forEach(t=>{
+            t.players.forEach(p=>{
+              if(p.nickname===nickname){
+                kills+=Number(p.player_stats.Kills||0);
+                deaths+=Number(p.player_stats.Deaths||0);
+                adrSum+=Number(p.player_stats.ADR||0);
+                hsSum+=Number(p.player_stats.Headshots||0);
+                roundsPlayed++;
+              }
+            });
+          });
+        });
+        if(roundsPlayed>0){
+          const KD = deaths>0?(kills/deaths).toFixed(2):kills;
+          const hsPercent = kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
+          const tr=document.createElement("tr");
+          tr.innerHTML=`<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum/roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;
+          tbody.appendChild(tr);
+          totalKills+=kills; totalDeaths+=deaths; totalADR+=(adrSum/roundsPlayed); totalHS+=kills>0?(hsSum/kills)*100:0;
+          totalRounds+=roundsPlayed; matchCount++;
+        }
+      }catch{ const tr=document.createElement("tr"); tr.innerHTML=`<td colspan="5">Veri yok</td>`; tbody.appendChild(tr); }
+    }
+
+    if(matchCount>0){
+      const avgKills=(totalKills/matchCount).toFixed(1);
+      const avgDeaths=(totalDeaths/matchCount).toFixed(1);
+      const avgKD=(totalKills/totalDeaths).toFixed(2);
+      const avgADR=(totalADR/matchCount).toFixed(1);
+      const avgHS=(totalHS/matchCount).toFixed(1)+"%";
+      const avgRow=document.createElement("tr");
+      avgRow.classList.add("avg-row");
+      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 1px #00ffff;border-top:1px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
+      tbody.appendChild(avgRow);
+    }
+
+  }catch{
+    document.getElementById("elo").innerText="ELO alınamadı";
+    document.getElementById("matches").innerText="Toplam Maç: N/A";
+    document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
+  }
+}
+  
 </script>
 </body>
 </html>
