@@ -43,6 +43,11 @@
   .avg-row { font-weight:bold; background:#1a1a1a; color:#00ffff; }
   .W { color:#00ff00; font-weight:bold; }
   .L { color:#ff3333; font-weight:bold; }
+  .last5 {
+    margin-top:10px;
+    font-size:16px;
+    text-align:center;
+  }
 </style>
 </head>
 <body>
@@ -67,12 +72,14 @@
       <tr><td colspan="7">Yükleniyor...</td></tr>
     </tbody>
   </table>
+  <div class="last5" id="last5">Yükleniyor...</div>
 </div>
 
 <script>
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
 const MATCH_LIMIT = 30;
+const LAST5_LIMIT = 5;
 
 async function fetchJSON(url){
   const res = await fetch(url, { headers:{ Authorization:"Bearer "+apiKey } });
@@ -95,28 +102,49 @@ async function loadWidget(){
     tbody.innerHTML = "";
 
     let totalKills=0, totalDeaths=0, totalADR=0, totalHS=0, countMatches=0;
+    let lastFive = [];
 
     for(let i=0;i<history.items.length;i++){
       const match = history.items[i];
       try{
         const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
-        let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
-        let win=false;
 
-        matchData.rounds?.forEach(r=>{
-          r.teams.forEach(t=>{
+        if(!matchData.rounds || matchData.rounds.length === 0){
+          // Round verisi yoksa maçı atla
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="7">Veri yok</td>`;
+          tbody.appendChild(tr);
+          continue;
+        }
+
+        let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
+        let playerTeamIndex = null;
+
+        // Roundları kontrol et ve oyuncuyu bul
+        matchData.rounds.forEach(r=>{
+          r.teams.forEach((t, teamIndex)=>{
             t.players.forEach(p=>{
-              if(p.nickname===nickname){
-                kills += Number(p.player_stats.Kills||0);
-                deaths += Number(p.player_stats.Deaths||0);
-                adrSum += Number(p.player_stats.ADR||0);
-                hsSum += Number(p.player_stats.Headshots||0);
-                roundsPlayed +=1;
-                win = t.team_stats.Result === "win";
+              if(p.nickname === nickname){
+                kills += Number(p.player_stats.Kills || 0);
+                deaths += Number(p.player_stats.Deaths || 0);
+                adrSum += Number(p.player_stats.ADR || 0);
+                hsSum += Number(p.player_stats.Headshots || 0);
+                roundsPlayed += 1;
+                playerTeamIndex = teamIndex;
               }
             });
           });
         });
+
+        // Kazananı round skorlarından hesapla
+        const team1Score = matchData.rounds.reduce((a,r)=> a + Number(r.teams[0].team_stats.Score || 0),0);
+        const team2Score = matchData.rounds.reduce((a,r)=> a + Number(r.teams[1].team_stats.Score || 0),0);
+        const win = (playerTeamIndex===0 && team1Score>team2Score) || (playerTeamIndex===1 && team2Score>team1Score);
+
+        // Son 5 maç için array
+        if(lastFive.length < LAST5_LIMIT){
+          lastFive.push(win ? 'W' : 'L');
+        }
 
         if(roundsPlayed>0){
           totalKills += kills;
@@ -169,18 +197,16 @@ async function loadWidget(){
       tbody.appendChild(avgTr);
     }
 
+    // Son 5 maç W/L gösterimi (Strugly formatı)
+    let lastFiveHTML = '';
+    lastFive.forEach(r=>{
+      lastFiveHTML += r === 'W' ? '<span class="W">W</span> ' : '<span class="L">L</span> ';
+    });
+    document.getElementById("last5").innerHTML = lastFiveHTML;
+
   }catch(err){
     console.error(err);
     document.getElementById("elo").innerText = "ELO alınamadı";
     document.getElementById("matches").innerText = "Toplam Maç: N/A";
     const tbody = document.querySelector("#stats-table tbody");
-    tbody.innerHTML = `<tr><td colspan="7">Veri alınamadı</td></tr>`;
-  }
-}
-
-  
-loadWidget();
-</script>
-
-</body>
-</html>
+    tbody.innerHTML = `<tr><td colspan="7">Veri alınamad
