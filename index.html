@@ -70,30 +70,42 @@ th{ background:#4B4B4B; font-size:12px; }
 .equip-card:hover{ background: rgba(0,255,255,0.2); box-shadow:0 0 12px var(--theme-color)aa; transform:scale(1.05); }
 .equip-card img{ width:80px; height:auto; margin-bottom:6px; }
 
-/* Gelişmiş Modern Alt Panel */
+/* Sağ tarafta küçük panel */
 #settings-bar {
   position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30%;
-  max-width: 250px;
-  padding: 12px 20px;
-  background: rgba(0, 0, 0, 0.35);
+  top: 100px;             /* İstenilen yükseklik */
+  right: 0;               /* Sağ tarafa yapışık */
+  width: 40px;            /* Küçük başlangıç genişliği */
+  height: 150px;          /* Panelin yüksekliği (dikey) */
+  background: rgba(0,0,0,0.35);
   backdrop-filter: blur(12px);
-  border-radius: 16px;
+  border-radius: 16px 0 0 16px; /* Sadece sol kenar yuvarlak */
   border: 2px solid var(--theme-color);
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 20px;
+  overflow: hidden;       /* Küçükken içeriği gizle */
   z-index: 10000;
-  
-  opacity: 0; /* fade-in başlangıcı */
-  animation: fadeInBar 1s ease forwards, neonPulse 3s infinite ease-in-out;
-  box-shadow: 0 0 10px var(--theme-color)44, 0 0 20px var(--theme-color)22;
-  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  transition: width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: -2px 0 10px var(--theme-color)44;
+}
+
+/* Hover olduğunda panel açılır */
+#settings-bar:hover {
+  width: 220px;           /* Açıldığında genişlik */
+  background: rgba(0,0,0,0.6);
+  box-shadow: -2px 0 25px var(--theme-color), -2px 0 50px var(--theme-color)aa;
+}
+
+/* İçerik görünürlük animasyonu */
+#settings-bar .settings-group {
+  opacity: 0;
+  margin: 10px 0;
+  transition: opacity 0.3s ease;
+}
+
+#settings-bar:hover .settings-group {
+  opacity: 1;
 }
 
 /* Fade-in */
