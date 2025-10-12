@@ -248,4 +248,49 @@ async function loadWidget(){
           <td>${i+1}</td>
           <td class="${win}">${win}</td>
           <td>${kills}</td>
-          <td>${
+          <td>${deaths}</td>
+          <td>${KD}</td>
+          <td>${roundsPlayed>0 ? (adrSum/roundsPlayed).toFixed(1) : "-"}</td>
+          <td>${hsPercent}</td>
+        `;
+        tbody.appendChild(tr);
+
+      }catch(e){
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="7">Veri yok</td>`;
+        tbody.appendChild(tr);
+      }
+    }
+
+    if(countMatches>0){
+      const avgKills = (totalKills/countMatches).toFixed(1);
+      const avgDeaths = (totalDeaths/countMatches).toFixed(1);
+      const avgKD = totalDeaths>0 ? (totalKills/totalDeaths).toFixed(2) : totalKills.toFixed(2);
+      const avgADR = (totalADR/countMatches).toFixed(1);
+      const avgHS = totalKills>0 ? ((totalHS/totalKills)*100).toFixed(1)+"%" : "-";
+
+      const avgTr = document.createElement("tr");
+      avgTr.className = "avg-row";
+      avgTr.innerHTML = `
+        <td colspan="2">Ortalama</td>
+        <td>${avgKills}</td>
+        <td>${avgDeaths}</td>
+        <td>${avgKD}</td>
+        <td>${avgADR}</td>
+        <td>${avgHS}</td>
+      `;
+      tbody.appendChild(avgTr);
+    }
+
+  }catch(err){
+    console.error(err);
+    document.getElementById("elo").innerText = "ELO alınamadı";
+    document.getElementById("matches").innerText = "Toplam Maç: N/A";
+    const tbody = document.querySelector("#stats-table tbody");
+    tbody.innerHTML = `<tr><td colspan="7">Veri alınamadı</td></tr>`;
+  }
+}
+</script>
+
+</body>
+</html>
