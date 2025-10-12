@@ -396,12 +396,15 @@ function updateToggleBtn(){
   toggleBtn.style.display = homeActive ? "block" : "none";
 }
 
-// Sekme değiştiğinde çağır
 tabs.forEach(btn=>{
   btn.addEventListener('click', ()=>{
     updateToggleBtn();
   });
 });
+
+// Sayfa yüklendiğinde kontrol
+updateToggleBtn();
+
 
 // Başlangıçta kontrol et
 updateToggleBtn();
