@@ -112,7 +112,7 @@ async function loadWidget(){
                 adrSum += Number(p.player_stats.ADR||0);
                 hsSum += Number(p.player_stats.Headshots||0);
                 roundsPlayed +=1;
-                win = t.team_stats.Result === "win";
+                win = t.team_stats.Result.toLowerCase() === "win"; // <-- burası değişti
               }
             });
           });
