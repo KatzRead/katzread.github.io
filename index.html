@@ -17,7 +17,6 @@
     min-height: 100vh;
   }
 
-  /* Başlık ve linkler */
   .header {
     padding-top: 30px;
   }
@@ -56,7 +55,6 @@
     margin-top: 40px;
   }
 
-  /* Faceit logosu */
   #toggleBtn {
     width: 150px;
     cursor: pointer;
@@ -65,7 +63,6 @@
   }
   #toggleBtn:hover { transform: scale(1.1); }
 
-  /* Widget */
   .widget {
     display: none;
     background: rgba(10,10,15,0.95);
@@ -105,8 +102,6 @@
   th { background: #4B4B4B; font-size: 12px; }
 
   .avg-row { font-weight: bold; background: #1a1a1a; color: #00ffff; }
-  .W { color: #00ff00; font-weight: bold; }
-  .L { color: #ff3333; font-weight: bold; }
 
   /* Scroll kaldırıldı, tbody normal */
   .widget table tbody {
@@ -128,7 +123,8 @@
 <body>
 
 <div class="header">
-  <h1>👾 KatzRead</h1>
+  <img src="logo.png" alt="KatzRead Logo" style="width:40px; vertical-align:middle; margin-right:8px;">
+  KatzRead
   <p>CS2 oyuncusu • Lurker • FUT Turkuaz</p>
 
   <div class="links">
@@ -140,12 +136,10 @@
   </div>
 </div>
 
-<!-- Faceit logosu -->
 <img id="toggleBtn" 
      src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" 
      alt="Faceit Logo">
 
-<!-- Widget -->
 <div class="widget" id="katzWidget">
   <h2>KatzRead</h2>
   <div class="stat" id="elo">ELO: Yükleniyor...</div>
@@ -154,7 +148,6 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>W/L</th>
         <th>Kills</th>
         <th>Deaths</th>
         <th>K/D</th>
@@ -163,7 +156,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td colspan="7">Yükleniyor...</td></tr>
+      <tr><td colspan="6">Yükleniyor...</td></tr>
     </tbody>
   </table>
 </div>
@@ -215,11 +208,6 @@ async function loadWidget(){
         const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
         let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
 
-        let win = "L"; 
-        if(match.rounds_result && match.rounds_result.length>0){
-          win = match.rounds_result.every(r => r.result==="win") ? "W" : "L";
-        }
-
         matchData.rounds?.forEach(r=>{
           r.teams.forEach(t=>{
             t.players.forEach(p=>{
@@ -248,7 +236,6 @@ async function loadWidget(){
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${i+1}</td>
-          <td class="${win}">${win}</td>
           <td>${kills}</td>
           <td>${deaths}</td>
           <td>${KD}</td>
@@ -259,7 +246,7 @@ async function loadWidget(){
 
       }catch(e){
         const tr = document.createElement("tr");
-        tr.innerHTML = `<td colspan="7">Veri yok</td>`;
+        tr.innerHTML = `<td colspan="6">Veri yok</td>`;
         tbody.appendChild(tr);
       }
     }
@@ -274,7 +261,7 @@ async function loadWidget(){
       const avgTr = document.createElement("tr");
       avgTr.className = "avg-row";
       avgTr.innerHTML = `
-        <td colspan="2">Ortalama</td>
+        <td>Ortalama</td>
         <td>${avgKills}</td>
         <td>${avgDeaths}</td>
         <td>${avgKD}</td>
@@ -289,7 +276,7 @@ async function loadWidget(){
     document.getElementById("elo").innerText = "ELO alınamadı";
     document.getElementById("matches").innerText = "Toplam Maç: N/A";
     const tbody = document.querySelector("#stats-table tbody");
-    tbody.innerHTML = `<tr><td colspan="7">Veri alınamadı</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6">Veri alınamadı</td></tr>`;
   }
 }
 </script>
