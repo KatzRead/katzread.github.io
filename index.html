@@ -72,7 +72,7 @@ th{ background:#4B4B4B; font-size:12px; }
   box-shadow: 0 0 15px var(--theme-color)66;
 }
 
-/* Sol taraf: Fotoğraf */
+/* Sol taraf: Fotoğraf + Glow arka plan */
 .about-photo {
   position: relative;
   width: 180px;
@@ -81,48 +81,40 @@ th{ background:#4B4B4B; font-size:12px; }
   flex-shrink: 0;
 }
 
-/* Neon efekti eklendi */
 .about-photo img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  object-position: center 35%; /* Burada 35% ile aşağıya kaydırıyoruz */
-  border: 2px solid var(--theme-color);
-  z-index: 2;
   position: relative;
-  box-shadow:0 0 5px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color);
-  animation: glow 1.5s infinite;
+  z-index: 2;
+  border: 2px solid var(--theme-color);
 }
 
-/* Neon Aura (logo tarzı) */
-.about-photo .aura {
+/* Glow efektini arka plana taşı */
+.photo-backdrop {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 100%;
-  height: 100%;
+  width: 200%;
+  height: 200%;
   border-radius: 50%;
-  background: transparent; /* gradient kaldırıldı */
-  box-shadow: 0 0 10px var(--theme-color),
-              0 0 20px var(--theme-color),
-              0 0 30px var(--theme-color),
-              0 0 40px var(--theme-color);
   transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px var(--theme-color),
+              0 0 30px var(--theme-color),
+              0 0 45px var(--theme-color);
   animation: glow 1.5s infinite alternate;
   z-index: 1;
   pointer-events: none;
 }
 
+/* Glow animasyonu */
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 10px var(--theme-color),0 0 20px var(--theme-color),0 0 30px var(--theme-color),0 0 40px var(--theme-color);}
-  50% { box-shadow: 0 0 15px var(--theme-color),0 0 25px var(--theme-color),0 0 35px var(--theme-color),0 0 50px var(--theme-color);}
+  0%   { box-shadow: 0 0 10px var(--theme-color), 0 0 25px var(--theme-color), 0 0 40px var(--theme-color); }
+  50%  { box-shadow: 0 0 15px var(--theme-color), 0 0 30px var(--theme-color), 0 0 50px var(--theme-color); }
+  100% { box-shadow: 0 0 10px var(--theme-color), 0 0 25px var(--theme-color), 0 0 40px var(--theme-color); }
 }
 
-@keyframes neonPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.8; }
-  50% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
 
 /* Sağ taraf: Metin */
 .about-text {
@@ -249,11 +241,12 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
   </div>
 </div>
 
+<!-- Hakkımda -->
 <div id="about" class="tab-content">
   <div class="about-section">
     <div class="about-photo">
+      <div class="photo-backdrop"></div> <!-- Glow burada -->
       <img src="katzread.png" alt="Profil Fotoğrafı">
-      <div class="aura"></div>
     </div>
     <div class="about-text">
       <h2>Hakkımda</h2>
@@ -262,6 +255,7 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
     </div>
   </div>
 </div>
+
 
 <div id="settings" class="tab-content">
   <div class="section-box">
