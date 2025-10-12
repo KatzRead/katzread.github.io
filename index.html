@@ -7,13 +7,17 @@
 <link rel="icon" type="image/x-icon" href="logo.svg">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
 :root { --theme-color: #00ffff; }
+
+* {
+  cursor: none !important; /* Tüm öğelerde imleci gizle */
+}
 
 body {
   margin:0; font-family:'Orbitron',sans-serif;
   background: radial-gradient(circle at top, #0a0a0f, #000);
   color:#e0e0e0; text-align:center; min-height:100vh;
-  cursor:none !important; /* her zaman imleci gizle */
   overflow-x:hidden; position:relative;
 }
 
@@ -146,7 +150,6 @@ th{ background:#4B4B4B; font-size:12px; }
 #crosshair {
   position: fixed; width:24px; height:24px; pointer-events:none;
   top:0; left:0; transform:translate(-50%, -50%); z-index:9999;
-  cursor:none !important;
 }
 #crosshair div { position:absolute; background: var(--theme-color); }
 #crosshair .top, #crosshair .bottom { width:2px; height:8px; }
@@ -157,7 +160,7 @@ th{ background:#4B4B4B; font-size:12px; }
 #crosshair .right { right:0; top:50%; transform:translateY(-50%); }
 
 /* Partikül Arka Plan */
-canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; cursor:none !important; }
+canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 </style>
 </head>
 <body>
@@ -313,73 +316,33 @@ try{
   for(let i=0;i<history.items.length;i++){
     const match=history.items[i];
     try{
-      const matchData=await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
-      let kills=0,deaths=0,adrSum=0,hsSum=0,roundsPlayed=0;
-      matchData.rounds?.forEach(r=>{
-        r.teams.forEach(t=>{ t.players.forEach(p=>{ if(p.nickname===nickname){ kills+=Number(p.player_stats.Kills||0); deaths+=Number(p.player_stats.Deaths||0); adrSum+=Number(p.player_stats.ADR||0); hsSum+=Number(p.player_stats.Headshots||0); roundsPlayed++; } }); });
-      });
-      if(roundsPlayed>0){
-        const KD=deaths>0?(kills/deaths).toFixed(2):kills;
-        const hsPercent=kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
-        const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum/roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;
-        tbody.appendChild(tr);
-        totalKills+=kills; totalDeaths+=deaths; totalADR+=(adrSum/roundsPlayed); totalHS+=kills>0?(hsSum/kills)*100:0;
-        totalRounds+=roundsPlayed; matchCount++;
-      }
-    }catch{ const tr=document.createElement("tr"); tr.innerHTML=`<td colspan="5">Veri yok</td>`; tbody.appendChild(tr);}
+      const matchData=await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}`);
+      const player=matchData.rounds[0].teams.faction1.find(p=>p.player_id===playerId)||matchData.rounds[0].teams.faction2.find(p=>p.player_id===playerId);
+      if(!player) continue;
+      const kills=player.stats?.Kills||0, deaths=player.stats?.Deaths||0, adr=player.stats?.AverageDamageRound||0, hs=player.stats?.Headshots||0, rounds=player.stats?.Rounds||1;
+      totalKills+=kills; totalDeaths+=deaths; totalADR+=adr; totalHS+=hs; totalRounds+=rounds; matchCount++;
+      const kd=(deaths>0? (kills/deaths).toFixed(2):kills); const hsPercent=(rounds>0?(hs/rounds*100).toFixed(1):0);
+      const row=`<tr><td>${kills}</td><td>${deaths}</td><td>${kd}</td><td>${adr}</td><td>${hsPercent}%</td></tr>`;
+      tbody.innerHTML+=row;
+    }catch(e){console.error(e);}
   }
   if(matchCount>0){
-    const avgKills=(totalKills/matchCount).toFixed(1);
-    const avgDeaths=(totalDeaths/matchCount).toFixed(1);
-    const avgKD=(totalKills/totalDeaths).toFixed(2);
+    const avgKD=(totalDeaths>0? (totalKills/totalDeaths).toFixed(2):totalKills);
     const avgADR=(totalADR/matchCount).toFixed(1);
-    const avgHS=(totalHS/matchCount).toFixed(1)+"%";
-    const avgRow=document.createElement("tr");
-    avgRow.classList.add("avg-row");
-    avgRow.innerHTML=`<td colspan="5" style="text-align:center;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
-    tbody.appendChild(avgRow);
+    const avgHS=(totalHS/totalRounds*100).toFixed(1);
+    tbody.innerHTML+=`<tr class="avg-row"><td>${(totalKills/matchCount).toFixed(1)}</td><td>${(totalDeaths/matchCount).toFixed(1)}</td><td>${avgKD}</td><td>${avgADR}</td><td>${avgHS}%</td></tr>`;
   }
-}catch{
-  document.getElementById("elo").innerText="ELO alınamadı";
-  document.getElementById("matches").innerText="Toplam Maç: N/A";
-  document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
-}}
+}catch(e){console.error(e);}
+}
 
-/* Neon Partikül + Ağ */
-const canvas=document.getElementById('particle-canvas'); 
-const ctx=canvas.getContext('2d');
-canvas.width=innerWidth; canvas.height=innerHeight;
-let mouse={x:canvas.width/2,y:canvas.height/2};
-addEventListener('resize',()=>{canvas.width=innerWidth;canvas.height=innerHeight; initParticles();});
-addEventListener('mousemove',e=>{mouse.x=e.clientX; mouse.y=e.clientY;});
+/* Crosshair Takip */
+const crosshair=document.getElementById("crosshair");
+document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; crosshair.style.top=e.clientY+"px";});
 
-let particles=[]; function initParticles(){particles=[]; for(let i=0;i<120;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.7,dy:(Math.random()-0.5)*0.7});}}
-initParticles();
-
-function hexToRgba(hex, alpha){let c=hex.replace('#',''); if(c.length===3)c=c[0]+c[0]+c[1]+c[1]+c[2]+c[2]; const bigint=parseInt(c,16); const r=(bigint>>16)&255; const g=(bigint>>8)&255; const b=bigint&255; return `rgba(${r},${g},${b},${alpha})`;}
-
-function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{const dx=mouse.x-p.x;const dy=mouse.y-p.y;const dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){p.dx+=dx*0.004;p.dy+=dy*0.004;}p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>canvas.width)p.dx*=-0.8;if(p.y<0||p.y>canvas.height)p.dy*=-0.8;p.dx*=0.95;p.dy*=0.95;let size=p.r; let alpha=0.6;if(dist<80){size=p.r+(80-dist)/30; alpha=0.6+(80-dist)/100;}ctx.fillStyle=hexToRgba(getComputedStyle(document.documentElement).getPropertyValue('--theme-color'), alpha);ctx.beginPath();ctx.arc(p.x,p.y,size,0,Math.PI*2);ctx.fill();});
-for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x;const dy=particles[i].y-particles[j].y;const dist=Math.sqrt(dx*dx+dy*dy);if(dist<80){let midDistToMouse=(Math.sqrt((particles[i].x-mouse.x)**2+(particles[i].y-mouse.y)**2)+Math.sqrt((particles[j].x-mouse.x)**2+(particles[j].y-mouse.y)**2))/2;let alphaLine=1-dist/80;if(midDistToMouse<80) alphaLine+=(80-midDistToMouse)/100; alphaLine=Math.min(alphaLine,1);ctx.strokeStyle=hexToRgba(getComputedStyle(document.documentElement).getPropertyValue('--theme-color'), alphaLine);ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.stroke();}}}
-requestAnimationFrame(animateParticles);}
-animateParticles();
-
-/* Crosshair */
-const crosshair = document.getElementById('crosshair');
-document.addEventListener('mousemove', e => { crosshair.style.left = e.clientX + 'px'; crosshair.style.top = e.clientY + 'px'; });
-
-/* ALT PANEL */
-const themeInput=document.getElementById('themeColor');
-const bgSelect=document.getElementById('bgEffect');
-const crosshairToggle=document.getElementById('crosshairToggle');
-
-themeInput.addEventListener('input',()=>{document.documentElement.style.setProperty('--theme-color',themeInput.value);});
-bgSelect.addEventListener('change',()=>{if(bgSelect.value==='particles'){ canvas.style.display='block'; document.body.style.background='radial-gradient(circle at top, #0a0a0f, #000)'; } else if(bgSelect.value==='gradient'){ canvas.style.display='none'; document.body.style.background='linear-gradient(120deg,#1e1e2f,#0a0a0f)'; } else{ canvas.style.display='none'; document.body.style.background='#0a0a0f'; }});
-crosshairToggle.addEventListener('change',()=>{ crosshair.style.display=crosshairToggle.value==='on'?'block':'none'; });
-
-/* Tıklamada da imleci gizli tut */
-document.addEventListener('mousedown', () => { document.body.style.cursor = 'none'; });
+/* Imleç Gizleme: Mouse hareket, click vs */
+["mousemove","mousedown","mouseup"].forEach(evt=>{
+  document.addEventListener(evt,()=>{document.body.style.cursor="none";});
+});
 </script>
-
 </body>
 </html>
