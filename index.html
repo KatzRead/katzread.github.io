@@ -56,19 +56,102 @@ th, td{ border:1px solid var(--theme-color); padding:4px; text-align:center; }
 th{ background:#4B4B4B; font-size:12px; }
 .avg-row{ font-weight:bold; background:#1a1a1a; color: var(--theme-color); }
 
-/* Sekmeler Hakkımda / Ayarlar / Ekipman */
+/* Hakkımda flex düzeni */
+.about-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: rgba(0,10,20,0.5);
+  border: 1px solid var(--theme-color);
+  border-radius: 16px;
+  box-shadow: 0 0 15px var(--theme-color)66;
+}
+
+/* Sol taraf: Fotoğraf */
+.about-photo {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Neon efekti eklendi */
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--theme-color);
+  z-index: 2;
+  position: relative;
+  box-shadow:0 0 5px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color);
+  animation: glow 1.5s infinite;
+}
+
+/* Neon Aura */
+.about-photo .aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220%;
+  height: 220%;
+  background: radial-gradient(circle, var(--theme-color) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  animation: neonPulse 2s infinite ease-in-out;
+  z-index: 1;
+  filter: blur(12px);
+  mix-blend-mode: screen;
+}
+
+@keyframes neonPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* Sağ taraf: Metin */
+.about-text {
+  flex: 1;
+  min-width: 220px;
+  color: #ccc;
+  line-height: 1.6;
+  font-size: 1.05em;
+}
+
+/* Başlık */
+.about-text h2 {
+  color: var(--theme-color);
+  font-size: 1.8em;
+  text-shadow: 0 0 10px var(--theme-color);
+  margin-bottom: 10px;
+}
+
+/* Responsive */
+@media(max-width: 600px) {
+  .about-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  .about-text { margin-top: 15px; }
+}
+
+/* Diğer CSS (sekme, ekipman, crosshair, panel vb.) */
 .section-box { max-width:800px; margin:40px auto; background: rgba(0,10,20,0.5); border:1px solid var(--theme-color); border-radius:16px; box-shadow:0 0 15px var(--theme-color)66; padding:30px; }
 .section-box h2{ color:var(--theme-color); font-size:1.8em; text-shadow:0 0 10px var(--theme-color); margin-bottom:15px; }
 .section-box p{ color:#ccc; line-height:1.6; font-size:1.05em; }
 .highlight{ color: var(--theme-color); text-shadow:0 0 8px var(--theme-color); font-weight:bold; }
 
-/* Ekipman Baloncukları */
 .equip-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-top:15px; }
 .equip-card{ background: rgba(0,255,255,0.08); border:1px solid var(--theme-color); padding:12px; border-radius:10px; transition:0.3s; color:#e0e0e0; font-size:0.95em; text-align:center; }
 .equip-card:hover{ background: rgba(0,255,255,0.2); box-shadow:0 0 12px var(--theme-color)aa; transform:scale(1.05); }
 .equip-card img{ width:80px; height:auto; margin-bottom:6px; }
 
-/* Crosshair */
 #crosshair {
   position: fixed; width:24px; height:24px; pointer-events:none;
   top:0; left:0; transform:translate(-50%, -50%); z-index:9999;
@@ -81,16 +164,14 @@ th{ background:#4B4B4B; font-size:12px; }
 #crosshair .left { left:0; top:50%; transform:translateY(-50%);}
 #crosshair .right { right:0; top:50%; transform:translateY(-50%); }
 
-/* Partikül Arka Plan */
 canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 
-/* Sağ Hover Panel */
 #settings-bar {
   position: fixed;
   top: 100px;
   right: 0;
-  width: 40px; /* Kapalı hali */
-  height: 50px; /* isteğe bağlı yükseklik */
+  width: 40px;
+  height: 50px;
   background: rgba(0,0,0,0.35);
   backdrop-filter: blur(1px);
   border-radius: 16px 0 0 16px;
@@ -137,7 +218,6 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
 
 <canvas id="particle-canvas"></canvas>
 
-<!-- Sekme Menüsü -->
 <div class="tab-menu">
   <button class="tab-btn active" data-tab="home">Ana Sayfa</button>
   <button class="tab-btn" data-tab="about">Hakkımda</button>
@@ -145,7 +225,6 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
   <button class="tab-btn" data-tab="equipment">Ekipmanlar</button>
 </div>
 
-<!-- Ana Sayfa -->
 <div id="home" class="tab-content active">
   <div class="header">
     <img src="katz.png" alt="KatzRead Logo" class="header-logo">
@@ -161,16 +240,20 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
   </div>
 </div>
 
-<!-- Hakkımda -->
 <div id="about" class="tab-content">
-  <div class="section-box">
-    <h2>Hakkımda</h2>
-    <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. 
-    <span class="highlight">FUT Turkuaz</span> takımında oynuyorum. Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum. Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
+  <div class="about-section">
+    <div class="about-photo">
+      <img src="katzread.png" alt="Profil Fotoğrafı">
+      <div class="aura"></div>
+    </div>
+    <div class="about-text">
+      <h2>Hakkımda</h2>
+      <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. 
+      <span class="highlight">FUT Turkuaz</span> takımında oynuyorum. Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum. Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
+    </div>
   </div>
 </div>
 
-<!-- Ayarlar -->
 <div id="settings" class="tab-content">
   <div class="section-box">
     <h2>Ayarlar</h2>
@@ -178,7 +261,6 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
   </div>
 </div>
 
-<!-- Ekipmanlar -->
 <div id="equipment" class="tab-content">
   <div class="section-box">
     <h2>Ekipmanlarım</h2>
@@ -203,7 +285,6 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
   </div>
 </div>
 
-<!-- Crosshair -->
 <div id="crosshair">
   <div class="top"></div>
   <div class="bottom"></div>
@@ -213,7 +294,6 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
 
 <footer>© 2025 KatzRead</footer>
 
-<!-- Sağ Hover Panel -->
 <div id="settings-bar">
   <div class="settings-group">
     <label for="themeColor">Tema Rengi:</label>
@@ -222,7 +302,6 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
 </div>
 
 <script>
-/* Sekme Geçişleri */
 const tabs=document.querySelectorAll('.tab-btn');
 const contents=document.querySelectorAll('.tab-content');
 tabs.forEach(btn=>btn.addEventListener('click',()=>{
@@ -232,21 +311,17 @@ tabs.forEach(btn=>btn.addEventListener('click',()=>{
   document.getElementById(btn.dataset.tab).classList.add('active');
 }));
 
-/* Crosshair Takip */
 const crosshair=document.getElementById("crosshair");
 document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; crosshair.style.top=e.clientY+"px";});
 
-/* Imleç Gizleme */
 ["mousemove","mousedown","mouseup"].forEach(evt=>{
   document.addEventListener(evt,()=>{document.body.style.cursor="none";});
 });
 
-/* Sağ Hover Panel */
 const settingsBar = document.getElementById("settings-bar");
 settingsBar.addEventListener("mouseenter", () => { settingsBar.classList.add("open"); });
 settingsBar.addEventListener("mouseleave", () => { settingsBar.classList.remove("open"); });
 
-// Tema rengini canlı değiştirme
 const themeInput = document.getElementById("themeColor");
 themeInput.addEventListener("input", (e) => {
   const color = e.target.value;
