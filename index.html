@@ -23,39 +23,43 @@
   }
 
   /* Logo */
-  .header-logo {
-    width: 80px;
-    margin: 0 auto 12px auto;
-    border-radius: 50%;
-    padding: 5px;
-    background: rgba(255,0,0,0.2);
-    animation: glow 1.5s infinite;
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: block;
-  }
+.header-logo {
+  width: 80px;
+  margin: 0 auto 12px auto;
+  border-radius: 50%;
+  padding: 5px;
+  background: rgba(0,255,255,0.2); /* neon mavi arka plan */
+  box-shadow:
+    0 0 5px #00ffff,
+    0 0 15px #00ffff,
+    0 0 25px #00ffff;
+  animation: glow 1.5s infinite;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: block;
+}
 
-  @keyframes glow {
-    0%, 100% {
-      box-shadow:
-        0 0 5px red,
-        0 0 15px red,
-        0 0 25px red;
-    }
-    50% {
-      box-shadow:
-        0 0 10px red,
-        0 0 20px red,
-        0 0 35px red;
-    }
-  }
-
-  .header-logo:hover {
-    transform: scale(1.2);
+@keyframes glow {
+  0%, 100% {
     box-shadow:
-      0 0 15px red,
-      0 0 30px red,
-      0 0 50px red;
+      0 0 5px #00ffff,
+      0 0 15px #00ffff,
+      0 0 25px #00ffff;
   }
+  50% {
+    box-shadow:
+      0 0 10px #00ffff,
+      0 0 20px #00ffff,
+      0 0 35px #00ffff;
+  }
+}
+
+.header-logo:hover {
+  transform: scale(1.2);
+  box-shadow:
+    0 0 15px #00ffff,
+    0 0 30px #00ffff,
+    0 0 50px #00ffff;
+}
 
   h1 {
     font-size: 2.8em;
