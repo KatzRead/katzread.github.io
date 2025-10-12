@@ -6,98 +6,181 @@
 <title>KatzRead</title>
 <link rel="icon" type="image/x-icon" href="logo.svg">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
-:root { --main-color: #00ffff; }
+  :root { --main-color: #00ffff; }
 
-body {
-  margin:0; font-family:'Orbitron',sans-serif;
-  background: radial-gradient(circle at top, #0a0a0f, #000);
-  color:#e0e0e0; text-align:center; min-height:100vh; cursor:none; overflow-x:hidden; position:relative;
-}
-a, button, input, select, textarea, img, #toggleBtn { cursor:none !important; }
+  body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: radial-gradient(circle at top, #0a0a0f, #000);
+    color: #e0e0e0;
+    text-align: center;
+    min-height: 100vh;
+    cursor: none;
+    overflow-x: hidden;
+    position: relative;
+  }
 
-/* Sekme Menü */
-.tab-menu { display:flex; justify-content:center; gap:20px; margin-top:20px; }
-.tab-menu button {
-  background:transparent; border:2px solid var(--main-color); color:var(--main-color);
-  padding:10px 20px; border-radius:10px; text-transform:uppercase; font-weight:bold; transition:0.3s;
-}
-.tab-menu button:hover, .tab-menu button.active {
-  background: var(--main-color); color:#000; box-shadow:0 0 15px var(--main-color);
-}
+  a, button, input, select, textarea, img, #toggleBtn { cursor: none !important; }
 
-/* Sekme İçerikleri */
-.tab-content { display:none; animation:fadeIn 0.6s ease; }
-.tab-content.active { display:block; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+  /* === Sekme Menüsü === */
+  .tab-menu {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
 
-/* Header */
-.header { padding-top:30px; }
-.header-logo { width:120px; margin:0 auto 12px auto; border-radius:10%; padding:5px;
-  background:rgba(0,255,255,0.2); box-shadow:0 0 5px var(--main-color),0 0 15px var(--main-color),0 0 25px var(--main-color);
-  animation:glow 1.5s infinite; transition:transform 0.3s, box-shadow 0.3s; display:block; }
-@keyframes glow { 0%,100%{box-shadow:0 0 5px var(--main-color),0 0 15px var(--main-color),0 0 25px var(--main-color);} 50%{box-shadow:0 0 10px var(--main-color),0 0 20px var(--main-color),0 0 35px var(--main-color);} }
-.header-logo:hover { transform:scale(1.2); }
-h1 { font-size:2.8em; color:var(--main-color); text-shadow:0 0 15px var(--main-color); margin:0; }
-p { font-size:1.2em; color:#ccc; margin-top:5px; }
-.links { margin-top:20px; }
-.links a { display:inline-block; margin:0 10px; padding:10px 20px; border:2px solid var(--main-color); border-radius:8px;
-  color:var(--main-color); text-decoration:none; transition:0.3s; text-transform:uppercase; letter-spacing:1px; }
-.links a:hover { background:var(--main-color); color:#000; box-shadow:0 0 20px var(--main-color); }
+  .tab-menu button {
+    background: transparent;
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: 0.3s;
+  }
 
-/* Widget */
-#toggleBtn { width:150px; transition:transform 0.2s; margin:20px auto; display:block; }
-#toggleBtn:hover { transform:scale(1.1); }
-.widget { display:none; background:rgba(10,10,15,0.95); border:2px solid var(--main-color); border-radius:10px;
-  padding:15px; width:90%; max-width:480px; margin:20px auto; box-shadow:0 0 15px var(--main-color); color:#fff; font-size:14px; transition:0.4s ease; }
-.widget h2 { margin:0; font-size:1.3em; color:var(--main-color); text-shadow:0 0 8px var(--main-color); }
-.stat { margin-top:8px; font-size:0.9em; }
+  .tab-menu button:hover, .tab-menu button.active {
+    background: var(--main-color);
+    color: #000;
+    box-shadow: 0 0 15px var(--main-color);
+  }
 
-/* Section Boxes */
-.section-box { max-width:800px; margin:40px auto; background:rgba(0,10,20,0.5); border:1px solid var(--main-color);
-  border-radius:16px; box-shadow:0 0 15px var(--main-color)66; padding:30px; }
-.section-box h2 { color:var(--main-color); font-size:1.8em; text-shadow:0 0 10px var(--main-color); margin-bottom:15px; }
-.section-box p { color:#ccc; line-height:1.6; font-size:1.05em; }
-.highlight { color:var(--main-color); text-shadow:0 0 8px var(--main-color); font-weight:bold; }
+  /* === Sekme İçerikleri === */
+  .tab-content { display: none; animation: fadeIn 0.6s ease; }
+  .tab-content.active { display: block; }
 
-/* Ekipman Baloncukları */
-#equipments { display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:15px; }
-.equip-bubble { width:40px; height:40px; border-radius:50%; cursor:pointer; transition:0.3s; border:2px solid #fff; }
-.equip-bubble.active { transform:scale(1.2); border:2px solid var(--main-color); }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-/* Ekipman tabloları */
-.equip-table { margin-top:20px; }
-.equip-table table { width:100%; border-collapse:collapse; font-size:14px; }
-.equip-table th, .equip-table td { border:1px solid var(--main-color); padding:6px; text-align:center; }
-.equip-table th { background: #1a1a1a; }
+  /* === Header === */
+  .header { padding-top: 30px; }
 
-/* Crosshair */
-#crosshair { position:fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%,-50%); z-index:9999; }
-#crosshair div { position:absolute; background:var(--main-color); box-shadow:0 0 5px var(--main-color),0 0 15px var(--main-color); }
-#crosshair .top, .bottom { width:2px; height:8px; left:50%; transform:translateX(-50%); }
-#crosshair .top { top:0; } #crosshair .bottom { bottom:0; }
-#crosshair .left, .right { width:8px; height:2px; top:50%; transform:translateY(-50%); }
-#crosshair .left { left:0; } #crosshair .right { right:0; }
+  .header-logo {
+    width: 120px;
+    margin: 0 auto 12px auto;
+    border-radius: 10%;
+    padding: 5px;
+    background: rgba(0,255,255,0.2);
+    box-shadow: 0 0 5px var(--main-color), 0 0 15px var(--main-color), 0 0 25px var(--main-color);
+    animation: glow 1.5s infinite;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: block;
+  }
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px var(--main-color), 0 0 15px var(--main-color), 0 0 25px var(--main-color); }
+    50% { box-shadow: 0 0 10px var(--main-color), 0 0 20px var(--main-color), 0 0 35px var(--main-color); }
+  }
+  .header-logo:hover { transform: scale(1.2); }
 
-/* Partikül Canvas */
-canvas#particle-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+  h1 { font-size: 2.8em; color: var(--main-color); text-shadow: 0 0 15px var(--main-color); margin: 0; }
+  p { font-size: 1.2em; color: #ccc; margin-top: 5px; }
 
-footer { font-size:0.9em; color:#555; margin-top:40px; }
+  .links { margin-top: 20px; }
+  .links a {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: 2px solid var(--main-color);
+    border-radius: 8px;
+    color: var(--main-color);
+    text-decoration: none;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .links a:hover { background: var(--main-color); color: #000; box-shadow: 0 0 20px var(--main-color); }
+
+  footer { font-size: 0.9em; color: #555; margin-top: 40px; }
+
+  /* === Widget === */
+  #toggleBtn { width: 150px; transition: transform 0.2s; margin: 20px auto; display: block; }
+  #toggleBtn:hover { transform: scale(1.1); }
+
+  .widget {
+    display: none;
+    background: rgba(10,10,15,0.95);
+    border: 2px solid var(--main-color);
+    border-radius: 10px;
+    padding: 15px;
+    width: 90%;
+    max-width: 480px;
+    margin: 20px auto;
+    box-shadow: 0 0 15px var(--main-color);
+    color: #fff;
+    font-size: 14px;
+    transition: 0.4s ease;
+  }
+
+  table { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: 13px; }
+  th, td { border: 1px solid var(--main-color); padding: 4px; text-align: center; }
+  th { background: #4B4B4B; font-size: 12px; }
+  .avg-row { font-weight: bold; background: #1a1a1a; color: var(--main-color); }
+
+  /* === Hakkımda ve Ayarlar Sekmeleri === */
+  .section-box {
+    max-width: 800px;
+    margin: 40px auto;
+    background: rgba(0, 10, 20, 0.5);
+    border: 1px solid var(--main-color);
+    border-radius: 16px;
+    box-shadow: 0 0 15px var(--main-color)66;
+    padding: 30px;
+  }
+
+  .section-box h2 { color: var(--main-color); font-size: 1.8em; text-shadow: 0 0 10px var(--main-color); margin-bottom: 15px; }
+  .section-box p { color: #ccc; line-height: 1.6; font-size: 1.05em; }
+  .highlight { color: var(--main-color); text-shadow: 0 0 8px var(--main-color); font-weight: bold; }
+
+  /* === Ekipman Baloncukları === */
+  .equip-bubbles { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+  .equip-bubbles div {
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    border: 2px solid var(--main-color); transition: 0.3s;
+  }
+  .equip-bubbles div:hover { transform: scale(1.2); }
+
+  /* Crosshair */
+  #crosshair {
+    position: fixed;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+  #crosshair div {
+    position: absolute;
+    background: var(--main-color);
+    box-shadow: 0 0 5px var(--main-color), 0 0 15px var(--main-color);
+  }
+  #crosshair .top { width: 2px; height: 8px; top: 0; left: 50%; transform: translateX(-50%); }
+  #crosshair .bottom { width: 2px; height: 8px; bottom: 0; left: 50%; transform: translateX(-50%); }
+  #crosshair .left { width: 8px; height: 2px; left: 0; top: 50%; transform: translateY(-50%); }
+  #crosshair .right { width: 8px; height: 2px; right: 0; top: 50%; transform: translateY(-50%); }
+
+  canvas#particle-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 </style>
 </head>
 <body>
 
 <canvas id="particle-canvas"></canvas>
 
-<!-- SEKME MENÜ -->
+<!-- Sekmeler -->
 <div class="tab-menu">
   <button class="tab-btn active" data-tab="home">Ana Sayfa</button>
   <button class="tab-btn" data-tab="about">Hakkımda</button>
   <button class="tab-btn" data-tab="settings">Ayarlar</button>
 </div>
 
-<!-- ANA SAYFA -->
+<!-- Ana Sayfa -->
 <div id="home" class="tab-content active">
   <div class="header">
     <img src="katz.png" alt="KatzRead Logo" class="header-logo">
@@ -111,7 +194,9 @@ footer { font-size:0.9em; color:#555; margin-top:40px; }
       <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
     </div>
   </div>
+
   <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
+
   <div class="widget" id="katzWidget">
     <h2>KatzRead</h2>
     <div class="stat" id="elo">ELO: Yükleniyor...</div>
@@ -125,52 +210,29 @@ footer { font-size:0.9em; color:#555; margin-top:40px; }
   </div>
 </div>
 
-<!-- HAKKIMDA -->
+<!-- Hakkımda -->
 <div id="about" class="tab-content">
   <div class="section-box">
     <h2>Hakkımda</h2>
     <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. 
-    <span class="highlight">FUT Turkuaz</span> takımında oynuyorum. Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum.  
+    <span class="highlight">FUT Turkuaz</span> takımında oynuyorum.  
+    Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum.  
     Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
   </div>
 </div>
 
-<!-- AYARLAR -->
+<!-- Ayarlar -->
 <div id="settings" class="tab-content">
   <div class="section-box">
     <h2>Ayarlar</h2>
-    <p>Buradan ekipman seçimi yapabilirsiniz:</p>
-    <div id="equipments">
-      <div class="equip-bubble" style="background:#00ffff;" data-equip="Mouse" data-img="mouse.png"></div>
-      <div class="equip-bubble" style="background:#ff00ff;" data-equip="Klavyen" data-img="keyboard.png"></div>
-      <div class="equip-bubble" style="background:#ffff00;" data-equip="Kulaklık" data-img="headset.png"></div>
-      <div class="equip-bubble" style="background:#ff4500;" data-equip="Monitör" data-img="monitor.png"></div>
+    <p>Temayı değiştirmek için baloncuğa tıklayın:</p>
+    <div class="equip-bubbles">
+      <div style="background:#00ffff;"></div>
+      <div style="background:#ff00ff;"></div>
+      <div style="background:#ff6600;"></div>
+      <div style="background:#00ff00;"></div>
     </div>
-    <p>Seçili ekipman: <span id="selectedEquip">Hiçbiri</span></p>
-
-    <div id="equipTables">
-      <!-- Buraya ekipman tabloları gelecek -->
-      <div class="equip-table" id="table-Mouse" style="display:none;">
-        <h3><img src="mouse.png" alt="Mouse" style="height:30px;"> Mouse</h3>
-        <table><thead><tr><th>Özellik</th><th>Değer</th></tr></thead>
-        <tbody><tr><td>DPI</td><td>800</td></tr><tr><td>Model</td><td>Logitech G Pro</td></tr></tbody></table>
-      </div>
-      <div class="equip-table" id="table-Klavyen" style="display:none;">
-        <h3><img src="keyboard.png" alt="Klavyen" style="height:30px;"> Klavyen</h3>
-        <table><thead><tr><th>Özellik</th><th>Değer</th></tr></thead>
-        <tbody><tr><td>Switch</td><td>Cherry MX Red</td></tr><tr><td>Model</td><td>SteelSeries Apex 7</td></tr></tbody></table>
-      </div>
-      <div class="equip-table" id="table-Kulaklık" style="display:none;">
-        <h3><img src="headset.png" alt="Kulaklık" style="height:30px;"> Kulaklık</h3>
-        <table><thead><tr><th>Özellik</th><th>Değer</th></tr></thead>
-        <tbody><tr><td>Model</td><td>HyperX Cloud II</td></tr><tr><td>Bağlantı</td><td>USB</td></tr></tbody></table>
-      </div>
-      <div class="equip-table" id="table-Monitör" style="display:none;">
-        <h3><img src="monitor.png" alt="Monitör" style="height:30px;"> Monitör</h3>
-        <table><thead><tr><th>Özellik</th><th>Değer</th></tr></thead>
-        <tbody><tr><td>Frekans</td><td>240Hz</td></tr><tr><td>Model</td><td>Asus PG259Q</td></tr></tbody></table>
-      </div>
-    </div>
+    <p>Burada ileride fare efekti, widget otomatik yenileme aralığı, tema rengi gibi ayarlar ekleyebilirsin.</p>
   </div>
 </div>
 
@@ -178,48 +240,112 @@ footer { font-size:0.9em; color:#555; margin-top:40px; }
 <div id="crosshair"><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div>
 
 <script>
-// Crosshair
+/* Crosshair */
 const crosshair=document.getElementById('crosshair');
-document.addEventListener('mousemove',e=>{crosshair.style.left=e.clientX+'px';crosshair.style.top=e.clientY+'px';});
+document.addEventListener('mousemove',e=>{
+  crosshair.style.left=e.clientX+'px';
+  crosshair.style.top=e.clientY+'px';
+});
 
-// Partikül
-const canvas=document.getElementById('particle-canvas'),ctx=canvas.getContext('2d');
-canvas.width=innerWidth;canvas.height=innerHeight;
+/* Partiküller */
+const canvas=document.getElementById('particle-canvas');
+const ctx=canvas.getContext('2d');
+canvas.width=innerWidth; canvas.height=innerHeight;
 addEventListener('resize',()=>{canvas.width=innerWidth;canvas.height=innerHeight;});
 let particles=[];
 for(let i=0;i<100;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5});}
-function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>canvas.width)p.dx*=-1;if(p.y<0||p.y>canvas.height)p.dy*=-1;ctx.fillStyle="#00ffff22";ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();});requestAnimationFrame(animateParticles);}
+function animateParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x+=p.dx; p.y+=p.dy;
+    if(p.x<0||p.x>canvas.width)p.dx*=-1;
+    if(p.y<0||p.y>canvas.height)p.dy*=-1;
+    ctx.fillStyle="#00ffff22";
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+  });
+  requestAnimationFrame(animateParticles);
+}
 animateParticles();
 
-// Sekmeler
-const tabs=document.querySelectorAll('.tab-btn'),contents=document.querySelectorAll('.tab-content');
-tabs.forEach(btn=>{btn.addEventListener('click',()=>{tabs.forEach(b=>b.classList.remove('active'));contents.forEach(c=>c.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.tab).classList.add('active');});});
+/* Sekmeler */
+const tabs=document.querySelectorAll('.tab-btn');
+const contents=document.querySelectorAll('.tab-content');
+tabs.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    tabs.forEach(b=>b.classList.remove('active'));
+    contents.forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
 
-// Widget
-const apiKey="dc63f5ce-1360-4c87-882a-c3c988115063",nickname="KatzRead",MATCH_LIMIT=30;
-const toggleBtn=document.getElementById("toggleBtn"),widgetDiv=document.getElementById("katzWidget");
-toggleBtn.addEventListener("click",()=>{if(widgetDiv.style.display==="none"||widgetDiv.style.display===""){widgetDiv.style.display="block";loadWidget();}else{widgetDiv.style.display="none";}});
-setInterval(()=>{if(widgetDiv.style.display==="block"){loadWidget();}},30000);
-async function fetchJSON(url){const res=await fetch(url,{headers:{Authorization:"Bearer "+apiKey}});return await res.json();}
-async function loadWidget(){try{const playerData=await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);const elo=playerData.games?.cs2?.faceit_elo||"N/A";document.getElementById("elo").innerText="ELO: "+elo;const playerId=playerData.player_id;const stats=await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);const matches=stats.lifetime?.Matches||"N/A";document.getElementById("matches").innerText="Toplam Maç: "+matches;const history=await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);const tbody=document.querySelector("#stats-table tbody");tbody.innerHTML="";let totalKills=0,totalDeaths=0,totalADR=0,totalHS=0,totalRounds=0,matchCount=0;for(let i=0;i<history.items.length;i++){const match=history.items[i];try{const matchData=await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);let kills=0,deaths=0,adrSum=0,hsSum=0,roundsPlayed=0;matchData.rounds?.forEach(r=>{r.teams.forEach(t=>{t.players.forEach(p=>{if(p.nickname===nickname){kills+=Number(p.player_stats.Kills||0);deaths+=Number(p.player_stats.Deaths||0);adrSum+=Number(p.player_stats.ADR||0);hsSum+=Number(p.player_stats.Headshots||0);roundsPlayed++;}});});});if(roundsPlayed>0){const KD=deaths>0?(kills/deaths).toFixed(2):kills;const hsPercent=kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";const tr=document.createElement("tr");tr.innerHTML=`<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum/roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;tbody.appendChild(tr);totalKills+=kills; totalDeaths+=deaths; totalADR+=(adrSum/roundsPlayed); totalHS+=kills>0?(hsSum/kills)*100:0;totalRounds+=roundsPlayed; matchCount++;}}catch{const tr=document.createElement("tr");tr.innerHTML=`<td colspan="5">Veri yok</td>`;tbody.appendChild(tr);}}if(matchCount>0){const avgKills=(totalKills/matchCount).toFixed(1);const avgDeaths=(totalDeaths/matchCount).toFixed(1);const avgKD=(totalKills/totalDeaths).toFixed(2);const avgADR=(totalADR/matchCount).toFixed(1);const avgHS=(totalHS/matchCount).toFixed(1)+"%";const avgRow=document.createElement("tr");avgRow.classList.add("avg-row");avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:var(--main-color);text-shadow:0 0 2px var(--main-color);border-top:2px solid var(--main-color);padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;tbody.appendChild(avgRow);}}catch{document.getElementById("elo").innerText="ELO alınamadı";document.getElementById("matches").innerText="Toplam Maç: N/A";document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;}}
-
-// Ekipman Baloncukları
-const equipBubbles=document.querySelectorAll('.equip-bubble');
-const selectedEquip=document.getElementById('selectedEquip');
-const equipTables=document.querySelectorAll('.equip-table');
-
+/* Ekipman baloncukları sadece renk değiştirir */
+const equipBubbles=document.querySelectorAll('.equip-bubbles div');
 equipBubbles.forEach(b=>{
   b.addEventListener('click',()=>{
     equipBubbles.forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
-    const equipName=b.dataset.equip;
-    selectedEquip.innerText=equipName;
-    equipTables.forEach(t=>t.style.display='none');
-    const table=document.getElementById('table-'+equipName);
-    if(table) table.style.display='block';
     document.documentElement.style.setProperty('--main-color', b.style.background);
   });
 });
+
+/* Widget */
+const apiKey="dc63f5ce-1360-4c87-882a-c3c988115063";
+const nickname="KatzRead";
+const MATCH_LIMIT=30;
+const toggleBtn=document.getElementById("toggleBtn");
+const widgetDiv=document.getElementById("katzWidget");
+toggleBtn.addEventListener("click",()=>{if(widgetDiv.style.display==="none"||widgetDiv.style.display===""){widgetDiv.style.display="block";loadWidget();}else{widgetDiv.style.display="none";}});
+setInterval(()=>{if(widgetDiv.style.display==="block"){loadWidget();}},30000);
+
+async function fetchJSON(url){const res=await fetch(url,{headers:{Authorization:"Bearer "+apiKey}});return await res.json();}
+async function loadWidget(){
+  try{
+    const playerData=await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
+    const elo=playerData.games?.cs2?.faceit_elo||"N/A";
+    document.getElementById("elo").innerText="ELO: "+elo;
+    const playerId=playerData.player_id;
+    const stats=await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
+    const matches=stats.lifetime?.Matches||"N/A";
+    document.getElementById("matches").innerText="Toplam Maç: "+matches;
+    const history=await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
+    const tbody=document.querySelector("#stats-table tbody");
+    tbody.innerHTML="";
+    let totalKills=0,totalDeaths=0,totalADR=0,totalHS=0,totalRounds=0,matchCount=0;
+    for(let i=0;i<history.items.length;i++){
+      const match=history.items[i];
+      try{
+        const matchData=await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
+        let kills=0,deaths=0,adrSum=0,hsSum=0,roundsPlayed=0;
+        matchData.rounds?.forEach(r=>{r.teams.forEach(t=>{t.players.forEach(p=>{if(p.nickname===nickname){kills+=Number(p.player_stats.Kills||0);deaths+=Number(p.player_stats.Deaths||0);adrSum+=Number(p.player_stats.ADR||0);hsSum+=Number(p.player_stats.Headshots||0);roundsPlayed++;}});});});
+        if(roundsPlayed>0){
+          const KD=deaths>0?(kills/deaths).toFixed(2):kills;
+          const hsPercent=kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
+          const tr=document.createElement("tr");
+          tr.innerHTML=`<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum/roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;
+          tbody.appendChild(tr);
+          totalKills+=kills; totalDeaths+=deaths; totalADR+=(adrSum/roundsPlayed); totalHS+=kills>0?(hsSum/kills)*100:0;
+          totalRounds+=roundsPlayed; matchCount++;
+        }
+      }catch{const tr=document.createElement("tr");tr.innerHTML=`<td colspan="5">Veri yok</td>`;tbody.appendChild(tr);}
+    }
+    if(matchCount>0){
+      const avgKills=(totalKills/matchCount).toFixed(1);
+      const avgDeaths=(totalDeaths/matchCount).toFixed(1);
+      const avgKD=(totalKills/totalDeaths).toFixed(2);
+      const avgADR=(totalADR/matchCount).toFixed(1);
+      const avgHS=(totalHS/matchCount).toFixed(1)+"%";
+      const avgRow=document.createElement("tr");
+      avgRow.classList.add("avg-row");
+      avgRow.innerHTML=`<td colspan="5" style="text-align:center;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
+      tbody.appendChild(avgRow);
+    }
+  }catch{
+    document.getElementById("elo").innerText="ELO alınamadı";
+    document.getElementById("matches").innerText="Toplam Maç: N/A";
+    document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
+  }
+}
 </script>
 </body>
 </html>
