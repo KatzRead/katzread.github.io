@@ -391,23 +391,7 @@ toggleBtn.addEventListener("click", () => {
     loadWidget();
   } else { widgetDiv.style.display = "none"; }
 });
-function updateToggleBtn(){
-  const homeActive = document.getElementById('home').classList.contains('active');
-  toggleBtn.style.display = homeActive ? "block" : "none";
-}
 
-tabs.forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    updateToggleBtn();
-  });
-});
-
-// Sayfa yüklendiğinde kontrol
-updateToggleBtn();
-
-
-// Başlangıçta kontrol et
-updateToggleBtn();
 /* Otomatik yenileme */
 setInterval(()=>{ if(widgetDiv.style.display==="block"){ loadWidget(); } },30000);
 
