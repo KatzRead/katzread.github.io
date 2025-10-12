@@ -25,7 +25,44 @@
       color: #00ffff;
       text-shadow: 0 0 15px #00ffff;
     }
+  /* Faceit logosu */
+  #toggleBtn {
+    width:100px;
+    cursor:pointer;
+    transition: transform 0.2s;
+  }
+  #toggleBtn:hover {
+    transform: scale(1.1);
+  }
 
+  .widget {
+    display:none; /* Başlangıçta gizli */
+    background: rgba(10,10,15,0.95);
+    border:2px solid #00ffff;
+    border-radius:10px;
+    padding:15px;
+    width:480px;
+    box-shadow:0 0 15px #00ffff;
+    text-align:center;
+    color:#fff;
+    font-size:14px;
+  }
+
+  .widget h2 {
+    margin:0;
+    font-size:1.3em;
+    color:#00ffff;
+    text-shadow:0 0 8px #00ffff;
+  }
+
+  .stat { margin-top:8px; font-size:0.9em; }
+  table { width:100%; margin-top:8px; border-collapse: collapse; font-size:13px; }
+  th, td { border:1px solid #00ffff; padding:4px; text-align:center; }
+  th { background:#4B4B4B; font-size:12px; }
+  .avg-row { font-weight:bold; background:#1a1a1a; color:#00ffff; }
+  .W { color:#00ff00; font-weight:bold; }
+  .L { color:#ff3333; font-weight:bold; }
+  
     p {
       font-size: 1.2em;
       color: #ccc;
