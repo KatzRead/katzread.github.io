@@ -7,27 +7,20 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: radial-gradient(circle at top, #0a0a0f, #000);
-      color: #e0e0e0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
+  body {
+    margin:0;
+    font-family:'Orbitron',sans-serif;
+    background:#0a0a0f;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:15px;
+    padding-top:20px;
+  }
 
-    h1 {
-      font-size: 2.8em;
-      color: #00ffff;
-      text-shadow: 0 0 15px #00ffff;
-    }
   /* Faceit logosu */
   #toggleBtn {
-    width:100px;
+    width:150px;
     cursor:pointer;
     transition: transform 0.2s;
   }
@@ -41,11 +34,13 @@
     border:2px solid #00ffff;
     border-radius:10px;
     padding:15px;
-    width:480px;
+    width:90%;
+    max-width:480px;
     box-shadow:0 0 15px #00ffff;
     text-align:center;
     color:#fff;
     font-size:14px;
+    margin:0 auto; /* Ortaya hizala */
   }
 
   .widget h2 {
@@ -62,67 +57,14 @@
   .avg-row { font-weight:bold; background:#1a1a1a; color:#00ffff; }
   .W { color:#00ff00; font-weight:bold; }
   .L { color:#ff3333; font-weight:bold; }
-  
-    p {
-      font-size: 1.2em;
-      color: #ccc;
-      margin-top: -5px;
-    }
-
-    .links {
-      margin-top: 30px;
-    }
-
-    .links a {
-      display: inline-block;
-      margin: 0 10px;
-      padding: 10px 20px;
-      border: 2px solid #00ffff;
-      border-radius: 8px;
-      color: #00ffff;
-      text-decoration: none;
-      transition: 0.3s;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .links a:hover {
-      background: #00ffff;
-      color: #000;
-      box-shadow: 0 0 20px #00ffff;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 0.9em;
-      color: #555;
-    }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 2em; }
-      .links a { padding: 8px 14px; margin: 5px; }
-    }
-  </style>
+</style>
 </head>
 <body>
-  <h1>👾 KatzRead</h1>
-  <p>CS2 oyuncusu • Lurker • Faceit 3700 ELO</p>
 
-  <div class="links">
-    <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
-    <a href="https://www.faceit.com/en/players/katzread" target="_blank">Faceit</a>
-    <a href="https://x.com/katzread" target="_blank">Twitter</a>
-    <a href="https://kick.com/katzread" target="_blank">Kick</a>
-  </div>
-
-  <footer>© 2025 KatzRead</footer>
-</body>
 <!-- Faceit logosu -->
 <img id="toggleBtn" 
      src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" 
-     alt="Faceit Logo" 
-     style="width:150px; cursor:pointer;">
+     alt="Faceit Logo">
 
 <div class="widget" id="katzWidget">
   <h2>KatzRead</h2>
@@ -191,7 +133,6 @@ async function loadWidget(){
         const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
         let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
 
-        // W/L belirleme
         let win = "L"; 
         if(match.rounds_result && match.rounds_result.length>0){
           win = match.rounds_result.every(r => r.result==="win") ? "W" : "L";
