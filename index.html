@@ -16,7 +16,9 @@
     color: #e0e0e0;
     text-align: center;
     min-height: 100vh;
-    cursor: none; /* normal imleç gizle */
+    cursor: none;
+    overflow-x: hidden;
+    position: relative;
   }
 
   /* Tüm tıklanabilir öğelerde imleci gizle */
@@ -25,9 +27,7 @@
   }
 
   /* Başlık ve linkler */
-  .header {
-    padding-top: 30px;
-  }
+  .header { padding-top: 30px; }
 
   /* Logo */
   .header-logo {
@@ -61,9 +61,7 @@
 
   p { font-size: 1.2em; color: #ccc; margin-top: 5px; }
 
-  .links {
-    margin-top: 20px;
-  }
+  .links { margin-top: 20px; }
   .links a {
     display: inline-block;
     margin: 0 10px;
@@ -82,11 +80,7 @@
     box-shadow: 0 0 20px #00ffff;
   }
 
-  footer {
-    font-size: 0.9em;
-    color: #555;
-    margin-top: 40px;
-  }
+  footer { font-size: 0.9em; color: #555; margin-top: 40px; }
 
   /* Faceit logosu */
   #toggleBtn {
@@ -110,45 +104,18 @@
     box-shadow: 0 0 15px #00ffff;
     color: #fff;
     font-size: 14px;
+    transition: 0.4s ease;
   }
 
-  .widget h2 { 
-    margin: 0;
-    font-size: 1.3em;
-    color: #00ffff;
-    text-shadow: 0 0 8px #00ffff;
-  }
-
+  .widget h2 { margin: 0; font-size: 1.3em; color: #00ffff; text-shadow: 0 0 8px #00ffff; }
   .stat { margin-top: 8px; font-size: 0.9em; }
 
-  table {
-    width: 100%;
-    margin-top: 8px;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-
-  th, td {
-    border: 1px solid #00ffff;
-    padding: 4px;
-    text-align: center;
-  }
-
+  table { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: 13px; }
+  th, td { border: 1px solid #00ffff; padding: 4px; text-align: center; }
   th { background: #4B4B4B; font-size: 12px; }
-
   .avg-row { font-weight: bold; background: #1a1a1a; color: #00ffff; }
-
-  /* Scroll kaldırıldı, tbody normal */
-  .widget table tbody {
-    display: table;
-    width: 100%;
-  }
-
-  .widget table thead, .widget table tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-  }
+  .widget table tbody { display: table; width: 100%; }
+  .widget table thead, .widget table tbody tr { display: table; width: 100%; table-layout: fixed; }
 
   @media (max-width: 600px) {
     h1 { font-size: 2em; }
@@ -177,7 +144,7 @@
   #crosshair .left { width: 8px; height: 2px; left: 0; top: 50%; transform: translateY(-50%); }
   #crosshair .right { width: 8px; height: 2px; right: 0; top: 50%; transform: translateY(-50%); }
 
-  /* === Kişisel & Sosyal Bölümler === */
+  /* 💬 Kişisel & Sosyal Bölümler */
   .about-section, .achievements, .contact {
     max-width: 800px;
     margin: 60px auto;
@@ -196,77 +163,28 @@
     margin-bottom: 15px;
   }
 
-  .about-section p {
-    color: #ccc;
-    line-height: 1.6;
-    font-size: 1.05em;
-  }
+  .about-section p { color: #ccc; line-height: 1.6; font-size: 1.05em; }
+  .highlight { color: #00ffff; text-shadow: 0 0 8px #00ffff; font-weight: bold; }
 
-  .highlight {
-    color: #00ffff;
-    text-shadow: 0 0 8px #00ffff;
-    font-weight: bold;
-  }
+  .achieve-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 15px; }
+  .card { background: rgba(0,255,255,0.08); border: 1px solid #00ffff55; padding: 12px; border-radius: 10px; transition: 0.3s; color: #e0e0e0; font-size: 0.95em; }
+  .card:hover { background: rgba(0,255,255,0.2); box-shadow: 0 0 12px #00ffffaa; transform: scale(1.05); }
 
-  .achieve-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
-    margin-top: 15px;
-  }
+  .contact p { color: #aaa; margin-bottom: 10px; }
+  .contact-btn { display: inline-block; background: #00ffff; color: #000; padding: 10px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; box-shadow: 0 0 15px #00ffff; transition: 0.3s; }
+  .contact-btn:hover { background: #000; color: #00ffff; box-shadow: 0 0 25px #00ffff; }
+  .socials { margin-top: 15px; }
+  .socials a { margin: 0 8px; color: #00ffff; text-decoration: none; transition: 0.3s; }
+  .socials a:hover { text-shadow: 0 0 8px #00ffff; }
 
-  .card {
-    background: rgba(0, 255, 255, 0.08);
-    border: 1px solid #00ffff55;
-    padding: 12px;
-    border-radius: 10px;
-    transition: 0.3s;
-    color: #e0e0e0;
-    font-size: 0.95em;
-  }
-  .card:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 12px #00ffffaa;
-    transform: scale(1.05);
-  }
-
-  .contact p {
-    color: #aaa;
-    margin-bottom: 10px;
-  }
-
-  .contact-btn {
-    display: inline-block;
-    background: #00ffff;
-    color: #000;
-    padding: 10px 25px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: bold;
-    box-shadow: 0 0 15px #00ffff;
-    transition: 0.3s;
-  }
-  .contact-btn:hover {
-    background: #000;
-    color: #00ffff;
-    box-shadow: 0 0 25px #00ffff;
-  }
-
-  .socials {
-    margin-top: 15px;
-  }
-  .socials a {
-    margin: 0 8px;
-    color: #00ffff;
-    text-decoration: none;
-    transition: 0.3s;
-  }
-  .socials a:hover {
-    text-shadow: 0 0 8px #00ffff;
-  }
+  /* === Partikül Arka Plan === */
+  canvas#particle-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 </style>
 </head>
 <body>
+
+<!-- Partikül Canvas -->
+<canvas id="particle-canvas"></canvas>
 
 <div class="header">
   <img src="katz.png" alt="KatzRead Logo" class="header-logo">
@@ -290,13 +208,7 @@
   <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
   <table id="stats-table">
     <thead>
-      <tr>
-        <th>Kills</th>
-        <th>Deaths</th>
-        <th>K/D</th>
-        <th>ADR</th>
-        <th>HS%</th>
-      </tr>
+      <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
     </thead>
     <tbody>
       <tr><td colspan="5">Yükleniyor...</td></tr>
@@ -337,115 +249,122 @@
 <footer>© 2025 KatzRead</footer>
 
 <!-- Crosshair -->
-<div id="crosshair">
-  <div class="top"></div>
-  <div class="bottom"></div>
-  <div class="left"></div>
-  <div class="right"></div>
-</div>
+<div id="crosshair"><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div>
 
 <script>
+/* Crosshair */
 const crosshair = document.getElementById('crosshair');
 document.addEventListener('mousemove', e => {
   crosshair.style.left = e.clientX + 'px';
   crosshair.style.top = e.clientY + 'px';
 });
 
+/* Partikül Arka Plan */
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+let particles = [];
+for(let i=0;i<100;i++){
+  particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2+1, dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5});
+}
+function animateParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x+=p.dx; p.y+=p.dy;
+    if(p.x<0||p.x>canvas.width) p.dx*=-1;
+    if(p.y<0||p.y>canvas.height) p.dy*=-1;
+    ctx.fillStyle="#00ffff22";
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+/* Faceit Widget */
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
 const MATCH_LIMIT = 30;
-
 const toggleBtn = document.getElementById("toggleBtn");
 const widgetDiv = document.getElementById("katzWidget");
 
 toggleBtn.addEventListener("click", () => {
-  if (widgetDiv.style.display === "none" || widgetDiv.style.display === "") {
+  if(widgetDiv.style.display === "none" || widgetDiv.style.display === ""){
     widgetDiv.style.display = "block";
     loadWidget();
-  } else {
-    widgetDiv.style.display = "none";
-  }
+  } else { widgetDiv.style.display = "none"; }
 });
 
-async function fetchJSON(url) {
-  const res = await fetch(url, { headers: { Authorization: "Bearer " + apiKey } });
+/* Otomatik yenileme */
+setInterval(()=>{ if(widgetDiv.style.display==="block"){ loadWidget(); } },30000);
+
+async function fetchJSON(url){
+  const res = await fetch(url,{ headers:{ Authorization: "Bearer "+apiKey } });
   return await res.json();
 }
 
-async function loadWidget() {
-  try {
+async function loadWidget(){
+  try{
     const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
     const elo = playerData.games?.cs2?.faceit_elo || "N/A";
-    document.getElementById("elo").innerText = "ELO: " + elo;
+    document.getElementById("elo").innerText = "ELO: "+elo;
     const playerId = playerData.player_id;
-
     const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
     const matches = stats.lifetime?.Matches || "N/A";
-    document.getElementById("matches").innerText = "Toplam Maç: " + matches;
-
+    document.getElementById("matches").innerText = "Toplam Maç: "+matches;
     const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
     const tbody = document.querySelector("#stats-table tbody");
-    tbody.innerHTML = "";
+    tbody.innerHTML="";
+    let totalKills=0,totalDeaths=0,totalADR=0,totalHS=0,totalRounds=0,matchCount=0;
 
-    let totalKills = 0, totalDeaths = 0, totalADR = 0, totalHS = 0, totalRounds = 0, matchCount = 0;
-
-    for (let i = 0; i < history.items.length; i++) {
+    for(let i=0;i<history.items.length;i++){
       const match = history.items[i];
-      try {
+      try{
         const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
-        let kills = 0, deaths = 0, adrSum = 0, hsSum = 0, roundsPlayed = 0;
-
-        matchData.rounds?.forEach(r => {
-          r.teams.forEach(t => {
-            t.players.forEach(p => {
-              if (p.nickname === nickname) {
-                kills += Number(p.player_stats.Kills || 0);
-                deaths += Number(p.player_stats.Deaths || 0);
-                adrSum += Number(p.player_stats.ADR || 0);
-                hsSum += Number(p.player_stats.Headshots || 0);
-                roundsPlayed += 1;
+        let kills=0,deaths=0,adrSum=0,hsSum=0,roundsPlayed=0;
+        matchData.rounds?.forEach(r=>{
+          r.teams.forEach(t=>{
+            t.players.forEach(p=>{
+              if(p.nickname===nickname){
+                kills+=Number(p.player_stats.Kills||0);
+                deaths+=Number(p.player_stats.Deaths||0);
+                adrSum+=Number(p.player_stats.ADR||0);
+                hsSum+=Number(p.player_stats.Headshots||0);
+                roundsPlayed++;
               }
             });
           });
         });
-
-        if (roundsPlayed > 0) {
-          const KD = deaths > 0 ? (kills / deaths).toFixed(2) : kills;
-          const hsPercent = kills > 0 ? ((hsSum / kills) * 100).toFixed(1) + "%" : "-";
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum / roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;
+        if(roundsPlayed>0){
+          const KD = deaths>0?(kills/deaths).toFixed(2):kills;
+          const hsPercent = kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
+          const tr=document.createElement("tr");
+          tr.innerHTML=`<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum/roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;
           tbody.appendChild(tr);
-
-          totalKills += kills;
-          totalDeaths += deaths;
-          totalADR += (adrSum / roundsPlayed);
-          totalHS += kills > 0 ? (hsSum / kills) * 100 : 0;
-          totalRounds += roundsPlayed;
-          matchCount++;
+          totalKills+=kills; totalDeaths+=deaths; totalADR+=(adrSum/roundsPlayed); totalHS+=kills>0?(hsSum/kills)*100:0;
+          totalRounds+=roundsPlayed; matchCount++;
         }
-      } catch {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td colspan="5">Veri yok</td>`;
-        tbody.appendChild(tr);
-      }
+      }catch{ const tr=document.createElement("tr"); tr.innerHTML=`<td colspan="5">Veri yok</td>`; tbody.appendChild(tr); }
     }
 
-    if (matchCount > 0) {
-      const avgKills = (totalKills / matchCount).toFixed(1);
-      const avgDeaths = (totalDeaths / matchCount).toFixed(1);
-      const avgKD = (totalKills / totalDeaths).toFixed(2);
-      const avgADR = (totalADR / matchCount).toFixed(1);
-      const avgHS = (totalHS / matchCount).toFixed(1) + "%";
-      const avgRow = document.createElement("tr");
+    if(matchCount>0){
+      const avgKills=(totalKills/matchCount).toFixed(1);
+      const avgDeaths=(totalDeaths/matchCount).toFixed(1);
+      const avgKD=(totalKills/totalDeaths).toFixed(2);
+      const avgADR=(totalADR/matchCount).toFixed(1);
+      const avgHS=(totalHS/matchCount).toFixed(1)+"%";
+      const avgRow=document.createElement("tr");
       avgRow.classList.add("avg-row");
-      avgRow.innerHTML = `<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 2px #00ffff;border-top:2px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
+      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 2px #00ffff;border-top:2px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
       tbody.appendChild(avgRow);
     }
 
-  } catch {
-    document.getElementById("elo").innerText = "ELO alınamadı";
-    document.getElementById("matches").innerText = "Toplam Maç: N/A";
-    document.querySelector("#stats-table tbody").innerHTML = `<tr><td colspan="5">Veri alınamadı</td></tr>`;
+  }catch{
+    document.getElementById("elo").innerText="ELO alınamadı";
+    document.getElementById("matches").innerText="Toplam Maç: N/A";
+    document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
   }
 }
 </script>
