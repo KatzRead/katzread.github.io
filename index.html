@@ -65,44 +65,80 @@ th{ background:#4B4B4B; font-size:12px; }
 .equip-card:hover{ background: rgba(0,255,255,0.2); box-shadow:0 0 12px var(--theme-color)aa; transform:scale(1.05); }
 .equip-card img{ width:80px; height:auto; margin-bottom:6px; }
 
-/* Gelişmiş Alt Panel Efektleri */
+/* Gelişmiş Modern Alt Panel */
 #settings-bar {
-  animation: fadeInBar 1.2s ease forwards, neonPulse 3s infinite ease-in-out;
-  box-shadow: 0 0 10px var(--theme-color)33, 0 0 20px var(--theme-color)11;
-  transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
-  opacity: 0; /* fade-in başlarken görünmez */
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 900px;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 2px solid var(--theme-color);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  z-index: 10000;
+  
+  opacity: 0; /* fade-in başlangıcı */
+  animation: fadeInBar 1s ease forwards, neonPulse 3s infinite ease-in-out;
+  box-shadow: 0 0 10px var(--theme-color)44, 0 0 20px var(--theme-color)22;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
 }
 
-#settings-bar:hover {
-  box-shadow: 0 0 20px var(--theme-color), 0 0 40px var(--theme-color)aa;
-  transform: translateY(-4px);
-  background: rgba(0, 0, 0, 0.9);
-}
-
-/* Fade-in Animasyonu */
+/* Fade-in */
 @keyframes fadeInBar {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translate(-50%, 30px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* Neon Nabız (Pulse) Efekti */
+/* Neon pulse */
 @keyframes neonPulse {
   0%, 100% {
     box-shadow: 0 0 8px var(--theme-color)44, 0 0 18px var(--theme-color)22;
   }
   50% {
-    box-shadow: 0 0 15px var(--theme-color), 0 0 35px var(--theme-color)66;
+    box-shadow: 0 0 18px var(--theme-color), 0 0 40px var(--theme-color)66;
   }
 }
 
-/* İçerik öğeleri için de parlama */
+/* Hover efektleri */
+#settings-bar:hover {
+  transform: translate(-50%, -4px);
+  box-shadow: 0 0 25px var(--theme-color), 0 0 50px var(--theme-color)aa;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* İçerik öğeleri neon glow hover */
 #settings-bar .settings-group {
-  transition: text-shadow 0.3s, color 0.3s;
+  color: var(--theme-color);
+  font-weight: bold;
+  transition: color 0.3s, text-shadow 0.3s;
 }
 
 #settings-bar .settings-group:hover {
   color: #fff;
-  text-shadow: 0 0 10px var(--theme-color), 0 0 20px var(--theme-color);
+  text-shadow: 0 0 12px var(--theme-color), 0 0 25px var(--theme-color);
+}
+
+/* Input ve select stilleri */
+#settings-bar input, #settings-bar select {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--theme-color);
+  border-radius: 8px;
+  color: #fff;
+  padding: 4px 8px;
+  transition: 0.3s;
+}
+
+#settings-bar input:hover, #settings-bar select:hover {
+  border-color: #fff;
+  box-shadow: 0 0 8px var(--theme-color);
 }
 
 /* Crosshair */
