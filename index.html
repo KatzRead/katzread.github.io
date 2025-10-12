@@ -342,7 +342,7 @@ async function loadWidget() {
       }
     }
 
-    // === Ortalama Bilgisi (Toplam maçın altına yazılıyor) ===
+    // === Ortalama Satırı ===
     if (matchCount > 0) {
       const avgKills = (totalKills / matchCount).toFixed(1);
       const avgDeaths = (totalDeaths / matchCount).toFixed(1);
@@ -350,19 +350,27 @@ async function loadWidget() {
       const avgADR = (totalADR / matchCount).toFixed(1);
       const avgHS = (totalHS / matchCount).toFixed(1) + "%";
 
-      const avgText = `AVG: ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}`;
-      document.getElementById("avgStats").innerText = avgText;
+      const avgRow = document.createElement("tr");
+      avgRow.classList.add("avg-row");
+      avgRow.innerHTML = `
+        <td>${avgKills}</td>
+        <td>${avgDeaths}</td>
+        <td>${avgKD}</td>
+        <td>${avgADR}</td>
+        <td>${avgHS}</td>
+      `;
+      tbody.appendChild(avgRow);
     }
 
   } catch (err) {
     console.error(err);
     document.getElementById("elo").innerText = "ELO alınamadı";
     document.getElementById("matches").innerText = "Toplam Maç: N/A";
-    document.getElementById("avgStats").innerText = "AVG: -";
     const tbody = document.querySelector("#stats-table tbody");
     tbody.innerHTML = `<tr><td colspan="5">Veri alınamadı</td></tr>`;
   }
 }
+
 
 
 </script>
