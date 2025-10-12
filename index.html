@@ -15,9 +15,27 @@
     align-items:flex-start;
     min-height:100vh;
     background:#0a0a0f;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 20px;
   }
 
+  button {
+    padding:10px 20px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    background:#00ffff;
+    color:#000;
+    cursor:pointer;
+    font-family:'Orbitron',sans-serif;
+    font-weight:bold;
+  }
+
+  button:hover { background:#00cccc; }
+
   .widget {
+    display:none; /* Başlangıçta gizli */
     background: rgba(10,10,15,0.95);
     border:2px solid #00ffff;
     border-radius:10px;
@@ -47,7 +65,9 @@
 </head>
 <body>
 
-<div class="widget">
+<button id="toggleBtn">KatzRead Widget Aç</button>
+
+<div class="widget" id="katzWidget">
   <h2>KatzRead</h2>
   <div class="stat" id="elo">ELO: Yükleniyor...</div>
   <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
@@ -73,6 +93,18 @@
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
 const MATCH_LIMIT = 30;
+
+// Widget aç/kapa butonu
+const toggleBtn = document.getElementById("toggleBtn");
+const widgetDiv = document.getElementById("katzWidget");
+toggleBtn.addEventListener("click", () => {
+  if(widgetDiv.style.display==="none"){
+    widgetDiv.style.display="block";
+    loadWidget(); // Butona basınca veri çek
+  } else {
+    widgetDiv.style.display="none";
+  }
+});
 
 async function fetchJSON(url){
   const res = await fetch(url, { headers:{ Authorization:"Bearer "+apiKey } });
@@ -182,8 +214,6 @@ async function loadWidget(){
     tbody.innerHTML = `<tr><td colspan="7">Veri alınamadı</td></tr>`;
   }
 }
-
-loadWidget();
 </script>
 
 </body>
