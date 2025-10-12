@@ -3,20 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KatzRead CS2 Widget</title>
-
+<title>KatzRead</title>
+<link rel="icon" type="image/x-icon" href="logo.svg">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
+  /* Body ve genel imleç */
   body {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
-    background: radial-gradient(circle at center, #010a12 0%, #000 100%);
-    color: #00ffff;
-    cursor: none; /* İmleç gizle */
+    background: radial-gradient(circle at top, #0a0a0f, #000);
+    color: #e0e0e0;
+    text-align: center;
+    min-height: 100vh;
+    cursor: none; /* normal imleç gizle */
   }
 
-  /* --- Crosshair --- */
+  /* Tüm tıklanabilir öğelerde imleci gizle */
+  a, button, input, select, textarea, img, #toggleBtn {
+    cursor: none !important;
+  }
+
+  /* Başlık ve linkler */
+  .header {
+    padding-top: 30px;
+  }
+
+  /* Logo */
+  .header-logo {
+    width: 120px;
+    margin: 0 auto 12px auto;
+    border-radius: 10%;
+    padding: 5px;
+    background: rgba(0,255,255,0.2);
+    box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff, 0 0 25px #00ffff;
+    animation: glow 1.5s infinite;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: block;
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff, 0 0 25px #00ffff; }
+    50% { box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 35px #00ffff; }
+  }
+
+  .header-logo:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff, 0 0 50px #00ffff;
+  }
+
+  h1 {
+    font-size: 2.8em;
+    color: #00ffff;
+    text-shadow: 0 0 15px #00ffff;
+    margin: 0;
+  }
+
+  p { font-size: 1.2em; color: #ccc; margin-top: 5px; }
+
+  .links {
+    margin-top: 20px;
+  }
+  .links a {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: 2px solid #00ffff;
+    border-radius: 8px;
+    color: #00ffff;
+    text-decoration: none;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .links a:hover {
+    background: #00ffff;
+    color: #000;
+    box-shadow: 0 0 20px #00ffff;
+  }
+
+  footer {
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 40px;
+  }
+
+  /* Faceit logosu */
+  #toggleBtn {
+    width: 150px;
+    transition: transform 0.2s;
+    margin: 20px auto;
+    display: block;
+  }
+  #toggleBtn:hover { transform: scale(1.1); }
+
+  /* Widget */
+  .widget {
+    display: none;
+    background: rgba(10,10,15,0.95);
+    border: 2px solid #00ffff;
+    border-radius: 10px;
+    padding: 15px;
+    width: 90%;
+    max-width: 480px;
+    margin: 20px auto;
+    box-shadow: 0 0 15px #00ffff;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .widget h2 { 
+    margin: 0;
+    font-size: 1.3em;
+    color: #00ffff;
+    text-shadow: 0 0 8px #00ffff;
+  }
+
+  .stat { margin-top: 8px; font-size: 0.9em; }
+
+  table {
+    width: 100%;
+    margin-top: 8px;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  th, td {
+    border: 1px solid #00ffff;
+    padding: 4px;
+    text-align: center;
+  }
+
+  th { background: #4B4B4B; font-size: 12px; }
+
+  .avg-row { font-weight: bold; background: #1a1a1a; color: #00ffff; }
+
+  /* Scroll kaldırıldı, tbody normal */
+  .widget table tbody {
+    display: table;
+    width: 100%;
+  }
+
+  .widget table thead, .widget table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 2em; }
+    .links a { padding: 8px 14px; margin: 5px; }
+    .header-logo { width: 60px; }
+  }
+
+  /* Crosshair */
   #crosshair {
     position: fixed;
     width: 24px;
@@ -37,40 +177,7 @@
   #crosshair .left { width: 8px; height: 2px; left: 0; top: 50%; transform: translateY(-50%); }
   #crosshair .right { width: 8px; height: 2px; right: 0; top: 50%; transform: translateY(-50%); }
 
-  /* --- Genel container --- */
-  .container {
-    text-align: center;
-    padding: 30px 10px;
-  }
-
-  /* --- Başlık --- */
-  .title {
-    font-size: 2.5em;
-    text-shadow: 0 0 15px #00ffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 25px;
-  }
-
-  .title img {
-    width: 48px;
-    height: 48px;
-    filter: drop-shadow(0 0 10px #00ffff);
-  }
-
-  /* --- Faceit widget --- */
-  iframe {
-    width: 400px;
-    height: 400px;
-    border: 2px solid #00ffff;
-    border-radius: 12px;
-    box-shadow: 0 0 20px #00ffff88;
-    pointer-events: auto;
-  }
-
-  /* === Kişisel ve Sosyal Bölümler === */
+  /* === Kişisel & Sosyal Bölümler === */
   .about-section, .achievements, .contact {
     max-width: 800px;
     margin: 60px auto;
@@ -101,7 +208,6 @@
     font-weight: bold;
   }
 
-  /* Başarı kartları */
   .achieve-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -124,7 +230,6 @@
     transform: scale(1.05);
   }
 
-  /* İletişim */
   .contact p {
     color: #aaa;
     margin-bottom: 10px;
@@ -147,7 +252,6 @@
     box-shadow: 0 0 25px #00ffff;
   }
 
-  /* Sosyal linkler */
   .socials {
     margin-top: 15px;
   }
@@ -160,73 +264,190 @@
   .socials a:hover {
     text-shadow: 0 0 8px #00ffff;
   }
-
-  /* Linklerin üstünde de imleç çıkmasın */
-  a, iframe, button {
-    cursor: none !important;
-  }
 </style>
 </head>
-
 <body>
-  <!-- Crosshair -->
-  <div id="crosshair">
-    <div class="top"></div>
-    <div class="bottom"></div>
-    <div class="left"></div>
-    <div class="right"></div>
+
+<div class="header">
+  <img src="katz.png" alt="KatzRead Logo" class="header-logo">
+  <h1>KatzRead</h1>
+  <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
+
+  <div class="links">
+    <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
+    <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
+    <a href="https://x.com/katzread" target="_blank">Twitter</a>
+    <a href="https://kick.com/katzread" target="_blank">Kick</a>
+    <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
   </div>
+</div>
 
-  <!-- Ana içerik -->
-  <div class="container">
-    <div class="title">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Letter_K_red.svg" alt="Logo">
-      <span>KatzRead</span>
-    </div>
+<img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
 
-    <iframe src="https://strugly.com/inc/widget.php?widget_type=widget-renew-2&player=02b26fe9-49d1-47e7-afa0-1b5c562ca4e2&secret=f597facb42096d1abfffec7a73b66903"></iframe>
+<div class="widget" id="katzWidget">
+  <h2>KatzRead</h2>
+  <div class="stat" id="elo">ELO: Yükleniyor...</div>
+  <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+  <table id="stats-table">
+    <thead>
+      <tr>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>K/D</th>
+        <th>ADR</th>
+        <th>HS%</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="5">Yükleniyor...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 💬 Kişisel Bölümler -->
+<section class="about-section">
+  <h2>💬 Hakkımda</h2>
+  <p>Ben <strong>KatzRead</strong>, 23 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum.  
+  Takımımda genellikle <span class="highlight">lurker</span> ve <span class="highlight">rifler</span> rollerinde oynuyorum.  
+  Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
+</section>
+
+<section class="achievements">
+  <h2>🏆 Başarılar</h2>
+  <div class="achieve-grid">
+    <div class="card">🔥 3700+ Faceit ELO</div>
+    <div class="card">🎯 Lurker & Rifler Rolü</div>
+    <div class="card">⚙️ Turnuva Deneyimi: Super Phalanx, Rebel Stars, FUT Turkuaz</div>
+    <div class="card">💡 Shotcall & Oyun Okuma Yeteneği</div>
   </div>
+</section>
 
-  <!-- 💬 Kişisel Bölümler -->
-  <section class="about-section">
-    <h2>💬 Hakkımda</h2>
-    <p>
-      Merhaba, ben <strong>KatzRead</strong>. 23 yaşındayım ve profesyonel düzeyde <strong>CS2</strong> oynuyorum. 
-      Oyun içinde genellikle <span class="highlight">lurker</span> ve <span class="highlight">rifler</span> rollerindeyim.
-      Oyun okuma, entry desteği ve shotcall kabiliyetimle takımı yönlendirmeye odaklanıyorum.
-      Şu anda <strong>Rebel Stars</strong> kadrosunda oynuyorum.
-    </p>
-  </section>
+<section class="contact">
+  <h2>📡 İletişim</h2>
+  <p>İşbirliği veya takım teklifleri için:</p>
+  <a href="mailto:katzread@proton.me" class="contact-btn">📧 katzread@proton.me</a>
+  <div class="socials">
+    <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
+    <a href="https://x.com/katzread" target="_blank">X (Twitter)</a>
+    <a href="https://kick.com/katzread" target="_blank">Kick</a>
+    <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
+  </div>
+</section>
 
-  <section class="achievements">
-    <h2>🏆 Başarılar</h2>
-    <div class="achieve-grid">
-      <div class="card">🔥 3700+ Faceit ELO</div>
-      <div class="card">🎯 Lurker & Rifler Rolü</div>
-      <div class="card">⚙️ Turnuva Tecrübesi: Super Phalanx, Rebel Stars</div>
-      <div class="card">💡 Strateji & Oyun Okuma Yeteneği</div>
-    </div>
-  </section>
+<footer>© 2025 KatzRead</footer>
 
-  <section class="contact">
-    <h2>📡 İletişim</h2>
-    <p>İşbirliği veya takım teklifleri için:</p>
-    <a href="mailto:katzread@proton.me" class="contact-btn">📧 katzread@proton.me</a>
-    <div class="socials">
-      <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
-      <a href="https://x.com/katzread" target="_blank">X (Twitter)</a>
-      <a href="https://kick.com/katzread" target="_blank">Kick</a>
-      <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
-    </div>
-  </section>
+<!-- Crosshair -->
+<div id="crosshair">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
 
 <script>
-  // Crosshair mouse takibi
-  const crosshair = document.getElementById('crosshair');
-  document.addEventListener('mousemove', e => {
-    crosshair.style.left = e.clientX + 'px';
-    crosshair.style.top = e.clientY + 'px';
-  });
+const crosshair = document.getElementById('crosshair');
+document.addEventListener('mousemove', e => {
+  crosshair.style.left = e.clientX + 'px';
+  crosshair.style.top = e.clientY + 'px';
+});
+
+const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
+const nickname = "KatzRead";
+const MATCH_LIMIT = 30;
+
+const toggleBtn = document.getElementById("toggleBtn");
+const widgetDiv = document.getElementById("katzWidget");
+
+toggleBtn.addEventListener("click", () => {
+  if (widgetDiv.style.display === "none" || widgetDiv.style.display === "") {
+    widgetDiv.style.display = "block";
+    loadWidget();
+  } else {
+    widgetDiv.style.display = "none";
+  }
+});
+
+async function fetchJSON(url) {
+  const res = await fetch(url, { headers: { Authorization: "Bearer " + apiKey } });
+  return await res.json();
+}
+
+async function loadWidget() {
+  try {
+    const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
+    const elo = playerData.games?.cs2?.faceit_elo || "N/A";
+    document.getElementById("elo").innerText = "ELO: " + elo;
+    const playerId = playerData.player_id;
+
+    const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
+    const matches = stats.lifetime?.Matches || "N/A";
+    document.getElementById("matches").innerText = "Toplam Maç: " + matches;
+
+    const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
+    const tbody = document.querySelector("#stats-table tbody");
+    tbody.innerHTML = "";
+
+    let totalKills = 0, totalDeaths = 0, totalADR = 0, totalHS = 0, totalRounds = 0, matchCount = 0;
+
+    for (let i = 0; i < history.items.length; i++) {
+      const match = history.items[i];
+      try {
+        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
+        let kills = 0, deaths = 0, adrSum = 0, hsSum = 0, roundsPlayed = 0;
+
+        matchData.rounds?.forEach(r => {
+          r.teams.forEach(t => {
+            t.players.forEach(p => {
+              if (p.nickname === nickname) {
+                kills += Number(p.player_stats.Kills || 0);
+                deaths += Number(p.player_stats.Deaths || 0);
+                adrSum += Number(p.player_stats.ADR || 0);
+                hsSum += Number(p.player_stats.Headshots || 0);
+                roundsPlayed += 1;
+              }
+            });
+          });
+        });
+
+        if (roundsPlayed > 0) {
+          const KD = deaths > 0 ? (kills / deaths).toFixed(2) : kills;
+          const hsPercent = kills > 0 ? ((hsSum / kills) * 100).toFixed(1) + "%" : "-";
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum / roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;
+          tbody.appendChild(tr);
+
+          totalKills += kills;
+          totalDeaths += deaths;
+          totalADR += (adrSum / roundsPlayed);
+          totalHS += kills > 0 ? (hsSum / kills) * 100 : 0;
+          totalRounds += roundsPlayed;
+          matchCount++;
+        }
+      } catch {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="5">Veri yok</td>`;
+        tbody.appendChild(tr);
+      }
+    }
+
+    if (matchCount > 0) {
+      const avgKills = (totalKills / matchCount).toFixed(1);
+      const avgDeaths = (totalDeaths / matchCount).toFixed(1);
+      const avgKD = (totalKills / totalDeaths).toFixed(2);
+      const avgADR = (totalADR / matchCount).toFixed(1);
+      const avgHS = (totalHS / matchCount).toFixed(1) + "%";
+      const avgRow = document.createElement("tr");
+      avgRow.classList.add("avg-row");
+      avgRow.innerHTML = `<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 2px #00ffff;border-top:2px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
+      tbody.appendChild(avgRow);
+    }
+
+  } catch {
+    document.getElementById("elo").innerText = "ELO alınamadı";
+    document.getElementById("matches").innerText = "Toplam Maç: N/A";
+    document.querySelector("#stats-table tbody").innerHTML = `<tr><td colspan="5">Veri alınamadı</td></tr>`;
+  }
+}
 </script>
 </body>
 </html>
