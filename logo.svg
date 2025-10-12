@@ -1,33 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
   <defs>
-    <!-- Dış glow -->
+    <!-- Glow -->
     <filter id="outer-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="2.5" result="blur1"></feGaussianBlur>
+      <feGaussianBlur stdDeviation="3" result="blur1"/>
       <feMerge>
-        <feMergeNode in="blur1"></feMergeNode>
-        <feMergeNode in="blur1"></feMergeNode>
-        <feMergeNode in="SourceGraphic"></feMergeNode>
-      </feMerge>
-    </filter>
-    
-    <!-- İç glow -->
-    <filter id="inner-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="0.7" result="blur2"></feGaussianBlur>
-      <feMerge>
-        <feMergeNode in="blur2"></feMergeNode>
-        <feMergeNode in="SourceGraphic"></feMergeNode>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
 
-    <!-- Gradient neon -->
-    <linearGradient id="neonGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#00ffff"></stop>
-      <stop offset="100%" stop-color="#00ff99"></stop>
+    <filter id="inner-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <linearGradient id="redGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff0000"/>
+      <stop offset="100%" stop-color="#ff5555"/>
     </linearGradient>
 
-    <!-- Animasyon için opacity değişimi -->
     <style type="text/css">
-      
+      <![CDATA[
         .glowText {
           animation: flicker 1.5s infinite alternate;
         }
@@ -39,13 +36,10 @@
           80% { opacity: 1; }
           100% { opacity: 0.9; }
         }
-      
+      ]]>
     </style>
   </defs>
 
-  <!-- Dış glow -->
-  <text x="50%" y="50%" font-size="48" font-family="Orbitron, sans-serif" font-weight="700" text-anchor="middle" alignment-baseline="middle" fill="url(#neonGrad)" filter="url(#outer-glow)" class="glowText">K</text>
-  
-  <!-- İç glow -->
-  <text x="50%" y="50%" font-size="48" font-family="Orbitron, sans-serif" font-weight="700" text-anchor="middle" alignment-baseline="middle" fill="#00ffff" filter="url(#inner-glow)" class="glowText">K</text>
+  <text x="50%" y="50%" font-size="96" font-family="Orbitron, sans-serif" font-weight="700" text-anchor="middle" alignment-baseline="middle" fill="url(#redGrad)" filter="url(#outer-glow)" class="glowText">K</text>
+  <text x="50%" y="50%" font-size="96" font-family="Orbitron, sans-serif" font-weight="700" text-anchor="middle" alignment-baseline="middle" fill="#ff0000" filter="url(#inner-glow)" class="glowText">K</text>
 </svg>
