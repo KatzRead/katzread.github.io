@@ -342,25 +342,30 @@ async function loadWidget() {
       }
     }
 
-    // === Ortalama Satırı ===
-    if (matchCount > 0) {
-      const avgKills = (totalKills / matchCount).toFixed(1);
-      const avgDeaths = (totalDeaths / matchCount).toFixed(1);
-      const avgKD = (totalKills / totalDeaths).toFixed(2);
-      const avgADR = (totalADR / matchCount).toFixed(1);
-      const avgHS = (totalHS / matchCount).toFixed(1) + "%";
+// === Ortalama Satırı ===
+if (matchCount > 0) {
+  const avgKills = (totalKills / matchCount).toFixed(1);
+  const avgDeaths = (totalDeaths / matchCount).toFixed(1);
+  const avgKD = (totalKills / totalDeaths).toFixed(2);
+  const avgADR = (totalADR / matchCount).toFixed(1);
+  const avgHS = (totalHS / matchCount).toFixed(1) + "%";
 
-      const avgRow = document.createElement("tr");
-      avgRow.classList.add("avg-row");
-      avgRow.innerHTML = `
-        <td>${avgKills}</td>
-        <td>${avgDeaths}</td>
-        <td>${avgKD}</td>
-        <td>${avgADR}</td>
-        <td>${avgHS}</td>
-      `;
-      tbody.appendChild(avgRow);
-    }
+  const avgRow = document.createElement("tr");
+  avgRow.classList.add("avg-row");
+  avgRow.innerHTML = `
+    <td colspan="5" style="
+      text-align:center;
+      font-weight:bold;
+      color:#00ffff;
+      text-shadow:0 0 10px #00ffff;
+      border-top:2px solid #00ffff;
+      padding-top:6px;
+    ">
+      AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}
+    </td>
+  `;
+  tbody.appendChild(avgRow);
+}
 
   } catch (err) {
     console.error(err);
