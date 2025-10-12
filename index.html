@@ -6,114 +6,109 @@
 <title>KatzRead</title>
 <link rel="icon" type="image/x-icon" href="logo.svg">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+:root { --main-color:#00ffff; }
 
-  :root { --main-color: #00ffff; }
+body {
+  margin:0; font-family:'Orbitron',sans-serif;
+  background:radial-gradient(circle at top,#0a0a0f,#000);
+  color:#e0e0e0; text-align:center;
+  min-height:100vh; cursor:none;
+  overflow-x:hidden; position:relative;
+}
+a,button,input,select,textarea,img,#toggleBtn{cursor:none !important;}
 
-  body {
-    margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    background: radial-gradient(circle at top, #0a0a0f, #000);
-    color: #e0e0e0;
-    text-align: center;
-    min-height: 100vh;
-    cursor: none;
-    overflow-x: hidden;
-    position: relative;
-  }
-  a, button, input, select, textarea, img, #toggleBtn { cursor: none !important; }
+/* Tab menu */
+.tab-menu{display:flex;justify-content:center;gap:20px;margin-top:20px;}
+.tab-menu button{
+  background:transparent;border:2px solid var(--main-color);
+  color:var(--main-color);padding:10px 20px;border-radius:10px;
+  text-transform:uppercase;font-weight:bold;transition:.3s;
+}
+.tab-menu button:hover,.tab-menu button.active{
+  background:var(--main-color); color:#000;
+  box-shadow:0 0 15px var(--main-color);
+}
 
-  /* === SEKME MENÜ === */
-  .tab-menu { display:flex; justify-content:center; gap:20px; margin-top:20px; }
-  .tab-menu button {
-    background:transparent;
-    border:2px solid var(--main-color);
-    color:var(--main-color);
-    padding:10px 20px;
-    border-radius:10px;
-    text-transform:uppercase;
-    font-weight:bold;
-    transition:0.3s;
-  }
-  .tab-menu button:hover, .tab-menu button.active { background:var(--main-color); color:#000; box-shadow:0 0 15px var(--main-color); }
+/* Tab content */
+.tab-content{display:none; animation:fadeIn .6s ease;}
+.tab-content.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);}}
 
-  .tab-content { display:none; animation:fadeIn 0.6s ease; }
-  .tab-content.active { display:block; }
-  @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+/* Header */
+.header{padding-top:30px;}
+.header-logo{
+  width:120px;margin:0 auto 12px auto;border-radius:10%;
+  padding:5px;background:rgba(0,255,255,0.2);
+  box-shadow:0 0 5px var(--main-color),0 0 15px var(--main-color),0 0 25px var(--main-color);
+  animation:glow 1.5s infinite;transition:.3s;display:block;
+}
+@keyframes glow{
+  0%,100%{box-shadow:0 0 5px var(--main-color),0 0 15px var(--main-color),0 0 25px var(--main-color);}
+  50%{box-shadow:0 0 10px var(--main-color),0 0 20px var(--main-color),0 0 35px var(--main-color);}
+}
+.header-logo:hover{transform:scale(1.2);}
+h1{font-size:2.8em;color:var(--main-color);text-shadow:0 0 15px var(--main-color);margin:0;}
+p{font-size:1.2em;color:#ccc;margin-top:5px;}
 
-  /* Header */
-  .header { padding-top:30px; }
-  .header-logo {
-    width:120px; margin:0 auto 12px auto; border-radius:10%;
-    padding:5px; background:rgba(0,255,255,0.2);
-    box-shadow:0 0 5px var(--main-color),0 0 15px var(--main-color),0 0 25px var(--main-color);
-    animation:glow 1.5s infinite; transition:transform 0.3s,box-shadow 0.3s; display:block;
-  }
-  @keyframes glow {
-    0%,100%{box-shadow:0 0 5px var(--main-color),0 0 15px var(--main-color),0 0 25px var(--main-color);}
-    50%{box-shadow:0 0 10px var(--main-color),0 0 20px var(--main-color),0 0 35px var(--main-color);}
-  }
-  .header-logo:hover { transform:scale(1.2); }
+/* Links */
+.links{margin-top:20px;}
+.links a{
+  display:inline-block;margin:0 10px;padding:10px 20px;
+  border:2px solid var(--main-color); border-radius:8px;
+  color:var(--main-color);text-decoration:none;transition:.3s;text-transform:uppercase;letter-spacing:1px;
+}
+.links a:hover{background:var(--main-color); color:#000; box-shadow:0 0 20px var(--main-color);}
 
-  h1 { font-size:2.8em; color:var(--main-color); text-shadow:0 0 15px var(--main-color); margin:0; }
-  p { font-size:1.2em; color:#ccc; margin-top:5px; }
-  .links { margin-top:20px; }
-  .links a {
-    display:inline-block; margin:0 10px; padding:10px 20px;
-    border:2px solid var(--main-color); border-radius:8px; color:var(--main-color);
-    text-decoration:none; transition:0.3s; text-transform:uppercase; letter-spacing:1px;
-  }
-  .links a:hover { background:var(--main-color); color:#000; box-shadow:0 0 20px var(--main-color); }
-  footer { font-size:0.9em; color:#555; margin-top:40px; }
+/* Widget */
+#toggleBtn{width:150px;transition:.2s;margin:20px auto;display:block;}
+#toggleBtn:hover{transform:scale(1.1);}
+.widget{
+  display:none;background:rgba(10,10,15,0.95);
+  border:2px solid var(--main-color);border-radius:10px;
+  padding:15px;width:90%;max-width:480px;margin:20px auto;
+  box-shadow:0 0 15px var(--main-color);color:#fff;font-size:14px;transition:.4s ease;
+}
+.widget h2{color:var(--main-color); text-shadow:0 0 8px var(--main-color);}
+.widget table{width:100%;margin-top:8px;border-collapse:collapse;font-size:13px;}
+.widget table th, .widget table td{border:1px solid var(--main-color);padding:4px;text-align:center;}
+.widget table th{background:#1a1a1a;font-size:12px; color:var(--main-color);}
+.avg-row{font-weight:bold;background:#1a1a1a;color:var(--main-color);}
 
-  /* Widget */
-  #toggleBtn { width:150px; transition:0.2s; margin:20px auto; display:block; }
-  #toggleBtn:hover { transform:scale(1.1); }
-  .widget {
-    display:none;
-    background:rgba(10,10,15,0.95);
-    border:2px solid var(--main-color);
-    border-radius:10px;
-    padding:15px;
-    width:90%;
-    max-width:480px;
-    margin:20px auto;
-    box-shadow:0 0 15px var(--main-color);
-    color:#fff; font-size:14px; transition:0.4s ease;
-  }
-  .widget h2 { margin:0; font-size:1.3em; color:var(--main-color); text-shadow:0 0 8px var(--main-color); }
-  .stat { margin-top:8px; font-size:0.9em; }
+/* Section Box */
+.section-box{
+  max-width:800px;margin:40px auto;
+  background:rgba(0,10,20,0.5);border:1px solid var(--main-color);
+  border-radius:16px;box-shadow:0 0 15px var(--main-color)66;padding:30px;
+}
+.section-box h2{color:var(--main-color);font-size:1.8em;text-shadow:0 0 10px var(--main-color);margin-bottom:15px;}
+.section-box p{color:#ccc; line-height:1.6;font-size:1.05em;}
+.highlight{color:var(--main-color);text-shadow:0 0 8px var(--main-color);font-weight:bold;}
 
-  /* Widget Tablo */
-  #stats-table { width:100%; border-collapse:collapse; margin-top:10px; font-size:14px; }
-  #stats-table th, #stats-table td { border:1px solid var(--main-color); padding:6px 8px; text-align:center; }
-  #stats-table th { background:rgba(0,0,0,0.3); color:var(--main-color); text-shadow:0 0 3px var(--main-color); }
-  #stats-table tbody tr:nth-child(even) { background:rgba(0,255,255,0.05); }
-  #stats-table tbody tr.avg-row td { font-weight:bold; color:var(--main-color); text-shadow:0 0 2px var(--main-color); background:rgba(0,255,255,0.1); }
+/* Crosshair */
+#crosshair{position:fixed;width:24px;height:24px;pointer-events:none;top:0;left:0;transform:translate(-50%,-50%);z-index:9999;}
+#crosshair div{position:absolute;background:var(--main-color);box-shadow:0 0 5px var(--main-color),0 0 15px var(--main-color);}
+#crosshair .top{width:2px;height:8px;top:0;left:50%;transform:translateX(-50%);}
+#crosshair .bottom{width:2px;height:8px;bottom:0;left:50%;transform:translateX(-50%);}
+#crosshair .left{width:8px;height:2px;left:0;top:50%;transform:translateY(-50%);}
+#crosshair .right{width:8px;height:2px;right:0;top:50%;transform:translateY(-50%);}
 
-  /* Hakkımda / Ayarlar */
-  .section-box { max-width:800px; margin:40px auto; background:rgba(0,10,20,0.5); border:1px solid var(--main-color); border-radius:16px; box-shadow:0 0 15px var(--main-color)66; padding:30px; }
-  .section-box h2 { color:var(--main-color); font-size:1.8em; text-shadow:0 0 10px var(--main-color); margin-bottom:15px; }
-  .section-box p { color:#ccc; line-height:1.6; font-size:1.05em; }
-  .highlight { color:var(--main-color); text-shadow:0 0 8px var(--main-color); font-weight:bold; }
+/* Particle Canvas */
+canvas#particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
 
-  /* Crosshair */
-  #crosshair { position:fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%,-50%); z-index:9999; }
-  #crosshair div { position:absolute; background:var(--main-color); box-shadow:0 0 5px var(--main-color),0 0 15px var(--main-color); }
-  #crosshair .top { width:2px; height:8px; top:0; left:50%; transform:translateX(-50%); }
-  #crosshair .bottom { width:2px; height:8px; bottom:0; left:50%; transform:translateX(-50%); }
-  #crosshair .left { width:8px; height:2px; left:0; top:50%; transform:translateY(-50%); }
-  #crosshair .right { width:8px; height:2px; right:0; top:50%; transform:translateY(-50%); }
-
-  /* Partikül */
-  canvas#particle-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+/* Ekipman baloncukları */
+.equip-bubble{
+  display:inline-block;width:40px;height:40px;border-radius:50%;margin:5px;cursor:pointer;border:2px solid #fff;transition:.2s;
+}
+.equip-bubble:hover{transform:scale(1.2);box-shadow:0 0 10px #fff;}
+.equip-bubble.active{box-shadow:0 0 20px var(--main-color);border:3px solid #fff;transform:scale(1.3);}
 </style>
 </head>
 <body>
 
 <canvas id="particle-canvas"></canvas>
 
-<!-- Sekmeler -->
+<!-- Tab Menu -->
 <div class="tab-menu">
   <button class="tab-btn active" data-tab="home">Ana Sayfa</button>
   <button class="tab-btn" data-tab="about">Hakkımda</button>
@@ -134,9 +129,7 @@
       <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
     </div>
   </div>
-
   <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
-
   <div class="widget" id="katzWidget">
     <h2>KatzRead</h2>
     <div class="stat" id="elo">ELO: Yükleniyor...</div>
@@ -154,7 +147,10 @@
 <div id="about" class="tab-content">
   <div class="section-box">
     <h2>Hakkımda</h2>
-    <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. <span class="highlight">FUT Turkuaz</span> takımında oynuyorum. Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum. Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
+    <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. 
+    <span class="highlight">FUT Turkuaz</span> takımında oynuyorum.  
+    Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum.  
+    Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
   </div>
 </div>
 
@@ -162,32 +158,39 @@
 <div id="settings" class="tab-content">
   <div class="section-box">
     <h2>Ayarlar</h2>
-    <p>Burada ileride fare efekti, widget otomatik yenileme aralığı, tema rengi gibi ayarları ekleyebilirsin.</p>
-    <p>💡 Örnek: <span class="highlight">Karanlık mod</span> veya <span class="highlight">Crosshair rengi</span> seçimi eklenebilir.</p>
+    <p>Buradan tema rengini ve ekipman seçimini değiştirebilirsin:</p>
+    <div id="equipments">
+      <div class="equip-bubble" style="background:#00ffff;" data-equip="Mouse"></div>
+      <div class="equip-bubble" style="background:#ff00ff;" data-equip="Klavyen"></div>
+      <div class="equip-bubble" style="background:#ffff00;" data-equip="Kulaklık"></div>
+      <div class="equip-bubble" style="background:#ff4500;" data-equip="Monitör"></div>
+    </div>
+    <p>Seçili ekipman: <span id="selectedEquip">Hiçbiri</span></p>
   </div>
 </div>
 
 <footer>© 2025 KatzRead</footer>
-
 <div id="crosshair"><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div>
 
 <script>
-/* Crosshair */
+// Crosshair
 const crosshair=document.getElementById('crosshair');
-document.addEventListener('mousemove',e=>{crosshair.style.left=e.clientX+'px'; crosshair.style.top=e.clientY+'px';});
+document.addEventListener('mousemove',e=>{crosshair.style.left=e.clientX+'px';crosshair.style.top=e.clientY+'px';});
 
-/* Partikül */
-const canvas=document.getElementById('particle-canvas'); const ctx=canvas.getContext('2d'); canvas.width=innerWidth; canvas.height=innerHeight;
-addEventListener('resize',()=>{canvas.width=innerWidth; canvas.height=innerHeight;});
-let particles=[]; for(let i=0;i<100;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5});}
-function animateParticles(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.x+=p.dx; p.y+=p.dy; if(p.x<0||p.x>canvas.width)p.dx*=-1; if(p.y<0||p.y>canvas.height)p.dy*=-1; ctx.fillStyle="#00ffff22"; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); }); requestAnimationFrame(animateParticles); }
+// Particle
+const canvas=document.getElementById('particle-canvas'), ctx=canvas.getContext('2d');
+canvas.width=innerWidth;canvas.height=innerHeight;
+addEventListener('resize',()=>{canvas.width=innerWidth;canvas.height=innerHeight;});
+let particles=[];for(let i=0;i<100;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5});}
+function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>canvas.width)p.dx*=-1;if(p.y<0||p.y>canvas.height)p.dy*=-1;ctx.fillStyle="#00ffff22";ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();});requestAnimationFrame(animateParticles);}
 animateParticles();
 
-/* Sekmeler */
-const tabs=document.querySelectorAll('.tab-btn'); const contents=document.querySelectorAll('.tab-content');
-tabs.forEach(btn=>{btn.addEventListener('click',()=>{tabs.forEach(b=>b.classList.remove('active')); contents.forEach(c=>c.classList.remove('active')); btn.classList.add('active'); document.getElementById(btn.dataset.tab).classList.add('active');});});
+// Tabs
+const tabs=document.querySelectorAll('.tab-btn');
+const contents=document.querySelectorAll('.tab-content');
+tabs.forEach(btn=>{btn.addEventListener('click',()=>{tabs.forEach(b=>b.classList.remove('active'));contents.forEach(c=>c.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.tab).classList.add('active');});});
 
-/* Widget */
+// Widget
 const apiKey="dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname="KatzRead";
 const MATCH_LIMIT=30;
@@ -195,7 +198,6 @@ const toggleBtn=document.getElementById("toggleBtn");
 const widgetDiv=document.getElementById("katzWidget");
 toggleBtn.addEventListener("click",()=>{if(widgetDiv.style.display==="none"||widgetDiv.style.display===""){widgetDiv.style.display="block";loadWidget();}else{widgetDiv.style.display="none";}});
 setInterval(()=>{if(widgetDiv.style.display==="block"){loadWidget();}},30000);
-
 async function fetchJSON(url){const res=await fetch(url,{headers:{Authorization:"Bearer "+apiKey}});return await res.json();}
 async function loadWidget(){
   try{
@@ -215,7 +217,7 @@ async function loadWidget(){
       try{
         const matchData=await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
         let kills=0,deaths=0,adrSum=0,hsSum=0,roundsPlayed=0;
-        matchData.rounds?.forEach(r=>{r.teams.forEach(t=>{t.players.forEach(p=>{if(p.nickname===nickname){kills+=Number(p.player_stats.Kills||0); deaths+=Number(p.player_stats.Deaths||0); adrSum+=Number(p.player_stats.ADR||0); hsSum+=Number(p.player_stats.Headshots||0); roundsPlayed++;}});});});
+        matchData.rounds?.forEach(r=>{r.teams.forEach(t=>{t.players.forEach(p=>{if(p.nickname===nickname){kills+=Number(p.player_stats.Kills||0);deaths+=Number(p.player_stats.Deaths||0);adrSum+=Number(p.player_stats.ADR||0);hsSum+=Number(p.player_stats.Headshots||0);roundsPlayed++;}});});});
         if(roundsPlayed>0){
           const KD=deaths>0?(kills/deaths).toFixed(2):kills;
           const hsPercent=kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
@@ -235,7 +237,7 @@ async function loadWidget(){
       const avgHS=(totalHS/matchCount).toFixed(1)+"%";
       const avgRow=document.createElement("tr");
       avgRow.classList.add("avg-row");
-      avgRow.innerHTML=`<td>${avgKills}</td><td>${avgDeaths}</td><td>${avgKD}</td><td>${avgADR}</td><td>${avgHS}</td>`;
+      avgRow.innerHTML=`<td colspan="5" style="text-align:center;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
       tbody.appendChild(avgRow);
     }
   }catch{
@@ -244,6 +246,20 @@ async function loadWidget(){
     document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
   }
 }
+
+// Ekipman Baloncukları ve Tema Renk
+const equipBubbles=document.querySelectorAll('.equip-bubble');
+const selectedEquip=document.getElementById('selectedEquip');
+equipBubbles.forEach(b=>{
+  b.addEventListener('click',()=>{
+    equipBubbles.forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    selectedEquip.innerText=b.dataset.equip;
+    const color=b.style.background;
+    document.documentElement.style.setProperty('--main-color',color);
+  });
+});
 </script>
+
 </body>
 </html>
