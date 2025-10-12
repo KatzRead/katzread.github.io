@@ -276,9 +276,9 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
       <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. 
       <span class="highlight">FUT Turkuaz</span> takımında oynuyorum. Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum. Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
     </div>
+    <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
   </div>
 </div>
-<img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
 
 <div class="widget" id="katzWidget">
   <h2>KatzRead</h2>
@@ -391,7 +391,20 @@ toggleBtn.addEventListener("click", () => {
     loadWidget();
   } else { widgetDiv.style.display = "none"; }
 });
+function updateToggleBtn(){
+  const homeActive = document.getElementById('home').classList.contains('active');
+  toggleBtn.style.display = homeActive ? "block" : "none";
+}
 
+// Sekme değiştiğinde çağır
+tabs.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    updateToggleBtn();
+  });
+});
+
+// Başlangıçta kontrol et
+updateToggleBtn();
 /* Otomatik yenileme */
 setInterval(()=>{ if(widgetDiv.style.display==="block"){ loadWidget(); } },30000);
 
