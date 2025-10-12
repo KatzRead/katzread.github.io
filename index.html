@@ -8,7 +8,6 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
-  /* Body ve genel imleç */
   body {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
@@ -21,15 +20,45 @@
     position: relative;
   }
 
-  /* Tüm tıklanabilir öğelerde imleci gizle */
-  a, button, input, select, textarea, img, #toggleBtn {
-    cursor: none !important;
+  a, button, input, select, textarea, img, #toggleBtn { cursor: none !important; }
+
+  /* === Sekme Menüsü === */
+  .tab-menu {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
   }
 
-  /* Başlık ve linkler */
+  .tab-menu button {
+    background: transparent;
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .tab-menu button:hover, .tab-menu button.active {
+    background: #00ffff;
+    color: #000;
+    box-shadow: 0 0 15px #00ffff;
+  }
+
+  /* === Sekme İçerikleri === */
+  .tab-content { display: none; animation: fadeIn 0.6s ease; }
+  .tab-content.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === Header === */
   .header { padding-top: 30px; }
 
-  /* Logo */
   .header-logo {
     width: 120px;
     margin: 0 auto 12px auto;
@@ -41,16 +70,11 @@
     transition: transform 0.3s, box-shadow 0.3s;
     display: block;
   }
-
   @keyframes glow {
     0%, 100% { box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff, 0 0 25px #00ffff; }
     50% { box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 35px #00ffff; }
   }
-
-  .header-logo:hover {
-    transform: scale(1.2);
-    box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff, 0 0 50px #00ffff;
-  }
+  .header-logo:hover { transform: scale(1.2); }
 
   h1 {
     font-size: 2.8em;
@@ -82,16 +106,10 @@
 
   footer { font-size: 0.9em; color: #555; margin-top: 40px; }
 
-  /* Faceit logosu */
-  #toggleBtn {
-    width: 150px;
-    transition: transform 0.2s;
-    margin: 20px auto;
-    display: block;
-  }
+  /* === Widget === */
+  #toggleBtn { width: 150px; transition: transform 0.2s; margin: 20px auto; display: block; }
   #toggleBtn:hover { transform: scale(1.1); }
 
-  /* Widget */
   .widget {
     display: none;
     background: rgba(10,10,15,0.95);
@@ -107,21 +125,26 @@
     transition: 0.4s ease;
   }
 
-  .widget h2 { margin: 0; font-size: 1.3em; color: #00ffff; text-shadow: 0 0 8px #00ffff; }
-  .stat { margin-top: 8px; font-size: 0.9em; }
-
-  table { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: 13px; }
-  th, td { border: 1px solid #00ffff; padding: 4px; text-align: center; }
-  th { background: #4B4B4B; font-size: 12px; }
-  .avg-row { font-weight: bold; background: #1a1a1a; color: #00ffff; }
-  .widget table tbody { display: table; width: 100%; }
-  .widget table thead, .widget table tbody tr { display: table; width: 100%; table-layout: fixed; }
-
-  @media (max-width: 600px) {
-    h1 { font-size: 2em; }
-    .links a { padding: 8px 14px; margin: 5px; }
-    .header-logo { width: 60px; }
+  /* === Hakkımda ve Ayarlar Sekmeleri === */
+  .section-box {
+    max-width: 800px;
+    margin: 40px auto;
+    background: rgba(0, 10, 20, 0.5);
+    border: 1px solid #00ffff;
+    border-radius: 16px;
+    box-shadow: 0 0 15px #00ffff66;
+    padding: 30px;
   }
+
+  .section-box h2 {
+    color: #00ffff;
+    font-size: 1.8em;
+    text-shadow: 0 0 10px #00ffff;
+    margin-bottom: 15px;
+  }
+
+  .section-box p { color: #ccc; line-height: 1.6; font-size: 1.05em; }
+  .highlight { color: #00ffff; text-shadow: 0 0 8px #00ffff; font-weight: bold; }
 
   /* Crosshair */
   #crosshair {
@@ -144,122 +167,99 @@
   #crosshair .left { width: 8px; height: 2px; left: 0; top: 50%; transform: translateY(-50%); }
   #crosshair .right { width: 8px; height: 2px; right: 0; top: 50%; transform: translateY(-50%); }
 
-  /* 💬 Kişisel & Sosyal Bölümler */
-  .about-section, .achievements, .contact {
-    max-width: 800px;
-    margin: 60px auto;
-    text-align: center;
-    padding: 30px;
-    background: rgba(0, 10, 20, 0.5);
-    border: 1px solid #00ffff;
-    border-radius: 16px;
-    box-shadow: 0 0 15px #00ffff66;
-  }
-
-  .about-section h2, .achievements h2, .contact h2 {
-    color: #00ffff;
-    font-size: 1.8em;
-    text-shadow: 0 0 10px #00ffff;
-    margin-bottom: 15px;
-  }
-
-  .about-section p { color: #ccc; line-height: 1.6; font-size: 1.05em; }
-  .highlight { color: #00ffff; text-shadow: 0 0 8px #00ffff; font-weight: bold; }
-
-  .achieve-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 15px; }
-  .card { background: rgba(0,255,255,0.08); border: 1px solid #00ffff55; padding: 12px; border-radius: 10px; transition: 0.3s; color: #e0e0e0; font-size: 0.95em; }
-  .card:hover { background: rgba(0,255,255,0.2); box-shadow: 0 0 12px #00ffffaa; transform: scale(1.05); }
-
-  .contact p { color: #aaa; margin-bottom: 10px; }
-  .contact-btn { display: inline-block; background: #00ffff; color: #000; padding: 10px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; box-shadow: 0 0 15px #00ffff; transition: 0.3s; }
-  .contact-btn:hover { background: #000; color: #00ffff; box-shadow: 0 0 25px #00ffff; }
-  .socials { margin-top: 15px; }
-  .socials a { margin: 0 8px; color: #00ffff; text-decoration: none; transition: 0.3s; }
-  .socials a:hover { text-shadow: 0 0 8px #00ffff; }
-
-  /* === Partikül Arka Plan === */
   canvas#particle-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 </style>
 </head>
 <body>
 
-<!-- Partikül Canvas -->
+<!-- Partikül Arka Plan -->
 <canvas id="particle-canvas"></canvas>
 
-<div class="header">
-  <img src="katz.png" alt="KatzRead Logo" class="header-logo">
-  <h1>KatzRead</h1>
-  <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
+<!-- === SEKME MENÜ === -->
+<div class="tab-menu">
+  <button class="tab-btn active" data-tab="home">Ana Sayfa</button>
+  <button class="tab-btn" data-tab="about">Hakkımda</button>
+  <button class="tab-btn" data-tab="settings">Ayarlar</button>
+</div>
 
-  <div class="links">
-    <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
-    <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
-    <a href="https://x.com/katzread" target="_blank">Twitter</a>
-    <a href="https://kick.com/katzread" target="_blank">Kick</a>
-    <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
-    <a href="setup.html">Ekipman & Ayarlar ⚙️</a>
+<!-- === ANA SAYFA === -->
+<div id="home" class="tab-content active">
+  <div class="header">
+    <img src="katz.png" alt="KatzRead Logo" class="header-logo">
+    <h1>KatzRead</h1>
+    <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
+
+    <div class="links">
+      <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
+      <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
+      <a href="https://x.com/katzread" target="_blank">Twitter</a>
+      <a href="https://kick.com/katzread" target="_blank">Kick</a>
+      <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
+    </div>
+  </div>
+
+  <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
+
+  <div class="widget" id="katzWidget">
+    <h2>KatzRead</h2>
+    <div class="stat" id="elo">ELO: Yükleniyor...</div>
+    <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+    <table id="stats-table">
+      <thead>
+        <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
+      </thead>
+      <tbody><tr><td colspan="5">Yükleniyor...</td></tr></tbody>
+    </table>
   </div>
 </div>
 
-<img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
-
-<div class="widget" id="katzWidget">
-  <h2>KatzRead</h2>
-  <div class="stat" id="elo">ELO: Yükleniyor...</div>
-  <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
-  <table id="stats-table">
-    <thead>
-      <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
-    </thead>
-    <tbody>
-      <tr><td colspan="5">Yükleniyor...</td></tr>
-    </tbody>
-  </table>
+<!-- === HAKKIMDA === -->
+<div id="about" class="tab-content">
+  <div class="section-box">
+    <h2>Hakkımda</h2>
+    <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. 
+    <span class="highlight">FUT Turkuaz</span> takımında oynuyorum.  
+    Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum.  
+    Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
+  </div>
 </div>
 
-<!-- 💬 Kişisel Bölümler -->
-<section class="about-section">
-  <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum.  <strong><span class="highlight">FUT Turkuaz</span></strong> takımında oynuyorum.
-  Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum.  
-  Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
-</section>
-
-<section class="contact">
-  <p>İşbirliği veya takım teklifleri için:</p>
-  <a href="mailto:katzread@gmail.com" class="contact-btn">📧 katzread@gmail.com</a>
+<!-- === AYARLAR === -->
+<div id="settings" class="tab-content">
+  <div class="section-box">
+    <h2>Ayarlar</h2>
+    <p>Burada ileride fare efekti, widget otomatik yenileme aralığı, tema rengi gibi ayarları ekleyebilirsin.</p>
+    <p>💡 Örnek: <span class="highlight">Karanlık mod</span> veya <span class="highlight">Crosshair rengi</span> seçimi eklenebilir.</p>
   </div>
-</section>
+</div>
 
 <footer>© 2025 KatzRead</footer>
 
-<!-- Crosshair -->
 <div id="crosshair"><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div>
 
 <script>
 /* Crosshair */
-const crosshair = document.getElementById('crosshair');
-document.addEventListener('mousemove', e => {
-  crosshair.style.left = e.clientX + 'px';
-  crosshair.style.top = e.clientY + 'px';
+const crosshair=document.getElementById('crosshair');
+document.addEventListener('mousemove',e=>{
+  crosshair.style.left=e.clientX+'px';
+  crosshair.style.top=e.clientY+'px';
 });
 
 /* Partikül Arka Plan */
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
-
-let particles = [];
+const canvas=document.getElementById('particle-canvas');
+const ctx=canvas.getContext('2d');
+canvas.width=innerWidth; canvas.height=innerHeight;
+addEventListener('resize',()=>{canvas.width=innerWidth;canvas.height=innerHeight;});
+let particles=[];
 for(let i=0;i<100;i++){
-  particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2+1, dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5});
+  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5});
 }
 function animateParticles(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   particles.forEach(p=>{
     p.x+=p.dx; p.y+=p.dy;
-    if(p.x<0||p.x>canvas.width) p.dx*=-1;
-    if(p.y<0||p.y>canvas.height) p.dy*=-1;
+    if(p.x<0||p.x>canvas.width)p.dx*=-1;
+    if(p.y<0||p.y>canvas.height)p.dy*=-1;
     ctx.fillStyle="#00ffff22";
     ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
   });
@@ -267,46 +267,48 @@ function animateParticles(){
 }
 animateParticles();
 
-/* Faceit Widget */
-const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
-const nickname = "KatzRead";
-const MATCH_LIMIT = 30;
-const toggleBtn = document.getElementById("toggleBtn");
-const widgetDiv = document.getElementById("katzWidget");
-
-toggleBtn.addEventListener("click", () => {
-  if(widgetDiv.style.display === "none" || widgetDiv.style.display === ""){
-    widgetDiv.style.display = "block";
-    loadWidget();
-  } else { widgetDiv.style.display = "none"; }
+/* Sekme Geçişleri */
+const tabs=document.querySelectorAll('.tab-btn');
+const contents=document.querySelectorAll('.tab-content');
+tabs.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    tabs.forEach(b=>b.classList.remove('active'));
+    contents.forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
 });
 
-/* Otomatik yenileme */
-setInterval(()=>{ if(widgetDiv.style.display==="block"){ loadWidget(); } },30000);
+/* Widget */
+const apiKey="dc63f5ce-1360-4c87-882a-c3c988115063";
+const nickname="KatzRead";
+const MATCH_LIMIT=30;
+const toggleBtn=document.getElementById("toggleBtn");
+const widgetDiv=document.getElementById("katzWidget");
+toggleBtn.addEventListener("click",()=>{
+  if(widgetDiv.style.display==="none"||widgetDiv.style.display===""){widgetDiv.style.display="block";loadWidget();}
+  else{widgetDiv.style.display="none";}
+});
+setInterval(()=>{if(widgetDiv.style.display==="block"){loadWidget();}},30000);
 
-async function fetchJSON(url){
-  const res = await fetch(url,{ headers:{ Authorization: "Bearer "+apiKey } });
-  return await res.json();
-}
-
+async function fetchJSON(url){const res=await fetch(url,{headers:{Authorization:"Bearer "+apiKey}});return await res.json();}
 async function loadWidget(){
   try{
-    const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
-    const elo = playerData.games?.cs2?.faceit_elo || "N/A";
-    document.getElementById("elo").innerText = "ELO: "+elo;
-    const playerId = playerData.player_id;
-    const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
-    const matches = stats.lifetime?.Matches || "N/A";
-    document.getElementById("matches").innerText = "Toplam Maç: "+matches;
-    const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
-    const tbody = document.querySelector("#stats-table tbody");
+    const playerData=await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
+    const elo=playerData.games?.cs2?.faceit_elo||"N/A";
+    document.getElementById("elo").innerText="ELO: "+elo;
+    const playerId=playerData.player_id;
+    const stats=await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
+    const matches=stats.lifetime?.Matches||"N/A";
+    document.getElementById("matches").innerText="Toplam Maç: "+matches;
+    const history=await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
+    const tbody=document.querySelector("#stats-table tbody");
     tbody.innerHTML="";
     let totalKills=0,totalDeaths=0,totalADR=0,totalHS=0,totalRounds=0,matchCount=0;
-
     for(let i=0;i<history.items.length;i++){
-      const match = history.items[i];
+      const match=history.items[i];
       try{
-        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
+        const matchData=await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
         let kills=0,deaths=0,adrSum=0,hsSum=0,roundsPlayed=0;
         matchData.rounds?.forEach(r=>{
           r.teams.forEach(t=>{
@@ -322,17 +324,16 @@ async function loadWidget(){
           });
         });
         if(roundsPlayed>0){
-          const KD = deaths>0?(kills/deaths).toFixed(2):kills;
-          const hsPercent = kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
+          const KD=deaths>0?(kills/deaths).toFixed(2):kills;
+          const hsPercent=kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
           const tr=document.createElement("tr");
           tr.innerHTML=`<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum/roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;
           tbody.appendChild(tr);
           totalKills+=kills; totalDeaths+=deaths; totalADR+=(adrSum/roundsPlayed); totalHS+=kills>0?(hsSum/kills)*100:0;
           totalRounds+=roundsPlayed; matchCount++;
         }
-      }catch{ const tr=document.createElement("tr"); tr.innerHTML=`<td colspan="5">Veri yok</td>`; tbody.appendChild(tr); }
+      }catch{const tr=document.createElement("tr");tr.innerHTML=`<td colspan="5">Veri yok</td>`;tbody.appendChild(tr);}
     }
-
     if(matchCount>0){
       const avgKills=(totalKills/matchCount).toFixed(1);
       const avgDeaths=(totalDeaths/matchCount).toFixed(1);
@@ -344,7 +345,6 @@ async function loadWidget(){
       avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 2px #00ffff;border-top:2px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
       tbody.appendChild(avgRow);
     }
-
   }catch{
     document.getElementById("elo").innerText="ELO alınamadı";
     document.getElementById("matches").innerText="Toplam Maç: N/A";
