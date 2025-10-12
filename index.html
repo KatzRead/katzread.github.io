@@ -22,7 +22,7 @@
     border:2px solid #00ffff;
     border-radius:10px;
     padding:15px;
-    width:480px;
+    width:520px;
     box-shadow:0 0 15px #00ffff;
     text-align:center;
     color:#fff;
@@ -43,11 +43,6 @@
   .avg-row { font-weight:bold; background:#1a1a1a; color:#00ffff; }
   .W { color:#00ff00; font-weight:bold; }
   .L { color:#ff3333; font-weight:bold; }
-  .last5 {
-    margin-top:10px;
-    font-size:16px;
-    text-align:center;
-  }
 </style>
 </head>
 <body>
@@ -72,14 +67,12 @@
       <tr><td colspan="7">Yükleniyor...</td></tr>
     </tbody>
   </table>
-  <div class="last5" id="last5">Yükleniyor...</div>
 </div>
 
 <script>
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
 const MATCH_LIMIT = 30;
-const LAST5_LIMIT = 5;
 
 async function fetchJSON(url){
   const res = await fetch(url, { headers:{ Authorization:"Bearer "+apiKey } });
@@ -102,81 +95,38 @@ async function loadWidget(){
     tbody.innerHTML = "";
 
     let totalKills=0, totalDeaths=0, totalADR=0, totalHS=0, countMatches=0;
-    let lastFive = [];
 
     for(let i=0;i<history.items.length;i++){
       const match = history.items[i];
-      try{
-        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
 
-        if(!matchData.rounds || matchData.rounds.length === 0){
-          // Round verisi yoksa maçı atla
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td colspan="7">Veri yok</td>`;
-          tbody.appendChild(tr);
-          continue;
-        }
+      let win = match.teams ? (match.teams[0].team_id === match.results?.winner ? "W" : "L") : "-";
+      // Maç istatistikleri bazen eksik olabilir, yoksa placeholder koy
+      const kills = match.stats?.Kills || 0;
+      const deaths = match.stats?.Deaths || 0;
+      const adr = match.stats?.ADR || 0;
+      const hsPercent = match.stats?.HS ? ((match.stats.HS/kills)*100).toFixed(1)+"%" : "-";
 
-        let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
-        let playerTeamIndex = null;
+      totalKills += kills;
+      totalDeaths += deaths;
+      totalADR += adr;
+      totalHS += match.stats?.HS || 0;
+      countMatches++;
 
-        // Roundları kontrol et ve oyuncuyu bul
-        matchData.rounds.forEach(r=>{
-          r.teams.forEach((t, teamIndex)=>{
-            t.players.forEach(p=>{
-              if(p.nickname === nickname){
-                kills += Number(p.player_stats.Kills || 0);
-                deaths += Number(p.player_stats.Deaths || 0);
-                adrSum += Number(p.player_stats.ADR || 0);
-                hsSum += Number(p.player_stats.Headshots || 0);
-                roundsPlayed += 1;
-                playerTeamIndex = teamIndex;
-              }
-            });
-          });
-        });
+      const KD = deaths>0 ? (kills/deaths).toFixed(2) : kills;
 
-        // Kazananı round skorlarından hesapla
-        const team1Score = matchData.rounds.reduce((a,r)=> a + Number(r.teams[0].team_stats.Score || 0),0);
-        const team2Score = matchData.rounds.reduce((a,r)=> a + Number(r.teams[1].team_stats.Score || 0),0);
-        const win = (playerTeamIndex===0 && team1Score>team2Score) || (playerTeamIndex===1 && team2Score>team1Score);
-
-        // Son 5 maç için array
-        if(lastFive.length < LAST5_LIMIT){
-          lastFive.push(win ? 'W' : 'L');
-        }
-
-        if(roundsPlayed>0){
-          totalKills += kills;
-          totalDeaths += deaths;
-          totalADR += adrSum/roundsPlayed;
-          totalHS += hsSum;
-          countMatches++;
-        }
-
-        const KD = deaths>0 ? (kills/deaths).toFixed(2) : kills;
-        const hsPercent = kills>0 ? ((hsSum/kills)*100).toFixed(1)+"%" : "-";
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${i+1}</td>
-          <td class="${win ? 'W' : 'L'}">${win ? 'W' : 'L'}</td>
-          <td>${kills}</td>
-          <td>${deaths}</td>
-          <td>${KD}</td>
-          <td>${roundsPlayed>0 ? (adrSum/roundsPlayed).toFixed(1) : "-"}</td>
-          <td>${hsPercent}</td>
-        `;
-        tbody.appendChild(tr);
-
-      }catch(e){
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td colspan="7">Veri yok</td>`;
-        tbody.appendChild(tr);
-      }
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${i+1}</td>
+        <td class="${win}">${win}</td>
+        <td>${kills}</td>
+        <td>${deaths}</td>
+        <td>${KD}</td>
+        <td>${adr}</td>
+        <td>${hsPercent}</td>
+      `;
+      tbody.appendChild(tr);
     }
 
-    // Ortalama satırı
     if(countMatches>0){
       const avgKills = (totalKills/countMatches).toFixed(1);
       const avgDeaths = (totalDeaths/countMatches).toFixed(1);
@@ -187,7 +137,8 @@ async function loadWidget(){
       const avgTr = document.createElement("tr");
       avgTr.className = "avg-row";
       avgTr.innerHTML = `
-        <td colspan="2">Ortalama</td>
+        <td>Ortalama</td>
+        <td>-</td>
         <td>${avgKills}</td>
         <td>${avgDeaths}</td>
         <td>${avgKD}</td>
@@ -197,16 +148,17 @@ async function loadWidget(){
       tbody.appendChild(avgTr);
     }
 
-    // Son 5 maç W/L gösterimi (Strugly formatı)
-    let lastFiveHTML = '';
-    lastFive.forEach(r=>{
-      lastFiveHTML += r === 'W' ? '<span class="W">W</span> ' : '<span class="L">L</span> ';
-    });
-    document.getElementById("last5").innerHTML = lastFiveHTML;
-
   }catch(err){
     console.error(err);
     document.getElementById("elo").innerText = "ELO alınamadı";
     document.getElementById("matches").innerText = "Toplam Maç: N/A";
     const tbody = document.querySelector("#stats-table tbody");
-    tbody.innerHTML = `<tr><td colspan="7">Veri alınamad
+    tbody.innerHTML = `<tr><td colspan="7">Veri alınamadı</td></tr>`;
+  }
+}
+
+loadWidget();
+</script>
+
+</body>
+</html>
