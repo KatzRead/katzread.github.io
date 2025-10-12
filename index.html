@@ -8,7 +8,9 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
-  :root { --accent: #00ffff; }
+  :root {
+    --accent: #00ffff;
+  }
 
   body {
     margin: 0;
@@ -19,6 +21,7 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
   }
 
   header {
@@ -28,9 +31,18 @@
     width: 100%;
   }
 
-  h1 { margin: 0; color: var(--accent); }
+  h1 {
+    margin: 0;
+    color: var(--accent);
+  }
 
-  nav { display: flex; justify-content: center; flex-wrap: wrap; margin: 15px 0; gap: 15px; }
+  nav {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+    gap: 15px;
+  }
+
   nav button {
     background: none;
     border: 2px solid var(--accent);
@@ -40,32 +52,42 @@
     cursor: pointer;
     transition: all 0.3s;
   }
-  nav button:hover, nav button.active { background: var(--accent); color: #000; }
+
+  nav button:hover, nav button.active {
+    background: var(--accent);
+    color: #000;
+  }
 
   section {
     display: none;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
     width: 90%;
-    max-width: 1000px;
+    max-width: 900px;
+    animation: fade 0.5s ease-in-out;
   }
-  section.active { display: block; opacity: 1; transform: translateY(0); }
 
-  /* Split view carousel */
-  .split-container {
-    display: flex;
+  section.active {
+    display: block;
+  }
+
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  iframe {
+    width: 100%;
+    height: 420px;
+    border: none;
+    border-radius: 10px;
+  }
+
+  /* --- Ekipman kartları --- */
+  .equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
-    overflow-x: auto;
-    padding: 10px 0;
-    scroll-snap-type: x mandatory;
+    margin-top: 20px;
   }
-  .split-container::-webkit-scrollbar { display: none; }
-  .split-widget, .split-equipment { flex: 0 0 auto; scroll-snap-align: start; }
-  .split-widget { min-width: 300px; max-width: 400px; }
-  .split-equipment { min-width: 300px; max-width: 600px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 15px; }
-
-  iframe { width: 100%; height: 420px; border-radius: 10px; border: none; }
 
   .equipment-card {
     background: #111;
@@ -75,35 +97,50 @@
     padding: 15px;
     transition: transform 0.3s, box-shadow 0.3s;
   }
-  .equipment-card:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--accent); }
 
-  @media (hover: none) {
-    .equipment-card:hover { transform: none; box-shadow: none; }
-    iframe { height: 300px; }
+  .equipment-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--accent);
   }
 
-  .equipment-card img { width: 100%; max-width: 160px; border-radius: 8px; }
-  .equipment-card h3 { color: var(--accent); margin: 10px 0 5px; }
-  .equipment-card p { font-size: 14px; color: #bbb; }
+  .equipment-card img {
+    width: 100%;
+    max-width: 160px;
+    border-radius: 8px;
+  }
 
-  /* Tema seçenekleri */
+  .equipment-card h3 {
+    color: var(--accent);
+    margin: 10px 0 5px;
+  }
+
+  .equipment-card p {
+    font-size: 14px;
+    color: #bbb;
+  }
+
+  /* Tema renkleri */
   .theme-option {
     display: inline-block;
     margin: 10px;
-    width: 40px; height: 40px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: 3px solid #fff;
     cursor: pointer;
     transition: transform 0.2s;
   }
-  .theme-option:hover { transform: scale(1.15); }
+
+  .theme-option:hover {
+    transform: scale(1.15);
+  }
+
   .turkuaz { background-color: #00ffff; }
   .mor { background-color: #9b5de5; }
   .kirmizi { background-color: #ff3b3b; }
 </style>
 </head>
 <body>
-
 <header>
   <h1>KatzRead</h1>
 </header>
@@ -114,121 +151,72 @@
   <button onclick="showTab('ayarlar')">Ayarlar</button>
 </nav>
 
-<!-- Ana Sayfa: Split View -->
 <section id="ana" class="active">
-  <div class="split-container">
-    <div class="split-widget">
-      <iframe src="https://strugly.com/inc/widget.php?widget_type=widget-renew-2&player=02b26fe9-49d1-47e7-afa0-1b5c562ca4e2&secret=f597facb42096d1abfffec7a73b66903"></iframe>
-    </div>
-    <div class="split-equipment equipment-grid">
-      <div class="equipment-card">
-        <img src="mouse.jpg" alt="Mouse">
-        <h3>Logitech G Pro X Superlight</h3>
-        <p>800 DPI — 1.6 sens — 1000Hz polling rate</p>
-      </div>
-      <div class="equipment-card">
-        <img src="keyboard.jpg" alt="Klavye">
-        <h3>Wooting 60HE</h3>
-        <p>Analog tuş desteği — Rapid Trigger açık</p>
-      </div>
-      <div class="equipment-card">
-        <img src="monitor.jpg" alt="Monitör">
-        <h3>ZOWIE XL2546K</h3>
-        <p>240Hz — DyAc ON — Black Equalizer 5</p>
-      </div>
-      <div class="equipment-card">
-        <img src="headset.jpg" alt="Kulaklık">
-        <h3>HyperX Cloud II</h3>
-        <p>7.1 kapalı — volume 70%</p>
-      </div>
-      <div class="equipment-card">
-        <img src="crosshair.png" alt="Crosshair">
-        <h3>Crosshair</h3>
-        <p>CS2 Kod: <code id="crosshairCode">CSGO-abc123-xyz789</code></p>
-        <button onclick="copyCrosshair()" style="margin-top:5px; padding:5px 10px; border:none; border-radius:6px; background:var(--accent); color:#000; cursor:pointer;">Kopyala</button>
-      </div>
-    </div>
-  </div>
+  <iframe src="https://strugly.com/inc/widget.php?widget_type=widget-renew-2&player=02b26fe9-49d1-47e7-afa0-1b5c562ca4e2&secret=f597facb42096d1abfffec7a73b66903"></iframe>
 </section>
 
-<!-- Ekipman & Ayarlar sekmesi -->
 <section id="ekipman">
   <h2>Ekipman & Ayarlar</h2>
   <div class="equipment-grid">
-    <!-- Ekipman kartları aynısı burada tekrar edilebilir veya farklı içerik -->
+    <div class="equipment-card">
+      <img src="mouse.jpg" alt="Mouse">
+      <h3>Logitech G Pro X Superlight</h3>
+      <p>800 DPI — 1.6 sens — 1000Hz polling rate</p>
+    </div>
+
+    <div class="equipment-card">
+      <img src="keyboard.jpg" alt="Klavye">
+      <h3>Wooting 60HE</h3>
+      <p>Analog tuş desteği — Rapid Trigger açık</p>
+    </div>
+
+    <div class="equipment-card">
+      <img src="monitor.jpg" alt="Monitör">
+      <h3>ZOWIE XL2546K</h3>
+      <p>240Hz — DyAc ON — Black Equalizer 5</p>
+    </div>
+
+    <div class="equipment-card">
+      <img src="headset.jpg" alt="Kulaklık">
+      <h3>HyperX Cloud II</h3>
+      <p>7.1 kapalı — volume 70%</p>
+    </div>
+
+    <div class="equipment-card">
+      <img src="crosshair.png" alt="Crosshair">
+      <h3>Crosshair</h3>
+      <p>CS2 Kod: <code>CSGO-abc123-xyz789</code></p>
+    </div>
   </div>
 </section>
 
-<!-- Ayarlar sekmesi -->
 <section id="ayarlar">
-  <h2>Site Ayarları</h2>
-  <p>Tema Rengi:</p>
+  <h2>Tema Rengi</h2>
+  <p>Site temasını seç:</p>
   <div>
     <div class="theme-option turkuaz" onclick="setTheme('#00ffff')"></div>
     <div class="theme-option mor" onclick="setTheme('#9b5de5')"></div>
     <div class="theme-option kirmizi" onclick="setTheme('#ff3b3b')"></div>
   </div>
-
-  <p style="margin-top:20px;">Animasyonlar:</p>
-  <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
-    <input type="checkbox" id="toggleAnimation" checked>
-    Animasyonları Aç / Kapa
-  </label>
 </section>
 
 <script>
 function showTab(id) {
-  const current = document.querySelector("section.active");
-  const next = document.getElementById(id);
-  if(current === next) return;
-
-  current.style.opacity = 0;
-  current.style.transform = "translateY(10px)";
-  setTimeout(() => {
-    current.classList.remove("active");
-    next.classList.add("active");
-    next.style.opacity = 0;
-    next.style.transform = "translateY(10px)";
-    setTimeout(() => {
-      next.style.opacity = 1;
-      next.style.transform = "translateY(0)";
-    }, 50);
-  }, 200);
-
+  document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
   document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
   event.target.classList.add("active");
 }
 
-// Tema değiştirme
 function setTheme(color) {
   document.documentElement.style.setProperty("--accent", color);
   localStorage.setItem("katz_theme", color);
 }
 
-// Crosshair kodu kopyalama
-function copyCrosshair() {
-  const code = document.getElementById("crosshairCode").innerText;
-  navigator.clipboard.writeText(code).then(() => alert("Crosshair kodu kopyalandı!"));
-}
-
-// Animasyon aç/kapa
-const animCheckbox = document.getElementById("toggleAnimation");
-animCheckbox.addEventListener("change", () => {
-  if(animCheckbox.checked){
-    document.querySelectorAll("section").forEach(sec => sec.style.transition = "");
-    document.querySelectorAll(".equipment-card").forEach(card => card.style.transition = "");
-  } else {
-    document.querySelectorAll("section").forEach(sec => sec.style.transition = "none");
-    document.querySelectorAll(".equipment-card").forEach(card => card.style.transition = "none");
-  }
-});
-
-// Sayfa yüklendiğinde kaydedilen tema
 window.addEventListener("load", () => {
   const saved = localStorage.getItem("katz_theme");
   if (saved) document.documentElement.style.setProperty("--accent", saved);
 });
 </script>
-
 </body>
 </html>
