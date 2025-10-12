@@ -228,15 +228,56 @@
 <div id="settings" class="tab-content">
   <div class="section-box">
     <h2>Ayarlar</h2>
-    <p>Burada ileride fare efekti, widget otomatik yenileme aralığı, tema rengi gibi ayarları ekleyebilirsin.</p>
-    <p>💡 Örnek: <span class="highlight">Karanlık mod</span> veya <span class="highlight">Crosshair rengi</span> seçimi eklenebilir.</p>
+    <p>Burada fare efekti, widget otomatik yenileme aralığı ve tema rengi ayarlarını yapabilirsiniz.</p>
+
+    <h3>Ekipman Renkleri</h3>
+    <div id="equipmentColors" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:15px;">
+      <div class="equip-bubble" data-color="#00ffff" title="Mouse"></div>
+      <div class="equip-bubble" data-color="#ff3b3b" title="Klavye"></div>
+      <div class="equip-bubble" data-color="#9b5de5" title="Monitör"></div>
+      <div class="equip-bubble" data-color="#ffb703" title="Kulaklık"></div>
+      <div class="equip-bubble" data-color="#00ff00" title="Crosshair"></div>
+    </div>
   </div>
 </div>
 
-<footer>© 2025 KatzRead</footer>
+<style>
+.equip-bubble {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.equip-bubble:hover { transform: scale(1.2); box-shadow: 0 0 10px #00ffff; }
+.equip-bubble.selected { border: 3px solid #00ffff; box-shadow: 0 0 15px #00ffff; }
+</style>
 
-<div id="crosshair"><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div>
+<script>
+// Ekipman baloncukları tıklama
+const equipBubbles = document.querySelectorAll('.equip-bubble');
+const crosshairDiv = document.getElementById('crosshair');
+const widgetDiv = document.getElementById('katzWidget');
 
+equipBubbles.forEach(bubble => {
+  // Balon rengini uygulama
+  bubble.style.backgroundColor = bubble.dataset.color;
+
+  bubble.addEventListener('click', () => {
+    equipBubbles.forEach(b => b.classList.remove('selected'));
+    bubble.classList.add('selected');
+
+    const color = bubble.dataset.color;
+    // Crosshair rengini değiştir
+    crosshairDiv.querySelectorAll('div').forEach(d => d.style.backgroundColor = color);
+    crosshairDiv.querySelectorAll('div').forEach(d => d.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}`);
+
+    // Widget border rengini değiştir
+    widgetDiv.style.borderColor = color;
+    widgetDiv.style.boxShadow = `0 0 15px ${color}`;
+  });
+});
+</script>
 <script>
 /* Crosshair */
 const crosshair=document.getElementById('crosshair');
