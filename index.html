@@ -8,7 +8,7 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
-  /* Body ve genel stil */
+  /* Body ve genel imleç */
   body {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
@@ -19,17 +19,23 @@
     cursor: none; /* normal imleç gizle */
   }
 
+  /* Tüm tıklanabilir öğelerde imleci gizle */
+  a, button, input, select, textarea {
+    cursor: none;
+  }
+
   /* Başlık ve linkler */
   .header {
     padding-top: 30px;
   }
 
+  /* Logo */
   .header-logo {
-    width: 140px;
+    width: 120px;
     margin: 0 auto 12px auto;
     border-radius: 10%;
     padding: 5px;
-    background: rgba(0,255,255,0.2);
+    background: rgba(0,255,255,0.2); /* neon mavi arka plan */
     box-shadow:
       0 0 5px #00ffff,
       0 0 15px #00ffff,
@@ -68,11 +74,8 @@
     text-shadow: 0 0 15px #00ffff;
     margin: 0;
   }
-  p {
-    font-size: 1.2em;
-    color: #ccc;
-    margin-top: 5px;
-  }
+
+  p { font-size: 1.2em; color: #ccc; margin-top: 5px; }
 
   .links {
     margin-top: 20px;
@@ -125,28 +128,34 @@
     color: #fff;
     font-size: 14px;
   }
-  .widget h2 {
+
+  .widget h2 { 
     margin: 0;
     font-size: 1.3em;
     color: #00ffff;
     text-shadow: 0 0 8px #00ffff;
   }
+
   .stat { margin-top: 8px; font-size: 0.9em; }
+
   table {
     width: 100%;
     margin-top: 8px;
     border-collapse: collapse;
     font-size: 13px;
   }
+
   th, td {
     border: 1px solid #00ffff;
     padding: 4px;
     text-align: center;
   }
+
   th { background: #4B4B4B; font-size: 12px; }
+
   .avg-row { font-weight: bold; background: #1a1a1a; color: #00ffff; }
 
-  /* Scroll kaldırıldı */
+  /* Scroll kaldırıldı, tbody normal */
   .widget table tbody {
     display: table;
     width: 100%;
@@ -157,10 +166,16 @@
     table-layout: fixed;
   }
 
+  @media (max-width: 600px) {
+    h1 { font-size: 2em; }
+    .links a { padding: 8px 14px; margin: 5px; }
+    .header-logo { width: 60px; }
+  }
+
   /* Crosshair divi */
   #crosshair {
     position: fixed;
-    width: 24px;
+    width: 24px;   
     height: 24px;
     pointer-events: none;
     top: 0;
@@ -177,28 +192,15 @@
   #crosshair .bottom { width: 2px; height: 8px; bottom: 0; left: 50%; transform: translateX(-50%); }
   #crosshair .left { width: 8px; height: 2px; left: 0; top: 50%; transform: translateY(-50%); }
   #crosshair .right { width: 8px; height: 2px; right: 0; top: 50%; transform: translateY(-50%); }
-
-  @media (max-width: 600px) {
-    h1 { font-size: 2em; }
-    .links a { padding: 8px 14px; margin: 5px; }
-    .header-logo { width: 80px; }
-  }
 </style>
 </head>
 <body>
-
-<!-- Crosshair -->
-<div id="crosshair">
-  <div class="top"></div>
-  <div class="bottom"></div>
-  <div class="left"></div>
-  <div class="right"></div>
-</div>
 
 <div class="header">
   <img src="katz.png" alt="KatzRead Logo" class="header-logo">
   <h1>KatzRead</h1>
   <p>CS2 oyuncusu • Lurker • FUT Turkuaz</p>
+
   <div class="links">
     <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
     <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
@@ -208,12 +210,10 @@
   </div>
 </div>
 
-<!-- Faceit logosu -->
 <img id="toggleBtn" 
      src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" 
      alt="Faceit Logo">
 
-<!-- Widget -->
 <div class="widget" id="katzWidget">
   <h2>KatzRead</h2>
   <div class="stat" id="elo">ELO: Yükleniyor...</div>
@@ -236,98 +236,107 @@
 
 <footer>© 2025 KatzRead</footer>
 
+<!-- Crosshair -->
+<div id="crosshair">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
+
 <script>
-const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
-const nickname = "KatzRead";
-const MATCH_LIMIT = 30;
+  // Crosshair hareketi
+  const crosshair = document.getElementById('crosshair');
+  document.addEventListener('mousemove', e => {
+    crosshair.style.left = e.clientX + 'px';
+    crosshair.style.top = e.clientY + 'px';
+  });
 
-const toggleBtn = document.getElementById("toggleBtn");
-const widgetDiv = document.getElementById("katzWidget");
+  // Widget için Faceit API
+  const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
+  const nickname = "KatzRead";
+  const MATCH_LIMIT = 30;
 
-toggleBtn.addEventListener("click", () => {
-  if(widgetDiv.style.display==="none"){
-    widgetDiv.style.display="block";
-    loadWidget();
-  } else {
-    widgetDiv.style.display="none";
+  const toggleBtn = document.getElementById("toggleBtn");
+  const widgetDiv = document.getElementById("katzWidget");
+
+  toggleBtn.addEventListener("click", () => {
+    if(widgetDiv.style.display==="none"){
+      widgetDiv.style.display="block";
+      loadWidget();
+    } else {
+      widgetDiv.style.display="none";
+    }
+  });
+
+  async function fetchJSON(url){
+    const res = await fetch(url, { headers:{ Authorization:"Bearer "+apiKey } });
+    return await res.json();
   }
-});
 
-async function fetchJSON(url){
-  const res = await fetch(url, { headers:{ Authorization:"Bearer "+apiKey } });
-  return await res.json();
-}
+  async function loadWidget(){
+    try {
+      const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
+      const elo = playerData.games?.cs2?.faceit_elo || "N/A";
+      document.getElementById("elo").innerText = "ELO: " + elo;
+      const playerId = playerData.player_id;
 
-async function loadWidget(){
-  try {
-    const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
-    const elo = playerData.games?.cs2?.faceit_elo || "N/A";
-    document.getElementById("elo").innerText = "ELO: " + elo;
-    const playerId = playerData.player_id;
+      const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
+      const matches = stats.lifetime?.Matches || "N/A";
+      document.getElementById("matches").innerText = "Toplam Maç: " + matches;
 
-    const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
-    const matches = stats.lifetime?.Matches || "N/A";
-    document.getElementById("matches").innerText = "Toplam Maç: " + matches;
+      const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
+      const tbody = document.querySelector("#stats-table tbody");
+      tbody.innerHTML = "";
 
-    const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
-    const tbody = document.querySelector("#stats-table tbody");
-    tbody.innerHTML = "";
+      for(let i=0;i<history.items.length;i++){
+        const match = history.items[i];
+        try{
+          const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
+          let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
 
-    for(let i=0;i<history.items.length;i++){
-      const match = history.items[i];
-      try{
-        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
-        let kills=0, deaths=0, adrSum=0, hsSum=0, roundsPlayed=0;
-
-        matchData.rounds?.forEach(r=>{
-          r.teams.forEach(t=>{
-            t.players.forEach(p=>{
-              if(p.nickname===nickname){
-                kills += Number(p.player_stats.Kills||0);
-                deaths += Number(p.player_stats.Deaths||0);
-                adrSum += Number(p.player_stats.ADR||0);
-                hsSum += Number(p.player_stats.Headshots||0);
-                roundsPlayed +=1;
-              }
+          matchData.rounds?.forEach(r=>{
+            r.teams.forEach(t=>{
+              t.players.forEach(p=>{
+                if(p.nickname===nickname){
+                  kills += Number(p.player_stats.Kills||0);
+                  deaths += Number(p.player_stats.Deaths||0);
+                  adrSum += Number(p.player_stats.ADR||0);
+                  hsSum += Number(p.player_stats.Headshots||0);
+                  roundsPlayed +=1;
+                }
+              });
             });
           });
-        });
 
-        const KD = deaths>0 ? (kills/deaths).toFixed(2) : kills;
-        const hsPercent = kills>0 ? ((hsSum/kills)*100).toFixed(1)+"%" : "-";
+          const KD = deaths>0 ? (kills/deaths).toFixed(2) : kills;
+          const hsPercent = kills>0 ? ((hsSum/kills)*100).toFixed(1)+"%" : "-";
 
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${kills}</td>
-          <td>${deaths}</td>
-          <td>${KD}</td>
-          <td>${roundsPlayed>0 ? (adrSum/roundsPlayed).toFixed(1) : "-"}</td>
-          <td>${hsPercent}</td>
-        `;
-        tbody.appendChild(tr);
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${kills}</td>
+            <td>${deaths}</td>
+            <td>${KD}</td>
+            <td>${roundsPlayed>0 ? (adrSum/roundsPlayed).toFixed(1) : "-"}</td>
+            <td>${hsPercent}</td>
+          `;
+          tbody.appendChild(tr);
 
-      }catch(e){
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td colspan="5">Veri yok</td>`;
-        tbody.appendChild(tr);
+        }catch(e){
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="5">Veri yok</td>`;
+          tbody.appendChild(tr);
+        }
       }
+
+    }catch(err){
+      console.error(err);
+      document.getElementById("elo").innerText = "ELO alınamadı";
+      document.getElementById("matches").innerText = "Toplam Maç: N/A";
+      const tbody = document.querySelector("#stats-table tbody");
+      tbody.innerHTML = `<tr><td colspan="5">Veri alınamadı</td></tr>`;
     }
-
-  }catch(err){
-    console.error(err);
-    document.getElementById("elo").innerText = "ELO alınamadı";
-    document.getElementById("matches").innerText = "Toplam Maç: N/A";
-    const tbody = document.querySelector("#stats-table tbody");
-    tbody.innerHTML = `<tr><td colspan="5">Veri alınamadı</td></tr>`;
   }
-}
-
-// Crosshair takip scripti
-const crosshair = document.getElementById('crosshair');
-document.addEventListener('mousemove', e => {
-  crosshair.style.left = e.clientX + 'px';
-  crosshair.style.top = e.clientY + 'px';
-});
 </script>
 
 </body>
