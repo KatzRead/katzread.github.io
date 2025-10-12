@@ -19,6 +19,13 @@
     cursor: none;
     overflow-x: hidden;
     position: relative;
+    animation: fadeIn 1s ease-out;
+  }
+
+  /* Fade-in animasyonu */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* Tüm tıklanabilir öğelerde imleci gizle */
@@ -26,7 +33,6 @@
     cursor: none !important;
   }
 
-  /* Başlık ve linkler */
   .header { padding-top: 30px; }
 
   /* Logo */
@@ -144,8 +150,14 @@
   #crosshair .left { width: 8px; height: 2px; left: 0; top: 50%; transform: translateY(-50%); }
   #crosshair .right { width: 8px; height: 2px; right: 0; top: 50%; transform: translateY(-50%); }
 
-  /* 💬 Kişisel & Sosyal Bölümler */
-  .about-section, .achievements, .contact {
+  #crosshair.fire {
+    transform: translate(-50%, -50%) scale(1.6);
+    filter: brightness(2);
+    transition: transform 0.1s ease, filter 0.1s ease;
+  }
+
+  /* Kişisel & Sosyal Bölümler */
+  .about-section, .contact, .settings {
     max-width: 800px;
     margin: 60px auto;
     text-align: center;
@@ -156,7 +168,7 @@
     box-shadow: 0 0 15px #00ffff66;
   }
 
-  .about-section h2, .achievements h2, .contact h2 {
+  .about-section h2, .contact h2, .settings h2 {
     color: #00ffff;
     font-size: 1.8em;
     text-shadow: 0 0 10px #00ffff;
@@ -166,18 +178,48 @@
   .about-section p { color: #ccc; line-height: 1.6; font-size: 1.05em; }
   .highlight { color: #00ffff; text-shadow: 0 0 8px #00ffff; font-weight: bold; }
 
-  .achieve-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 15px; }
-  .card { background: rgba(0,255,255,0.08); border: 1px solid #00ffff55; padding: 12px; border-radius: 10px; transition: 0.3s; color: #e0e0e0; font-size: 0.95em; }
-  .card:hover { background: rgba(0,255,255,0.2); box-shadow: 0 0 12px #00ffffaa; transform: scale(1.05); }
+  /* Ekipman & Ayarlar */
+  .setup-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+  }
+  .setup-card {
+    background: rgba(0,255,255,0.08);
+    border: 1px solid #00ffff55;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .setup-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px #00ffff88;
+  }
+  .setup-card h3 {
+    color: #00ffff;
+    text-shadow: 0 0 8px #00ffff;
+    margin-bottom: 10px;
+  }
+  .setup-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .setup-card li {
+    margin: 8px 0;
+    font-size: 1em;
+    color: #ccc;
+  }
+  .crosshair-code {
+    background: rgba(0,255,255,0.15);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-family: monospace;
+    color: #00ffff;
+  }
 
-  .contact p { color: #aaa; margin-bottom: 10px; }
-  .contact-btn { display: inline-block; background: #00ffff; color: #000; padding: 10px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; box-shadow: 0 0 15px #00ffff; transition: 0.3s; }
-  .contact-btn:hover { background: #000; color: #00ffff; box-shadow: 0 0 25px #00ffff; }
-  .socials { margin-top: 15px; }
-  .socials a { margin: 0 8px; color: #00ffff; text-decoration: none; transition: 0.3s; }
-  .socials a:hover { text-shadow: 0 0 8px #00ffff; }
-
-  /* === Partikül Arka Plan === */
+  /* Partikül Arka Plan */
   canvas#particle-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 </style>
 </head>
@@ -216,23 +258,54 @@
   </table>
 </div>
 
-<!-- 💬 Kişisel Bölümler -->
 <section class="about-section">
-  <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum.  <strong><span class="highlight">FUT Turkuaz</span></strong> takımında oynuyorum.
+  <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum.  
+  <strong><span class="highlight">FUT Turkuaz</span></strong> takımında oynuyorum.
   Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum.  
   Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
+</section>
+
+<!-- 💠 Ekipman & Ayarlar Bölümü -->
+<section class="settings">
+  <h2>🎮 Ekipman & Ayarlar</h2>
+  <div class="setup-grid">
+    <div class="setup-card">
+      <h3>🖱️ Donanım</h3>
+      <ul>
+        <li><strong>Mouse:</strong> Razer Viper V2 Pro (800 DPI, 1.2 sens)</li>
+        <li><strong>Klavye:</strong> Wooting 60HE</li>
+        <li><strong>Mousepad:</strong> Artisan Zero Soft XL</li>
+        <li><strong>Kulaklık:</strong> HyperX Cloud Alpha</li>
+        <li><strong>Monitör:</strong> Zowie XL2546K (240Hz)</li>
+      </ul>
+    </div>
+
+    <div class="setup-card">
+      <h3>⚙️ Oyun Ayarları</h3>
+      <ul>
+        <li><strong>Resolution:</strong> 1280x960 (4:3 Stretched)</li>
+        <li><strong>Viewmodel:</strong> 2 2 1.5 0 1</li>
+        <li><strong>Crosshair:</strong> <span class="crosshair-code">CSGO-ytrrJ-sZViN-t8VxM-dqTfD-OkNyN</span></li>
+        <li><strong>Bob:</strong> 0; <strong>Cl_righthand:</strong> 1</li>
+        <li><strong>Launch Options:</strong> -novid -freq 240 -tickrate 128</li>
+      </ul>
+    </div>
+  </div>
 </section>
 
 <section class="contact">
   <p>İşbirliği veya takım teklifleri için:</p>
   <a href="mailto:katzread@gmail.com" class="contact-btn">📧 katzread@gmail.com</a>
-  </div>
 </section>
 
 <footer>© 2025 KatzRead</footer>
 
-<!-- Crosshair -->
-<div id="crosshair"><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div>
+<div id="crosshair">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
 
 <script>
 /* Crosshair */
@@ -240,6 +313,12 @@ const crosshair = document.getElementById('crosshair');
 document.addEventListener('mousemove', e => {
   crosshair.style.left = e.clientX + 'px';
   crosshair.style.top = e.clientY + 'px';
+});
+
+/* Crosshair Fire Effect */
+document.addEventListener('click', () => {
+  crosshair.classList.add('fire');
+  setTimeout(() => crosshair.classList.remove('fire'), 100);
 });
 
 /* Partikül Arka Plan */
@@ -305,50 +384,25 @@ async function loadWidget(){
     for(let i=0;i<history.items.length;i++){
       const match = history.items[i];
       try{
-        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
-        let kills=0,deaths=0,adrSum=0,hsSum=0,roundsPlayed=0;
-        matchData.rounds?.forEach(r=>{
-          r.teams.forEach(t=>{
-            t.players.forEach(p=>{
-              if(p.nickname===nickname){
-                kills+=Number(p.player_stats.Kills||0);
-                deaths+=Number(p.player_stats.Deaths||0);
-                adrSum+=Number(p.player_stats.ADR||0);
-                hsSum+=Number(p.player_stats.Headshots||0);
-                roundsPlayed++;
-              }
-            });
-          });
-        });
-        if(roundsPlayed>0){
-          const KD = deaths>0?(kills/deaths).toFixed(2):kills;
-          const hsPercent = kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
-          const tr=document.createElement("tr");
-          tr.innerHTML=`<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum/roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;
-          tbody.appendChild(tr);
-          totalKills+=kills; totalDeaths+=deaths; totalADR+=(adrSum/roundsPlayed); totalHS+=kills>0?(hsSum/kills)*100:0;
-          totalRounds+=roundsPlayed; matchCount++;
+        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}`);
+        const player = matchData.teams.faction1.roster.find(p=>p.nickname===nickname) || matchData.teams.faction2.roster.find(p=>p.nickname===nickname);
+        if(player && player.player_stats){
+          const s=player.player_stats;
+          const kills=parseInt(s.Kills), deaths=parseInt(s.Deaths);
+          const adr=parseFloat(s.ADR), hs=parseFloat(s["Headshots %"]);
+          totalKills+=kills; totalDeaths+=deaths; totalADR+=adr; totalHS+=hs;
+          totalRounds+=parseInt(s["Rounds Played"]); matchCount++;
+          tbody.innerHTML+=`<tr><td>${kills}</td><td>${deaths}</td><td>${(kills/deaths).toFixed(2)}</td><td>${adr}</td><td>${hs}%</td></tr>`;
         }
-      }catch{ const tr=document.createElement("tr"); tr.innerHTML=`<td colspan="5">Veri yok</td>`; tbody.appendChild(tr); }
+      }catch(e){}
     }
-
     if(matchCount>0){
-      const avgKills=(totalKills/matchCount).toFixed(1);
-      const avgDeaths=(totalDeaths/matchCount).toFixed(1);
       const avgKD=(totalKills/totalDeaths).toFixed(2);
       const avgADR=(totalADR/matchCount).toFixed(1);
-      const avgHS=(totalHS/matchCount).toFixed(1)+"%";
-      const avgRow=document.createElement("tr");
-      avgRow.classList.add("avg-row");
-      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 2px #00ffff;border-top:2px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
-      tbody.appendChild(avgRow);
+      const avgHS=(totalHS/matchCount).toFixed(1);
+      tbody.innerHTML+=`<tr class="avg-row"><td colspan="2">Averages</td><td>${avgKD}</td><td>${avgADR}</td><td>${avgHS}%</td></tr>`;
     }
-
-  }catch{
-    document.getElementById("elo").innerText="ELO alınamadı";
-    document.getElementById("matches").innerText="Toplam Maç: N/A";
-    document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
-  }
+  }catch(e){ console.error(e); document.querySelector("#stats-table tbody").innerHTML="<tr><td colspan='5'>Veri alınamadı.</td></tr>"; }
 }
 </script>
 </body>
