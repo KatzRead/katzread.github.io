@@ -7,8 +7,6 @@
 <link rel="icon" type="image/x-icon" href="logo.svg">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-
-  /* Body ve genel imleç */
   body {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
@@ -19,391 +17,84 @@
     cursor: none;
     overflow-x: hidden;
     position: relative;
-    animation: fadeIn 1s ease-out;
   }
-
-  /* Fade-in animasyonu */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Tüm tıklanabilir öğelerde imleci gizle */
-  a, button, input, select, textarea, img, #toggleBtn {
-    cursor: none !important;
-  }
-
+  a, button, input, select, textarea, img, #toggleBtn { cursor: none !important; }
   .header { padding-top: 30px; }
-
-  /* Logo */
   .header-logo {
-    width: 120px;
-    margin: 0 auto 12px auto;
-    border-radius: 10%;
-    padding: 5px;
-    background: rgba(0,255,255,0.2);
+    width: 120px; margin: 0 auto 12px auto; border-radius: 10%;
+    padding: 5px; background: rgba(0,255,255,0.2);
     box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff, 0 0 25px #00ffff;
-    animation: glow 1.5s infinite;
-    transition: transform 0.3s, box-shadow 0.3s;
+    animation: glow 1.5s infinite; transition: transform 0.3s, box-shadow 0.3s;
     display: block;
   }
-
-  @keyframes glow {
-    0%, 100% { box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff, 0 0 25px #00ffff; }
-    50% { box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 35px #00ffff; }
-  }
-
-  .header-logo:hover {
-    transform: scale(1.2);
-    box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff, 0 0 50px #00ffff;
-  }
-
-  h1 {
-    font-size: 2.8em;
-    color: #00ffff;
-    text-shadow: 0 0 15px #00ffff;
-    margin: 0;
-  }
-
+  @keyframes glow { 0%,100%{box-shadow:0 0 5px #00ffff,0 0 15px #00ffff,0 0 25px #00ffff;} 50%{box-shadow:0 0 10px #00ffff,0 0 20px #00ffff,0 0 35px #00ffff;} }
+  .header-logo:hover { transform: scale(1.2); box-shadow: 0 0 15px #00ffff,0 0 30px #00ffff,0 0 50px #00ffff; }
+  h1 { font-size: 2.8em; color: #00ffff; text-shadow: 0 0 15px #00ffff; margin: 0; }
   p { font-size: 1.2em; color: #ccc; margin-top: 5px; }
-
   .links { margin-top: 20px; }
   .links a {
-    display: inline-block;
-    margin: 0 10px;
-    padding: 10px 20px;
-    border: 2px solid #00ffff;
-    border-radius: 8px;
-    color: #00ffff;
-    text-decoration: none;
-    transition: 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    display: inline-block; margin: 0 10px; padding: 10px 20px; border: 2px solid #00ffff;
+    border-radius: 8px; color: #00ffff; text-decoration: none; transition: 0.3s;
+    text-transform: uppercase; letter-spacing: 1px;
   }
-  .links a:hover {
-    background: #00ffff;
-    color: #000;
-    box-shadow: 0 0 20px #00ffff;
-  }
-
+  .links a:hover { background: #00ffff; color: #000; box-shadow: 0 0 20px #00ffff; }
   footer { font-size: 0.9em; color: #555; margin-top: 40px; }
 
-  /* Faceit logosu */
-  #toggleBtn {
-    width: 150px;
-    transition: transform 0.2s;
-    margin: 20px auto;
-    display: block;
-  }
+  #toggleBtn { width:150px; transition:transform 0.2s; margin:20px auto; display:block; }
   #toggleBtn:hover { transform: scale(1.1); }
-
-  /* Widget */
   .widget {
-    display: none;
-    background: rgba(10,10,15,0.95);
-    border: 2px solid #00ffff;
-    border-radius: 10px;
-    padding: 15px;
-    width: 90%;
-    max-width: 480px;
-    margin: 20px auto;
-    box-shadow: 0 0 15px #00ffff;
-    color: #fff;
-    font-size: 14px;
-    transition: 0.4s ease;
+    display: none; background: rgba(10,10,15,0.95); border: 2px solid #00ffff;
+    border-radius: 10px; padding: 15px; width: 90%; max-width: 480px; margin: 20px auto;
+    box-shadow: 0 0 15px #00ffff; color: #fff; font-size: 14px; transition: 0.4s ease;
   }
+  .widget h2 { margin:0; font-size:1.3em; color:#00ffff; text-shadow:0 0 8px #00ffff; }
+  .stat { margin-top:8px; font-size:0.9em; }
+  table { width:100%; margin-top:8px; border-collapse:collapse; font-size:13px; }
+  th, td { border:1px solid #00ffff; padding:4px; text-align:center; }
+  th { background:#4B4B4B; font-size:12px; }
+  .avg-row { font-weight:bold; background:#1a1a1a; color:#00ffff; }
 
-  .widget h2 { margin: 0; font-size: 1.3em; color: #00ffff; text-shadow: 0 0 8px #00ffff; }
-  .stat { margin-top: 8px; font-size: 0.9em; }
+  #crosshair { position:fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%,-50%); z-index:9999; }
+  #crosshair div { position:absolute; background:#00ffff; box-shadow:0 0 5px #00ffff,0 0 15px #00ffff; }
+  #crosshair .top{width:2px;height:8px;top:0;left:50%;transform:translateX(-50%);}
+  #crosshair .bottom{width:2px;height:8px;bottom:0;left:50%;transform:translateX(-50%);}
+  #crosshair .left{width:8px;height:2px;left:0;top:50%;transform:translateY(-50%);}
+  #crosshair .right{width:8px;height:2px;right:0;top:50%;transform:translateY(-50%);}
 
-  table { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: 13px; }
-  th, td { border: 1px solid #00ffff; padding: 4px; text-align: center; }
-  th { background: #4B4B4B; font-size: 12px; }
-  .avg-row { font-weight: bold; background: #1a1a1a; color: #00ffff; }
-  .widget table tbody { display: table; width: 100%; }
-  .widget table thead, .widget table tbody tr { display: table; width: 100%; table-layout: fixed; }
-
-  @media (max-width: 600px) {
-    h1 { font-size: 2em; }
-    .links a { padding: 8px 14px; margin: 5px; }
-    .header-logo { width: 60px; }
-  }
-
-  /* Crosshair */
-  #crosshair {
-    position: fixed;
-    width: 24px;
-    height: 24px;
-    pointer-events: none;
-    top: 0;
-    left: 0;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-  }
-  #crosshair div {
-    position: absolute;
-    background: #00ffff;
-    box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff;
-  }
-  #crosshair .top { width: 2px; height: 8px; top: 0; left: 50%; transform: translateX(-50%); }
-  #crosshair .bottom { width: 2px; height: 8px; bottom: 0; left: 50%; transform: translateX(-50%); }
-  #crosshair .left { width: 8px; height: 2px; left: 0; top: 50%; transform: translateY(-50%); }
-  #crosshair .right { width: 8px; height: 2px; right: 0; top: 50%; transform: translateY(-50%); }
-
-  #crosshair.fire {
-    transform: translate(-50%, -50%) scale(1.6);
-    filter: brightness(2);
-    transition: transform 0.1s ease, filter 0.1s ease;
-  }
-
-  /* Kişisel & Sosyal Bölümler */
-  .about-section, .contact, .settings {
-    max-width: 800px;
-    margin: 60px auto;
-    text-align: center;
-    padding: 30px;
-    background: rgba(0, 10, 20, 0.5);
-    border: 1px solid #00ffff;
-    border-radius: 16px;
-    box-shadow: 0 0 15px #00ffff66;
-  }
-
-  .about-section h2, .contact h2, .settings h2 {
-    color: #00ffff;
-    font-size: 1.8em;
-    text-shadow: 0 0 10px #00ffff;
-    margin-bottom: 15px;
-  }
-
-  .about-section p { color: #ccc; line-height: 1.6; font-size: 1.05em; }
-  .highlight { color: #00ffff; text-shadow: 0 0 8px #00ffff; font-weight: bold; }
-
-  /* Ekipman & Ayarlar */
-  .setup-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-  }
-  .setup-card {
-    background: rgba(0,255,255,0.08);
-    border: 1px solid #00ffff55;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: left;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .setup-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 20px #00ffff88;
-  }
-  .setup-card h3 {
-    color: #00ffff;
-    text-shadow: 0 0 8px #00ffff;
-    margin-bottom: 10px;
-  }
-  .setup-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .setup-card li {
-    margin: 8px 0;
-    font-size: 1em;
-    color: #ccc;
-  }
-  .crosshair-code {
-    background: rgba(0,255,255,0.15);
-    padding: 2px 6px;
-    border-radius: 6px;
-    font-family: monospace;
-    color: #00ffff;
-  }
-
-  /* Partikül Arka Plan */
   canvas#particle-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 </style>
 </head>
 <body>
-
-<!-- Partikül Canvas -->
 <canvas id="particle-canvas"></canvas>
 
 <div class="header">
-  <img src="katz.png" alt="KatzRead Logo" class="header-logo">
+  <img src="katz.png" class="header-logo" alt="KatzRead Logo">
   <h1>KatzRead</h1>
-  <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
+  <p>CS2 Oyuncusu • In Game Leader • FUT Turkuaz</p>
 
   <div class="links">
     <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
     <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
     <a href="https://x.com/katzread" target="_blank">Twitter</a>
     <a href="https://kick.com/katzread" target="_blank">Kick</a>
-    <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
+    <a href="setup.html">Ekipman & Ayarlar ⚙️</a>
   </div>
 </div>
-
-<img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
-
-<div class="widget" id="katzWidget">
-  <h2>KatzRead</h2>
-  <div class="stat" id="elo">ELO: Yükleniyor...</div>
-  <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
-  <table id="stats-table">
-    <thead>
-      <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
-    </thead>
-    <tbody>
-      <tr><td colspan="5">Yükleniyor...</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<section class="about-section">
-  <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum.  
-  <strong><span class="highlight">FUT Turkuaz</span></strong> takımında oynuyorum.
-  Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum.  
-  Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
-</section>
-
-<!-- 💠 Ekipman & Ayarlar Bölümü -->
-<section class="settings">
-  <h2>🎮 Ekipman & Ayarlar</h2>
-  <div class="setup-grid">
-    <div class="setup-card">
-      <h3>🖱️ Donanım</h3>
-      <ul>
-        <li><strong>Mouse:</strong> Logitech G PRO X Superlight 2 (800 DPI, 1.1 sens)</li>
-        <li><strong>Klavye:</strong> LOGITECH G PRO X TKL RAPID</li>
-        <li><strong>Mousepad:</strong> SteelSeries Qck+ Large Mouse Pad</li>
-        <li><strong>Kulaklık:</strong> Logitech G Pro X 2 Lightspeed 7.1</li>
-        <li><strong>Monitör:</strong> BenQ Zowie XL2566X Plus 400 Hz</li>
-      </ul>
-    </div>
-
-    <div class="setup-card">
-      <h3>⚙️ Oyun Ayarları</h3>
-      <ul>
-        <li><strong>Resolution:</strong> 1280x960 (4:3 Stretched)</li>
-        <li><strong>Viewmodel:</strong> 2 2 1.5 0 1</li>
-        <li><strong>Crosshair:</strong> <span class="crosshair-code">CSGO-ytrrJ-sZViN-t8VxM-dqTfD-OkNyN</span></li>
-        <li><strong>Bob:</strong> 0; <strong>Cl_righthand:</strong> 1</li>
-        <li><strong>Launch Options:</strong> -novid -freq 240 -tickrate 128</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="contact">
-  <p>İşbirligi veya takım teklifleri için:</p>
-  <a href="mailto:katzread@gmail.com" class="contact-btn">📧 katzread@gmail.com</a>
-</section>
 
 <footer>© 2025 KatzRead</footer>
-
-<div id="crosshair">
-  <div class="top"></div>
-  <div class="bottom"></div>
-  <div class="left"></div>
-  <div class="right"></div>
-</div>
-
+<div id="crosshair"><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div>
 <script>
 /* Crosshair */
-const crosshair = document.getElementById('crosshair');
-document.addEventListener('mousemove', e => {
-  crosshair.style.left = e.clientX + 'px';
-  crosshair.style.top = e.clientY + 'px';
+document.addEventListener('mousemove', e=>{
+  const c=document.getElementById('crosshair');
+  c.style.left=e.clientX+'px'; c.style.top=e.clientY+'px';
 });
-
-/* Crosshair Fire Effect */
-document.addEventListener('click', () => {
-  crosshair.classList.add('fire');
-  setTimeout(() => crosshair.classList.remove('fire'), 100);
-});
-
 /* Partikül Arka Plan */
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
-
-let particles = [];
-for(let i=0;i<100;i++){
-  particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2+1, dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5});
-}
-function animateParticles(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach(p=>{
-    p.x+=p.dx; p.y+=p.dy;
-    if(p.x<0||p.x>canvas.width) p.dx*=-1;
-    if(p.y<0||p.y>canvas.height) p.dy*=-1;
-    ctx.fillStyle="#00ffff22";
-    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
-  });
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-/* Faceit Widget */
-const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
-const nickname = "KatzRead";
-const MATCH_LIMIT = 30;
-const toggleBtn = document.getElementById("toggleBtn");
-const widgetDiv = document.getElementById("katzWidget");
-
-toggleBtn.addEventListener("click", () => {
-  if(widgetDiv.style.display === "none" || widgetDiv.style.display === ""){
-    widgetDiv.style.display = "block";
-    loadWidget();
-  } else { widgetDiv.style.display = "none"; }
-});
-
-/* Otomatik yenileme */
-setInterval(()=>{ if(widgetDiv.style.display==="block"){ loadWidget(); } },30000);
-
-async function fetchJSON(url){
-  const res = await fetch(url,{ headers:{ Authorization: "Bearer "+apiKey } });
-  return await res.json();
-}
-
-async function loadWidget(){
-  try{
-    const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
-    const elo = playerData.games?.cs2?.faceit_elo || "N/A";
-    document.getElementById("elo").innerText = "ELO: "+elo;
-    const playerId = playerData.player_id;
-    const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
-    const matches = stats.lifetime?.Matches || "N/A";
-    document.getElementById("matches").innerText = "Toplam Maç: "+matches;
-    const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
-    const tbody = document.querySelector("#stats-table tbody");
-    tbody.innerHTML="";
-    let totalKills=0,totalDeaths=0,totalADR=0,totalHS=0,totalRounds=0,matchCount=0;
-
-    for(let i=0;i<history.items.length;i++){
-      const match = history.items[i];
-      try{
-        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}`);
-        const player = matchData.teams.faction1.roster.find(p=>p.nickname===nickname) || matchData.teams.faction2.roster.find(p=>p.nickname===nickname);
-        if(player && player.player_stats){
-          const s=player.player_stats;
-          const kills=parseInt(s.Kills), deaths=parseInt(s.Deaths);
-          const adr=parseFloat(s.ADR), hs=parseFloat(s["Headshots %"]);
-          totalKills+=kills; totalDeaths+=deaths; totalADR+=adr; totalHS+=hs;
-          totalRounds+=parseInt(s["Rounds Played"]); matchCount++;
-          tbody.innerHTML+=`<tr><td>${kills}</td><td>${deaths}</td><td>${(kills/deaths).toFixed(2)}</td><td>${adr}</td><td>${hs}%</td></tr>`;
-        }
-      }catch(e){}
-    }
-    if(matchCount>0){
-      const avgKD=(totalKills/totalDeaths).toFixed(2);
-      const avgADR=(totalADR/matchCount).toFixed(1);
-      const avgHS=(totalHS/matchCount).toFixed(1);
-      tbody.innerHTML+=`<tr class="avg-row"><td colspan="2">Averages</td><td>${avgKD}</td><td>${avgADR}</td><td>${avgHS}%</td></tr>`;
-    }
-  }catch(e){ console.error(e); document.querySelector("#stats-table tbody").innerHTML="<tr><td colspan='5'>Veri alınamadı.</td></tr>"; }
-}
+const canvas=document.getElementById('particle-canvas'),ctx=canvas.getContext('2d');
+canvas.width=innerWidth;canvas.height=innerHeight;
+let p=[];for(let i=0;i<100;i++)p.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-.5)*.5,dy:(Math.random()-.5)*.5});
+function anim(){ctx.clearRect(0,0,canvas.width,canvas.height);p.forEach(a=>{a.x+=a.dx;a.y+=a.dy;if(a.x<0||a.x>canvas.width)a.dx*=-1;if(a.y<0||a.y>canvas.height)a.dy*=-1;ctx.fillStyle="#00ffff22";ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,Math.PI*2);ctx.fill();});requestAnimationFrame(anim);}
+anim();
 </script>
 </body>
 </html>
