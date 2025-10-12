@@ -8,6 +8,10 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
+  :root {
+    --main-color: #00ffff; /* Varsayılan tema rengi */
+  }
+
   body {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
@@ -32,8 +36,8 @@
 
   .tab-menu button {
     background: transparent;
-    border: 2px solid #00ffff;
-    color: #00ffff;
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
     padding: 10px 20px;
     border-radius: 10px;
     text-transform: uppercase;
@@ -42,16 +46,19 @@
   }
 
   .tab-menu button:hover, .tab-menu button.active {
-    background: #00ffff;
+    background: var(--main-color);
     color: #000;
-    box-shadow: 0 0 15px #00ffff;
+    box-shadow: 0 0 15px var(--main-color);
   }
 
   /* === Sekme İçerikleri === */
   .tab-content { display: none; animation: fadeIn 0.6s ease; }
   .tab-content.active { display: block; }
 
-  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   /* === Header === */
   .header { padding-top: 30px; }
@@ -62,18 +69,24 @@
     border-radius: 10%;
     padding: 5px;
     background: rgba(0,255,255,0.2);
-    box-shadow: 0 0 5px #00ffff,0 0 15px #00ffff,0 0 25px #00ffff;
+    box-shadow: 0 0 5px var(--main-color), 0 0 15px var(--main-color), 0 0 25px var(--main-color);
     animation: glow 1.5s infinite;
     transition: transform 0.3s, box-shadow 0.3s;
     display: block;
   }
   @keyframes glow {
-    0%,100%{box-shadow:0 0 5px #00ffff,0 0 15px #00ffff,0 0 25px #00ffff;}
-    50%{box-shadow:0 0 10px #00ffff,0 0 20px #00ffff,0 0 35px #00ffff;}
+    0%, 100% { box-shadow: 0 0 5px var(--main-color), 0 0 15px var(--main-color), 0 0 25px var(--main-color); }
+    50% { box-shadow: 0 0 10px var(--main-color), 0 0 20px var(--main-color), 0 0 35px var(--main-color); }
   }
   .header-logo:hover { transform: scale(1.2); }
 
-  h1 { font-size: 2.8em; color: #00ffff; text-shadow: 0 0 15px #00ffff; margin: 0; }
+  h1 {
+    font-size: 2.8em;
+    color: var(--main-color);
+    text-shadow: 0 0 15px var(--main-color);
+    margin: 0;
+  }
+
   p { font-size: 1.2em; color: #ccc; margin-top: 5px; }
 
   .links { margin-top: 20px; }
@@ -81,15 +94,19 @@
     display: inline-block;
     margin: 0 10px;
     padding: 10px 20px;
-    border: 2px solid #00ffff;
+    border: 2px solid var(--main-color);
     border-radius: 8px;
-    color: #00ffff;
+    color: var(--main-color);
     text-decoration: none;
     transition: 0.3s;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
-  .links a:hover { background: #00ffff; color: #000; box-shadow:0 0 20px #00ffff; }
+  .links a:hover {
+    background: var(--main-color);
+    color: #000;
+    box-shadow: 0 0 20px var(--main-color);
+  }
 
   footer { font-size: 0.9em; color: #555; margin-top: 40px; }
 
@@ -100,13 +117,13 @@
   .widget {
     display: none;
     background: rgba(10,10,15,0.95);
-    border: 2px solid #00ffff;
+    border: 2px solid var(--main-color);
     border-radius: 10px;
     padding: 15px;
     width: 90%;
     max-width: 480px;
     margin: 20px auto;
-    box-shadow: 0 0 15px #00ffff;
+    box-shadow: 0 0 15px var(--main-color);
     color: #fff;
     font-size: 14px;
     transition: 0.4s ease;
@@ -116,52 +133,75 @@
   .section-box {
     max-width: 800px;
     margin: 40px auto;
-    background: rgba(0,10,20,0.5);
-    border: 1px solid #00ffff;
+    background: rgba(0, 10, 20, 0.5);
+    border: 1px solid var(--main-color);
     border-radius: 16px;
-    box-shadow: 0 0 15px #00ffff66;
+    box-shadow: 0 0 15px var(--main-color)66;
     padding: 30px;
   }
-  .section-box h2 { color: #00ffff; font-size: 1.8em; text-shadow:0 0 10px #00ffff; margin-bottom: 15px; }
-  .section-box p { color: #ccc; line-height:1.6; font-size:1.05em; }
-  .highlight { color:#00ffff; text-shadow:0 0 8px #00ffff; font-weight:bold; }
 
-  /* === Ekipman Baloncukları === */
-  .theme-bubble {
-    width:40px; height:40px; border-radius:50%; border:2px solid #fff; cursor:pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+  .section-box h2 {
+    color: var(--main-color);
+    font-size: 1.8em;
+    text-shadow: 0 0 10px var(--main-color);
+    margin-bottom: 15px;
   }
-  .theme-bubble:hover { transform: scale(1.2); box-shadow:0 0 10px #fff; }
-  .theme-bubble.selected { border:3px solid #fff; box-shadow:0 0 15px #fff; }
 
-  /* === Crosshair === */
-  #crosshair { position: fixed; width:24px;height:24px;pointer-events:none;top:0;left:0;transform:translate(-50%,-50%);z-index:9999; }
-  #crosshair div { position:absolute;background:#00ffff;box-shadow:0 0 5px #00ffff,0 0 15px #00ffff; }
-  #crosshair .top{width:2px;height:8px;top:0;left:50%;transform:translateX(-50%);}
-  #crosshair .bottom{width:2px;height:8px;bottom:0;left:50%;transform:translateX(-50%);}
-  #crosshair .left{width:8px;height:2px;left:0;top:50%;transform:translateY(-50%);}
-  #crosshair .right{width:8px;height:2px;right:0;top:50%;transform:translateY(-50%);}
+  .section-box p { color: #ccc; line-height: 1.6; font-size: 1.05em; }
+  .highlight { color: var(--main-color); text-shadow: 0 0 8px var(--main-color); font-weight: bold; }
 
-  canvas#particle-canvas { position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none; }
+  /* Tema Baloncukları */
+  .theme-bubbles { display:flex; justify-content:center; gap:12px; margin-top:15px; }
+  .theme-bubble {
+    width: 24px; height: 24px; border-radius:50%;
+    cursor:pointer; border:2px solid #fff;
+    transition:0.3s;
+  }
+  .theme-bubble:hover { transform: scale(1.2); }
+
+  /* Crosshair */
+  #crosshair {
+    position: fixed;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+  #crosshair div {
+    position: absolute;
+    background: var(--main-color);
+    box-shadow: 0 0 5px var(--main-color), 0 0 15px var(--main-color);
+  }
+  #crosshair .top { width: 2px; height: 8px; top: 0; left: 50%; transform: translateX(-50%); }
+  #crosshair .bottom { width: 2px; height: 8px; bottom: 0; left: 50%; transform: translateX(-50%); }
+  #crosshair .left { width: 8px; height: 2px; left: 0; top: 50%; transform: translateY(-50%); }
+  #crosshair .right { width: 8px; height: 2px; right: 0; top: 50%; transform: translateY(-50%); }
+
+  canvas#particle-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 </style>
 </head>
 <body>
 
+<!-- Partikül Arka Plan -->
 <canvas id="particle-canvas"></canvas>
 
-<!-- === SEKME MENÜ === -->
+<!-- Sekme Menüsü -->
 <div class="tab-menu">
   <button class="tab-btn active" data-tab="home">Ana Sayfa</button>
   <button class="tab-btn" data-tab="about">Hakkımda</button>
   <button class="tab-btn" data-tab="settings">Ayarlar</button>
 </div>
 
-<!-- === ANA SAYFA === -->
+<!-- Ana Sayfa -->
 <div id="home" class="tab-content active">
   <div class="header">
     <img src="katz.png" alt="KatzRead Logo" class="header-logo">
     <h1>KatzRead</h1>
     <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
+
     <div class="links">
       <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
       <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
@@ -172,18 +212,21 @@
   </div>
 
   <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
+
   <div class="widget" id="katzWidget">
     <h2>KatzRead</h2>
     <div class="stat" id="elo">ELO: Yükleniyor...</div>
     <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
     <table id="stats-table">
-      <thead><tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr></thead>
+      <thead>
+        <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
+      </thead>
       <tbody><tr><td colspan="5">Yükleniyor...</td></tr></tbody>
     </table>
   </div>
 </div>
 
-<!-- === HAKKIMDA === -->
+<!-- Hakkımda -->
 <div id="about" class="tab-content">
   <div class="section-box">
     <h2>Hakkımda</h2>
@@ -194,70 +237,60 @@
   </div>
 </div>
 
-<!-- === AYARLAR === -->
+<!-- Ayarlar -->
 <div id="settings" class="tab-content">
   <div class="section-box">
     <h2>Ayarlar</h2>
-    <p>Burada fare efekti, widget otomatik yenileme aralığı ve tema rengi ayarlarını yapabilirsiniz.</p>
-
-    <h3>Tema Renkleri</h3>
-    <div id="themeColors" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:15px;">
-      <div class="theme-bubble" data-color="#00ffff" title="Turkuaz"></div>
-      <div class="theme-bubble" data-color="#ff3b3b" title="Kırmızı"></div>
-      <div class="theme-bubble" data-color="#9b5de5" title="Mor"></div>
-      <div class="theme-bubble" data-color="#ffb703" title="Sarı"></div>
-      <div class="theme-bubble" data-color="#00ff00" title="Yeşil"></div>
+    <p>Burada ekipman veya tema ayarlarını değiştirebilirsiniz.</p>
+    <p>💡 Örnek: Tema rengi seçmek için baloncukları kullanın.</p>
+    <div class="theme-bubbles">
+      <div class="theme-bubble" data-color="#00ffff" style="background:#00ffff;"></div>
+      <div class="theme-bubble" data-color="#ff4d4d" style="background:#ff4d4d;"></div>
+      <div class="theme-bubble" data-color="#4dff4d" style="background:#4dff4d;"></div>
+      <div class="theme-bubble" data-color="#ffb84d" style="background:#ffb84d;"></div>
+      <div class="theme-bubble" data-color="#b84dff" style="background:#b84dff;"></div>
     </div>
   </div>
 </div>
 
 <footer>© 2025 KatzRead</footer>
+
 <div id="crosshair"><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div>
 
 <script>
-// Crosshair
-const crosshair = document.getElementById('crosshair');
-document.addEventListener('mousemove', e => {
-  crosshair.style.left = e.clientX + 'px';
-  crosshair.style.top = e.clientY + 'px';
-});
+/* Crosshair */
+const crosshair=document.getElementById('crosshair');
+document.addEventListener('mousemove',e=>{ crosshair.style.left=e.clientX+'px'; crosshair.style.top=e.clientY+'px'; });
 
-// Partikül Arka Plan
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = innerWidth; canvas.height = innerHeight;
-addEventListener('resize', () => { canvas.width=innerWidth; canvas.height=innerHeight; });
-
-let particles = [];
-for(let i=0;i<100;i++){
-  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5,color:'#00ffff22'});
-}
-function animateParticles(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach(p=>{
-    p.x+=p.dx; p.y+=p.dy;
-    if(p.x<0||p.x>canvas.width)p.dx*=-1;
-    if(p.y<0||p.y>canvas.height)p.dy*=-1;
-    ctx.fillStyle=p.color;
-    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
-  });
-  requestAnimationFrame(animateParticles);
-}
+/* Partikül Arka Plan */
+const canvas=document.getElementById('particle-canvas');
+const ctx=canvas.getContext('2d');
+canvas.width=innerWidth; canvas.height=innerHeight;
+addEventListener('resize',()=>{canvas.width=innerWidth; canvas.height=innerHeight;});
+let particles=[];
+for(let i=0;i<100;i++){ particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2+1, dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5}); }
+function animateParticles(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{ p.x+=p.dx; p.y+=p.dy; if(p.x<0||p.x>canvas.width)p.dx*=-1; if(p.y<0||p.y>canvas.height)p.dy*=-1; ctx.fillStyle="#00ffff22"; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); }); requestAnimationFrame(animateParticles); }
 animateParticles();
 
-// Sekme Geçişleri
+/* Sekme Geçişleri */
 const tabs=document.querySelectorAll('.tab-btn');
 const contents=document.querySelectorAll('.tab-content');
-tabs.forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    tabs.forEach(b=>b.classList.remove('active'));
-    contents.forEach(c=>c.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
+tabs.forEach(btn=>{ btn.addEventListener('click',()=>{
+  tabs.forEach(b=>b.classList.remove('active'));
+  contents.forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+}); });
+
+/* Tema Renkleri */
+const themeBubbles=document.querySelectorAll('.theme-bubble');
+themeBubbles.forEach(bubble=>{
+  bubble.addEventListener('click',()=>{
+    document.documentElement.style.setProperty('--main-color', bubble.dataset.color);
   });
 });
 
-// Widget
+/* Widget */
 const apiKey="dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname="KatzRead";
 const MATCH_LIMIT=30;
@@ -320,7 +353,7 @@ async function loadWidget(){
       const avgHS=(totalHS/matchCount).toFixed(1)+"%";
       const avgRow=document.createElement("tr");
       avgRow.classList.add("avg-row");
-      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 2px #00ffff;border-top:2px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
+      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:var(--main-color);text-shadow:0 0 2px var(--main-color);border-top:2px solid var(--main-color);padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
       tbody.appendChild(avgRow);
     }
   }catch{
@@ -329,42 +362,6 @@ async function loadWidget(){
     document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
   }
 }
-
-// === Tema Renkleri ===
-const themeBubbles = document.querySelectorAll('.theme-bubble');
-themeBubbles.forEach(bubble=>{
-  bubble.style.backgroundColor = bubble.dataset.color;
-  bubble.addEventListener('click',()=>{
-    themeBubbles.forEach(b=>b.classList.remove('selected'));
-    bubble.classList.add('selected');
-    const color = bubble.dataset.color;
-
-    // Crosshair
-    document.querySelectorAll('#crosshair div').forEach(d=>{
-      d.style.backgroundColor = color;
-      d.style.boxShadow = `0 0 5px ${color},0 0 15px ${color}`;
-    });
-    // Widget
-    const widgetDiv = document.getElementById('katzWidget');
-    widgetDiv.style.borderColor = color;
-    widgetDiv.style.boxShadow = `0 0 15px ${color}`;
-    // Header Logo
-    document.querySelector('.header-logo').style.boxShadow = `0 0 5px ${color},0 0 15px ${color},0 0 25px ${color}`;
-    // Başlıklar
-    document.querySelectorAll('h1,.section-box h2,.highlight').forEach(el=>{
-      el.style.color = color;
-      el.style.textShadow = `0 0 8px ${color}`;
-    });
-    // Linkler
-    document.querySelectorAll('.links a').forEach(a=>{
-      a.style.borderColor = color;
-      a.addEventListener('mouseover',()=>{ a.style.background=color; a.style.color='#000'; a.style.boxShadow=`0 0 20px ${color}`; });
-      a.addEventListener('mouseout',()=>{ a.style.background='transparent'; a.style.color=color; a.style.boxShadow='none'; });
-    });
-    // Partiküller
-    particles.forEach(p=>p.color=color+'22');
-  });
-});
 </script>
 </body>
 </html>
