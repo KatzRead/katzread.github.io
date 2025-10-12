@@ -386,12 +386,17 @@ const toggleBtn = document.getElementById("toggleBtn");
 const widgetDiv = document.getElementById("katzWidget");
 
 toggleBtn.addEventListener("click", () => {
-  if(widgetDiv.style.display === "none" || widgetDiv.style.display === ""){
-    widgetDiv.style.display = "block";
-    loadWidget();
-  } else { widgetDiv.style.display = "none"; }
-});
+  const activeTab = document.querySelector(".tab-content.active");
+  const widget = activeTab.querySelector("#katzWidget"); // sadece aktif tab içindeki widget
+  if(!widget) return; // widget yoksa çık
 
+  if(widget.style.display === "none" || widget.style.display === ""){
+    widget.style.display = "block";
+    loadWidget();
+  } else { 
+    widget.style.display = "none"; 
+  }
+});
 /* Otomatik yenileme */
 setInterval(()=>{ if(widgetDiv.style.display==="block"){ loadWidget(); } },30000);
 
