@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KatzReadd</title>
+<title>KatzRead</title>
 <link rel="icon" type="image/x-icon" href="logo.svg">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
- 
+
+  /* Body ve genel stil */
   body {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
@@ -15,49 +16,16 @@
     color: #e0e0e0;
     text-align: center;
     min-height: 100vh;
-    cursor: none; /* default imleci gizle */
+    cursor: none; /* normal imleç gizle */
   }
-
-  /* Crosshair */
-  #crosshair {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 40px;
-    height: 40px;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-  }
-  #crosshair div {
-    position: absolute;
-    background: #00ffff;
-  }
-  #crosshair .top, #crosshair .bottom {
-    width: 2px;
-    height: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  #crosshair .top { top: 0; }
-  #crosshair .bottom { bottom: 0; }
-  #crosshair .left, #crosshair .right {
-    width: 15px;
-    height: 2px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  #crosshair .left { left: 0; }
-  #crosshair .right { right: 0; }
 
   /* Başlık ve linkler */
   .header {
     padding-top: 30px;
   }
 
-  /* Logo */
   .header-logo {
-    width: 120px;
+    width: 140px;
     margin: 0 auto 12px auto;
     border-radius: 10%;
     padding: 5px;
@@ -100,8 +68,11 @@
     text-shadow: 0 0 15px #00ffff;
     margin: 0;
   }
-
-  p { font-size: 1.2em; color: #ccc; margin-top: 5px; }
+  p {
+    font-size: 1.2em;
+    color: #ccc;
+    margin-top: 5px;
+  }
 
   .links {
     margin-top: 20px;
@@ -154,47 +125,80 @@
     color: #fff;
     font-size: 14px;
   }
-
-  .widget h2 { 
+  .widget h2 {
     margin: 0;
     font-size: 1.3em;
     color: #00ffff;
     text-shadow: 0 0 8px #00ffff;
   }
-
   .stat { margin-top: 8px; font-size: 0.9em; }
-
   table {
     width: 100%;
     margin-top: 8px;
     border-collapse: collapse;
     font-size: 13px;
   }
-
   th, td {
     border: 1px solid #00ffff;
     padding: 4px;
     text-align: center;
   }
-
   th { background: #4B4B4B; font-size: 12px; }
-
   .avg-row { font-weight: bold; background: #1a1a1a; color: #00ffff; }
+
+  /* Scroll kaldırıldı */
+  .widget table tbody {
+    display: table;
+    width: 100%;
+  }
+  .widget table thead, .widget table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  /* Crosshair divi */
+  #crosshair {
+    position: fixed;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+  #crosshair div {
+    position: absolute;
+    background: #00ffff;
+    box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff;
+  }
+  #crosshair .top { width: 2px; height: 8px; top: 0; left: 50%; transform: translateX(-50%); }
+  #crosshair .bottom { width: 2px; height: 8px; bottom: 0; left: 50%; transform: translateX(-50%); }
+  #crosshair .left { width: 8px; height: 2px; left: 0; top: 50%; transform: translateY(-50%); }
+  #crosshair .right { width: 8px; height: 2px; right: 0; top: 50%; transform: translateY(-50%); }
 
   @media (max-width: 600px) {
     h1 { font-size: 2em; }
     .links a { padding: 8px 14px; margin: 5px; }
-    .header-logo { width: 60px; }
+    .header-logo { width: 80px; }
   }
 </style>
 </head>
 <body>
 
+<!-- Crosshair -->
+<div id="crosshair">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
+
 <div class="header">
   <img src="katz.png" alt="KatzRead Logo" class="header-logo">
   <h1>KatzRead</h1>
   <p>CS2 oyuncusu • Lurker • FUT Turkuaz</p>
-
   <div class="links">
     <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
     <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
@@ -228,14 +232,6 @@
       <tr><td colspan="5">Yükleniyor...</td></tr>
     </tbody>
   </table>
-</div>
-
-<!-- Crosshair -->
-<div id="crosshair">
-  <div class="top"></div>
-  <div class="bottom"></div>
-  <div class="left"></div>
-  <div class="right"></div>
 </div>
 
 <footer>© 2025 KatzRead</footer>
@@ -326,11 +322,11 @@ async function loadWidget(){
   }
 }
 
-// Mouse ile crosshair hareketi
-document.addEventListener("mousemove", e=>{
-  const cross = document.getElementById("crosshair");
-  cross.style.left = e.clientX + "px";
-  cross.style.top = e.clientY + "px";
+// Crosshair takip scripti
+const crosshair = document.getElementById('crosshair');
+document.addEventListener('mousemove', e => {
+  crosshair.style.left = e.clientX + 'px';
+  crosshair.style.top = e.clientY + 'px';
 });
 </script>
 
