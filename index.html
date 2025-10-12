@@ -81,20 +81,52 @@ th{ background:#4B4B4B; font-size:12px; }
 /* Partikül Arka Plan */
 canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 
-/* Sağ Hover Panel */
+* Sağ Hover Panel */
 #settings-bar {
-  position: fixed; top: 100px; right: 0;
-  width: 40px; background: rgba(0,0,0,0.35);
-  backdrop-filter: blur(1px); border-radius: 16px 0 0 16px; border: 1px solid var(--theme-color);
-  display: flex; flex-direction: column; align-items: center;
-  overflow: hidden; z-index: 10000; transition: all 0.4s ease;
+  position: fixed;
+  top: 100px;
+  right: 0;
+  width: 40px; /* Kapalı hali */
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(1px);
+  border-radius: 16px 0 0 16px;
+  border: 1px solid var(--theme-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  z-index: 10000;
+  transition: width 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
   box-shadow: -2px 0 10px var(--theme-color)44;
 }
-#settings-bar.open { width: 220px; background: rgba(0,0,0,0.6); box-shadow: -2px 0 25px var(--theme-color), -2px 0 50px var(--theme-color)aa; }
-#settings-bar .settings-group { opacity: 0; transform: translateX(20px); margin: 10px 0; width: 50%; transition: opacity 0.4s ease, transform 0.4s ease; }
-#settings-bar.open .settings-group { opacity: 1; transform: translateX(0); }
-#settings-bar input, #settings-bar select { background: rgba(0,0,0,0.5); border: 1px solid var(--theme-color); border-radius: 8px; color: #fff; padding: 4px 8px; transition: all 0.3s ease; }
-#settings-bar input:hover, #settings-bar select:hover { border-color: #fff; box-shadow: 0 0 8px var(--theme-color); }
+#settings-bar.open {
+  width: 220px;
+  background: rgba(0,0,0,0.6);
+  box-shadow: -2px 0 25px var(--theme-color), -2px 0 50px var(--theme-color)aa;
+}
+#settings-bar .settings-group {
+  opacity: 0;
+  transform: translateX(20px);
+  margin: 10px 0;
+  width: 50%;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+#settings-bar.open .settings-group {
+  opacity: 1;
+  transform: translateX(0);
+}
+#settings-bar input, #settings-bar select {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--theme-color);
+  border-radius: 8px;
+  color: #fff;
+  padding: 4px 8px;
+  transition: 0.3s;
+}
+#settings-bar input:hover, #settings-bar select:hover {
+  border-color: #fff;
+  box-shadow: 0 0 8px var(--theme-color);
+}
 </style>
 </head>
 <body>
