@@ -361,16 +361,6 @@ themeInput.addEventListener("input", (e) => {
   const color = e.target.value;
   document.documentElement.style.setProperty("--theme-color", color);
 });
-  
-  themeInput.addEventListener("input", (e) => {
-  const color = e.target.value;
-  document.documentElement.style.setProperty("--theme-color", color);
-
-  // Logo glow ve hover güncelle
-  const logo = document.querySelector(".header-logo");
-  logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
-});
-
   /* Faceit Widget */
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
@@ -444,9 +434,8 @@ async function loadWidget(){
       const avgADR=(totalADR/matchCount).toFixed(1);
       const avgHS=(totalHS/matchCount).toFixed(1)+"%";
       const avgRow=document.createElement("tr");
-      const avgRow=document.createElement("tr");
       avgRow.classList.add("avg-row");
-      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:var(--theme-color);font-size:1.05em;border-top:2px solid var(--theme-color);padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
+      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 1px #00ffff;border-top:1px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
       tbody.appendChild(avgRow);
     }
 
