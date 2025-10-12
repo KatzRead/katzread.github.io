@@ -29,33 +29,11 @@ body {
 .tab-content.active { display:block; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
 
-/* HEADER LOGO NEON */
-.header { padding-top:30px; display:flex; flex-direction:column; align-items:center; }
-.logo-container {
-  position: relative;
-  display: inline-block;
-}
-.header-logo {
-  width: 120px;
-  border-radius: 10%;
-  z-index: 2;
-  position: relative;
-}
-.logo-aura {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 140px; height: 140px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--theme-color)55, transparent 70%);
-  filter: blur(15px);
-  z-index: 1;
-  animation: pulse 1.5s infinite alternate;
-}
-@keyframes pulse {
-  from { transform: translate(-50%, -50%) scale(1); opacity:0.7; }
-  to { transform: translate(-50%, -50%) scale(1.1); opacity:1; }
-}
+/* Header */
+.header { padding-top:30px; }
+.header-logo { width:120px; margin:0 auto 12px auto; border-radius:10%; padding:5px; background: rgba(0,255,255,0.2); box-shadow:0 0 5px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color); animation:glow 1.5s infinite; transition:0.3s; display:block;}
+@keyframes glow { 0%,100%{box-shadow:0 0 5px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color);} 50%{box-shadow:0 0 10px var(--theme-color),0 0 20px var(--theme-color),0 0 35px var(--theme-color);} }
+.header-logo:hover { transform: scale(1.2); }
 
 h1{ font-size:2.8em; color:var(--theme-color); text-shadow:0 0 15px var(--theme-color); margin:0; }
 p{ font-size:1.2em; color:#ccc; margin-top:5px; }
@@ -84,37 +62,6 @@ th{ background:#4B4B4B; font-size:12px; }
 .section-box p{ color:#ccc; line-height:1.6; font-size:1.05em; }
 .highlight{ color: var(--theme-color); text-shadow:0 0 8px var(--theme-color); font-weight:bold; }
 
-/* Hakkımda foto solda */
-.about-content {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.about-photo {
-  position: relative;
-  width: 140px;
-  height: 140px;
-  flex-shrink: 0;
-}
-.about-photo img {
-  width: 100%;
-  border-radius: 16px;
-  z-index: 2;
-  position: relative;
-}
-.about-photo .aura {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 160px; height: 160px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--theme-color)55, transparent 70%);
-  filter: blur(15px);
-  z-index: 1;
-  animation: pulse 1.5s infinite alternate;
-}
-
 /* Ekipman Baloncukları */
 .equip-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-top:15px; }
 .equip-card{ background: rgba(0,255,255,0.08); border:1px solid var(--theme-color); padding:12px; border-radius:10px; transition:0.3s; color:#e0e0e0; font-size:0.95em; text-align:center; }
@@ -142,7 +89,7 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
   position: fixed;
   top: 100px;
   right: 0;
-  width: 40px;
+  width: 40px; /* Kapalı hali */
   background: rgba(0,0,0,0.35);
   backdrop-filter: blur(1px);
   border-radius: 16px 0 0 16px;
@@ -164,7 +111,7 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
   opacity: 0;
   transform: translateX(20px);
   margin: 10px 0;
-  width: 50%;
+  width: 80%;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 #settings-bar.open .settings-group {
@@ -200,10 +147,7 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
 <!-- Ana Sayfa -->
 <div id="home" class="tab-content active">
   <div class="header">
-    <div class="logo-container">
-      <img src="logo.png" alt="KatzRead Logo" class="header-logo">
-      <div class="logo-aura"></div>
-    </div>
+    <img src="katz.png" alt="KatzRead Logo" class="header-logo">
     <h1>KatzRead</h1>
     <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
     <div class="links">
@@ -214,31 +158,14 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
       <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
     </div>
   </div>
-
-  <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
-  <div class="widget" id="katzWidget">
-    <h2>KatzRead</h2>
-    <div class="stat" id="elo">ELO: Yükleniyor...</div>
-    <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
-    <table id="stats-table">
-      <thead><tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr></thead>
-      <tbody><tr><td colspan="5">Yükleniyor...</td></tr></tbody>
-    </table>
-  </div>
 </div>
 
 <!-- Hakkımda -->
 <div id="about" class="tab-content">
   <div class="section-box">
     <h2>Hakkımda</h2>
-    <div class="about-content">
-      <div class="about-photo">
-        <img src="profil.png" alt="Profil Fotoğrafı">
-        <div class="aura"></div>
-      </div>
-      <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. 
-      <span class="highlight">FUT Turkuaz</span> takımında oynuyorum. Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum. Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
-    </div>
+    <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. 
+    <span class="highlight">FUT Turkuaz</span> takımında oynuyorum. Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum. Oyun okuma, entry desteği ve shotcall kabiliyetlerimle strateji tarafını da üstleniyorum.</p>
   </div>
 </div>
 
@@ -285,7 +212,7 @@ canvas#particle-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; 
 
 <footer>© 2025 KatzRead</footer>
 
-<!-- ALT PANEL -->
+<!-- Sağ Hover Panel -->
 <div id="settings-bar">
   <div class="settings-group">
     <label for="themeColor">Tema Rengi:</label>
@@ -304,21 +231,6 @@ tabs.forEach(btn=>btn.addEventListener('click',()=>{
   document.getElementById(btn.dataset.tab).classList.add('active');
 }));
 
-/* Faceit Widget */
-const apiKey="dc63f5ce-1360-4c87-882a-c3c988115063";
-const nickname="KatzRead";
-const MATCH_LIMIT=30;
-const toggleBtn=document.getElementById("toggleBtn");
-const widgetDiv=document.getElementById("katzWidget");
-toggleBtn.addEventListener("click",()=>{
-  widgetDiv.style.display=(widgetDiv.style.display==="block"?"none":"block");
-  if(widgetDiv.style.display==="block") loadWidget();
-});
-setInterval(()=>{if(widgetDiv.style.display==="block") loadWidget();},30000);
-
-async function fetchJSON(url){const res=await fetch(url,{headers:{Authorization:"Bearer "+apiKey}});return await res.json();}
-async function loadWidget(){/* widget verisi yükleme kodu buraya */}
-
 /* Crosshair Takip */
 const crosshair=document.getElementById("crosshair");
 document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; crosshair.style.top=e.clientY+"px";});
@@ -332,6 +244,13 @@ document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; c
 const settingsBar = document.getElementById("settings-bar");
 settingsBar.addEventListener("mouseenter", () => { settingsBar.classList.add("open"); });
 settingsBar.addEventListener("mouseleave", () => { settingsBar.classList.remove("open"); });
+
+// Tema rengini canlı değiştirme
+const themeInput = document.getElementById("themeColor");
+themeInput.addEventListener("input", (e) => {
+  const color = e.target.value;
+  document.documentElement.style.setProperty("--theme-color", color);
+});
 </script>
 </body>
 </html>
