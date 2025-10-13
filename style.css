@@ -94,6 +94,8 @@ th{ background:#4B4B4B; font-size:12px; }
   border:1px solid var(--theme-color);
   border-radius:16px;
   box-shadow:0 0 15px var(--theme-color)66;
+  position: relative;
+  z-index: 1;
 }
 .section-box h2{ color:var(--theme-color); font-size:1.8em; text-shadow:0 0 10px var(--theme-color); margin-bottom:15px; }
 .section-box p{ color:#ccc; line-height:1.6; font-size:1.05em; }
