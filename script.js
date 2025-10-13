@@ -221,7 +221,22 @@ async function loadWidget(){
       const avgHS=(totalHS/matchCount).toFixed(1)+"%";
       const avgRow=document.createElement("tr");
       avgRow.classList.add("avg-row");
-      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 1px #00ffff;border-top:1px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
+avgRow.innerHTML = `
+<td colspan="5" style="
+    text-align:center;
+    font-weight:900; /* daha kalın */
+    font-size:1.05em; /* biraz daha büyük */
+    color: var(--theme-color);
+    text-shadow:
+        0 0 4px var(--theme-color),
+        0 0 8px var(--theme-color),
+        0 0 12px var(--theme-color);
+    border-top: 1px solid var(--theme-color);
+    padding-top:6px;
+">
+    AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}
+</td>
+`;
       tbody.appendChild(avgRow);
     }
 
