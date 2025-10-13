@@ -1,170 +1,179 @@
-/* ========== Genel Ayarlar ========== */
-:root {
-  --theme-color: #00ffff;          /* Ana tema rengi */
-  --theme-bg-alpha: 0.1;           /* Blok arka planı saydamlık */
-  --theme-bg-hover-alpha: 0.2;     /* Hover arka plan saydamlığı */
-}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KatzRead</title>
+<link rel="icon" type="image/png" sizes="16x16" href="https://katzread.github.io/katz.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://katzread.github.io/katz.png">
+<link rel="icon" type="image/png" sizes="96x96" href="https://katzread.github.io/katz.png">
+<link rel="icon" type="image/png" sizes="180x180" href="https://katzread.github.io/katz.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-body {
-  margin: 0;
-  font-family: 'Orbitron', sans-serif;
-  background: #0a0a0a;
-  color: var(--theme-color);
-}
+<canvas id="particle-canvas"></canvas>
 
-/* ========== Crosshair ========== */
-#crosshair {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  margin-left: -15px;
-  margin-top: -15px;
-  pointer-events: none;
-  z-index: 9999;
-}
+<div class="tab-menu">
+  <button class="tab-btn active" data-tab="home">Ana Sayfa</button>
+  <button class="tab-btn" data-tab="about">Hakkımda</button>
+  <button class="tab-btn" data-tab="settings">Ayarlar</button>
+  <button class="tab-btn" data-tab="equipment">Ekipmanlar</button>
+</div>
 
-#crosshair .top, #crosshair .bottom, #crosshair .left, #crosshair .right {
-  position: absolute;
-  background-color: var(--theme-color);
-}
+<div id="home" class="tab-content active">
+  <div class="header">
+    <img src="katz.png" alt="KatzRead Logo" class="header-logo">
+    <h1>KatzRead</h1>
+    <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
+    <div class="links">
+      <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
+      <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
+      <a href="https://x.com/katzread" target="_blank">Twitter</a>
+      <a href="https://kick.com/katzread" target="_blank">Kick</a>
+      <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
+    </div>
+    <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
+  </div>
+  <div class="widget" id="katzWidget">
+    <h2>KatzRead</h2>
+    <div class="stat" id="elo">ELO: Yükleniyor...</div>
+    <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+    <table id="stats-table">
+      <thead>
+        <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="5">Yükleniyor...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-#crosshair .top, #crosshair .bottom {
-  width: 2px;
-  height: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-#crosshair .top { top: 0; }
-#crosshair .bottom { bottom: 0; }
+<div id="about" class="tab-content">
+  <div class="about-section">
+    <div class="about-photo">
+      <img src="katzread.jpg" alt="Profil Fotoğrafı">
+      <div class="aura"></div>
+    </div>
+    <div class="about-text">
+      <h2>Hakkımda</h2>
+      <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. 
+      <span class="highlight">FUT Turkuaz</span> takımında oynuyorum. Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum.</p>
+    </div>
+  </div>
+</div>
 
-#crosshair .left, #crosshair .right {
-  height: 2px;
-  width: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-#crosshair .left { left: 0; }
-#crosshair .right { right: 0; }
+<div id="settings" class="tab-content">
+  <div class="section-box">
+    <h2>Ayarlar</h2>
+    <p>Buradan tema rengi ve arka plan efektini değiştirebilirsiniz. Crosshair aç/kapa ve renk ayarı da burada uygulanacaktır.</p>
+  </div>
+</div>
 
-/* ========== Tab Menü ========== */
-.tab-menu {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
+<div id="equipment" class="tab-content">
+  <div class="section-box">
+    <h2>💠 PC Özelliklerim</h2>
+    <div class="equip-grid">
+      <div class="equip-card">
+        <img src="https://cdn.discordapp.com/attachments/1222334561511174176/1315684412371806229/cpu.png" alt="CPU">
+        <strong>CPU</strong><br>Intel Core i9-13900K
+      </div>
+      <div class="equip-card">
+        <img src="https://cdn.discordapp.com/attachments/1222334561511174176/1315684532314597437/gpu.png" alt="GPU">
+        <strong>GPU</strong><br>NVIDIA RTX 4090
+          <div class="equip-item">
+      </div>
+      <div class="equip-card">
+        <img src="https://cdn.discordapp.com/attachments/1222334561511174176/1315684600227454986/ram.png" alt="RAM">
+        <strong>RAM</strong><br>32GB DDR5 6000MHz
+      </div>
+      <div class="equip-card">
+        <img src="https://cdn.discordapp.com/attachments/1222334561511174176/1315684672216905799/ssd.png" alt="SSD">
+        <strong>SSD</strong><br>2TB NVMe
+      </div>
+      <div class="equip-card">
+        <img src="https://cdn.discordapp.com/attachments/1222334561511174176/1315684750731132999/motherboard.png" alt="Motherboard">
+        <strong>Anakart</strong><br>ASUS ROG Z790
+      </div>
+      <div class="equip-card">
+        <img src="https://cdn.discordapp.com/attachments/1222334561511174176/1315684819650803783/psu.png" alt="PSU">
+        <strong>Güç Kaynağı</strong><br>1000W 80+ Platinum
+      </div>
+            <div class="equip-card">
+        <img src="https://cdn.coolermaster.com/media/assets/1005/masterbox-nr200p-black-gallery-image1-zoom.png" alt="Kasa">
+        <strong>Kasa</strong><br>Cooler Master NR200P
+      </div>
+    </div>
+  </div>
 
-.tab-btn {
-  background: transparent;
-  border: 2px solid var(--theme-color);
-  color: var(--theme-color);
-  padding: 8px 16px;
-  margin: 0 5px;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
+  <div class="section-box">
+    <h2>🎮 Oyuncu Ekipmanlarım</h2>
+    <div class="equip-grid">
+      <div class="equip-card">
+        <img src="https://resource.logitechg.com/w_1200,c_limit,q_auto,f_auto,dpr_1.0/content/dam/gaming/en/products/pro-x-superlight/gallery/pro-x-superlight-black-gallery-1.png" alt="Mouse">
+        <strong>Mouse</strong><br>Logitech G Pro X Superlight
+      </div>
+      <div class="equip-card">
+        <img src="https://www.corsair.com/medias/sys_master/images/images/h42/h74/9596528537630/base-k100-rgb-gallery-01.png" alt="Keyboard">
+        <strong>Klavye</strong><br>Corsair K100 RGB
+      </div>
+      <div class="equip-card">
+        <img src="https://assets2.razerzone.com/images/pnx.assets/d4cd5a54384d0b3f7f3a5da7ac8e54c2/razer-blackshark-v2-pro-gallery-01.png" alt="Kulaklık">
+        <strong>Kulaklık</strong><br>Razer BlackShark V2 Pro
+      </div>
+      <div class="equip-card">
+        <img src="https://m.media-amazon.com/images/I/61vNWa+R4OL._AC_SL1500_.jpg" alt="Mousepad">
+        <strong>Mousepad</strong><br>SteelSeries QcK Heavy
+      </div>
+      <div class="equip-card">
+        <img src="https://images.philips.com/is/image/philipsconsumer/f6d2f2e0c1e14533a9e3ae7800a9b62c?$jpglarge$&wid=1250" alt="Monitor">
+        <strong>Monitör</strong><br>27" 240Hz 1ms IPS
+      </div>
+    </div>
+  </div>
+</div>
 
-.tab-btn.active, .tab-btn:hover {
-  background: var(--theme-color);
-  color: #000;
-}
+<div id="crosshair">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
 
-/* ========== Tab İçerikleri ========== */
-.tab-content {
-  display: none;
-  padding: 20px;
-}
+<footer>© 2025 KatzRead</footer>
 
-.tab-content.active {
-  display: block;
-}
+<div id="settings-bar">
+  <div class="settings-group">
+    <label for="themeColor">Tema Rengi:</label>
+    <input type="color" id="themeColor" value="#00ffff">
+  </div>
+</div>
 
-/* ========== Ekipman & Sistem Grid ========== */
-.equip-grid {
-  display: grid;
-  gap: 20px;
-  max-width: 1200px;
-  margin: 20px auto;
-}
+<script src="script.js"></script>
+</body>
+</html>
 
-.equip-card {
-  background-color: rgba(0, 255, 255, var(--theme-bg-alpha));
-  box-shadow: 0 0 10px var(--theme-color), 0 0 20px var(--theme-color);
-  border-radius: 12px;
-  padding: 15px;
-  text-align: center;
-  color: #fff; /* yazılar saydam olmasın */
-  transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-}
 
-.equip-card:hover {
-  transform: scale(1.05);
-  background-color: rgba(0, 255, 255, var(--theme-bg-hover-alpha));
-  box-shadow: 0 0 20px var(--theme-color), 0 0 30px var(--theme-color);
-}
 
-/* Sistem grid: 2 satır, 4 sütun */
-#equipment > .section-box:first-child .equip-grid {
-  grid-template-columns: repeat(4, 1fr);
-}
 
-/* Ekipman grid: 1. satır 4 blok, 2. satır 1 blok ortada */
-#equipment > .section-box:last-child .equip-grid {
-  grid-template-columns: repeat(4, 1fr);
-}
 
-#equipment > .section-box:last-child .equip-grid .equip-card:last-child {
-  grid-column: 2 / span 2; /* 2. satır ortalaması */
-}
 
-/* Responsive */
-@media (max-width: 900px) {
-  #equipment > .section-box:first-child .equip-grid,
-  #equipment > .section-box:last-child .equip-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  #equipment > .section-box:last-child .equip-grid .equip-card:last-child {
-    grid-column: 1 / -1;
-  }
-}
 
-@media (max-width: 500px) {
-  #equipment > .section-box:first-child .equip-grid,
-  #equipment > .section-box:last-child .equip-grid {
-    grid-template-columns: 1fr;
-  }
-  #equipment > .section-box:last-child .equip-grid .equip-card:last-child {
-    grid-column: 1 / -1;
-  }
-}
 
-/* ========== Ayarlar Paneli ========== */
-#settings-bar {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  background: #111;
-  padding: 10px;
-  border-radius: 12px;
-  border: 2px solid var(--theme-color);
-  color: #fff;
-}
 
-#settings-bar label {
-  margin-right: 5px;
-}
 
-#settings-bar input[type="color"] {
-  cursor: pointer;
-}
 
-/* ========== Footer ========== */
-footer {
-  text-align: center;
-  padding: 15px;
-  background: #111;
-  color: var(--theme-color);
-  margin-top: 50px;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
