@@ -163,6 +163,14 @@ th{ background:#4B4B4B; font-size:12px; }
   .ekipman-grid .solo { grid-column: 1 / -1; }
 }
 
+.img-wrapper img {
+  width: 100px;  /* Önceki 80px */
+  height: 100px; /* Önceki 80px */
+  object-fit: contain;
+}
+.equip-content:hover img {
+  transform: scale(1.05);
+}
 
 
 
