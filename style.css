@@ -106,6 +106,29 @@ th{ background:#4B4B4B; font-size:12px; }
 }
 .equip-card:hover{ background: radial-gradient(circle at center, rgba(var(--theme-rgb),0.2) 0%, rgba(0,0,0,0.4) 100%); box-shadow:0 0 12px var(--theme-color)aa; transform:scale(1.05); }
 .equip-card img{ width:80px; height:auto; margin-bottom:6px; }
+.accordion-btn {
+  cursor: pointer;
+  background: rgba(var(--theme-rgb), 0.2);
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  border: 1px solid var(--theme-color);
+  color: var(--theme-color);
+  text-align: left;
+  font-size: 1.2em;
+  transition: 0.3s;
+}
+
+.accordion-btn:hover {
+  background: rgba(var(--theme-rgb), 0.4);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  margin-bottom: 15px;
+}
 
 /* Crosshair */
 #crosshair { position: fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%, -50%); z-index:9999; }
