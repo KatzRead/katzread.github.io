@@ -56,26 +56,18 @@ let canvasHeight = window.innerHeight;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
+// Canvas arka planda olacak şekilde z-index
+canvas.style.zIndex = 0;  // UI elementlerin arkasında
+canvas.style.position = 'fixed';
+canvas.style.top = '0';
+canvas.style.left = '0';
+
+// Window resize
 window.addEventListener('resize', () => {
   canvasWidth = window.innerWidth;
   canvasHeight = window.innerHeight;
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
-});
-
-// Mouse tracking
-const mouse = { x: null, y: null, radius: 100 };
-window.addEventListener('mousemove', e => {
-  mouse.x = e.x;
-  mouse.y = e.y;
-});
-
-// UI hover
-const uiElements = document.querySelectorAll('.tab-menu button, .links a, #toggleBtn, #settings-bar');
-let particleScale = 1;
-uiElements.forEach(el => {
-  el.addEventListener('mouseenter', () => { particleScale = 0.2; });
-  el.addEventListener('mouseleave', () => { particleScale = 1; });
 });
 
 // Theme helper
@@ -87,8 +79,8 @@ class Particle {
     this.x = x || Math.random() * canvasWidth;
     this.y = y || Math.random() * canvasHeight;
     this.size = size || Math.random() * 3 + 1;
-    this.speedX = (Math.random() - 0.5) * 0.5;
-    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.3; // yavaş hareket
+    this.speedY = (Math.random() - 0.5) * 0.3;
     this.baseSize = this.size;
   }
   update() {
@@ -99,18 +91,6 @@ class Particle {
     if(this.x < 0) this.x = canvasWidth;
     if(this.y > canvasHeight) this.y = 0;
     if(this.y < 0) this.y = canvasHeight;
-
-    // Fareye yakınsa hafif büyü
-    if(mouse.x && mouse.y){
-      const dx = this.x - mouse.x;
-      const dy = this.y - mouse.y;
-      const distance = Math.sqrt(dx*dx + dy*dy);
-      if(distance < mouse.radius){
-        this.size = this.baseSize + (mouse.radius - distance)/50;
-      } else {
-        this.size = this.baseSize;
-      }
-    }
   }
   draw() {
     ctx.fillStyle = `rgba(${getThemeRGB()},0.7)`;
@@ -129,8 +109,9 @@ function initParticles(num=80){
 initParticles();
 
 // Crosshair halo particle
+const crosshairEl = document.getElementById("crosshair");
 function drawCrosshairHalo() {
-  const rect = document.getElementById("crosshair").getBoundingClientRect();
+  const rect = crosshairEl.getBoundingClientRect();
   const cx = rect.left + rect.width/2;
   const cy = rect.top + rect.height/2;
   
@@ -153,7 +134,7 @@ function animateParticles() {
 
   particlesArray.forEach(p => { p.update(); p.draw(); });
 
-  // Connect particles
+  // Lines
   const themeRGB = getThemeRGB();
   for(let i=0;i<particlesArray.length;i++){
     for(let j=i+1;j<particlesArray.length;j++){
@@ -178,6 +159,7 @@ function animateParticles() {
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
+
 
 
 // Faceit Widget
