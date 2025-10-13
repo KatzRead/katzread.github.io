@@ -108,7 +108,7 @@ th{ background:#4B4B4B; font-size:12px; }
   }
 
   .equip-content {
-  background-color: #00ffff33; /* 33 = %20 opacity */
+  background-color: rgba(var(--theme-color), 0.1); /* 33 = %20 opacity */
   box-shadow: 0 0 10px var(--theme-color), 0 0 20px var(--theme-color);
   padding: 15px;
   border-radius: 12px;
