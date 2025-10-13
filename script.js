@@ -17,6 +17,50 @@ document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; c
 const settingsBar = document.getElementById("settings-bar");
 settingsBar.addEventListener("mouseenter", () => { settingsBar.classList.add("open"); });
 settingsBar.addEventListener("mouseleave", () => { settingsBar.classList.remove("open"); });
+// CFG Dosya Yükleme
+const cfgInput = document.getElementById('cfgInput');
+const cfgDisplay = document.getElementById('cfgDisplay');
+
+cfgInput.addEventListener('change', e => {
+  cfgDisplay.innerHTML = ""; // Önceki içerikleri temizle
+  Array.from(e.target.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      // Dosya içeriğini göster
+      const container = document.createElement('div');
+      container.classList.add('cfg-container');
+      container.innerHTML = `
+        <strong>${file.name}</strong>
+        <pre>${reader.result}</pre>
+        <button class="copyBtn">Kopyala</button>
+        <button class="downloadBtn">İndir</button>
+      `;
+      cfgDisplay.appendChild(container);
+
+      // Kopyala butonu
+      const copyBtn = container.querySelector('.copyBtn');
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(reader.result).then(() => {
+          copyBtn.textContent = "Kopyalandı!";
+          setTimeout(()=>copyBtn.textContent="Kopyala",1000);
+        });
+      });
+
+      // İndir butonu
+      const downloadBtn = container.querySelector('.downloadBtn');
+      downloadBtn.addEventListener('click', () => {
+        const blob = new Blob([reader.result], {type:"text/plain"});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = file.name;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    };
+    reader.readAsText(file);
+  });
+});
+
 
 // Tema rengi input
 const themeInput = document.getElementById("themeColor");
