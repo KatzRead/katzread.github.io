@@ -1,35 +1,17 @@
 // Tab geçişleri
-const tabs = document.querySelectorAll('.tab-btn');
-const contents = document.querySelectorAll('.tab-content');
-tabs.forEach(btn => btn.addEventListener('click', () => {
-  tabs.forEach(b => b.classList.remove('active'));
-  contents.forEach(c => c.classList.remove('active'));
+const tabs=document.querySelectorAll('.tab-btn');
+const contents=document.querySelectorAll('.tab-content');
+tabs.forEach(btn=>btn.addEventListener('click',()=>{
+  tabs.forEach(b=>b.classList.remove('active'));
+  contents.forEach(c=>c.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById(btn.dataset.tab).classList.add('active');
 }));
 
 // Crosshair
-const crosshair = document.getElementById("crosshair");
-
-// Mouse hareketi
-document.addEventListener("mousemove", e => {
-  crosshair.style.left = e.clientX + "px";
-  crosshair.style.top = e.clientY + "px";
-
-  // Her mousemove’de cursor gizle
-  document.body.style.cursor = "none";
-
-  // Tüm interaktif elementlerde de cursor gizle
-  document.querySelectorAll("button, input, select, textarea, a").forEach(el => {
-    el.style.cursor = "none";
-  });
-});
-
-// Tüm interaktif elementlerde hover sırasında cursor gizleme
-document.querySelectorAll("button, input, select, textarea, a").forEach(el => {
-  el.addEventListener("mouseenter", () => { el.style.cursor = "none"; });
-  el.addEventListener("mouseleave", () => { el.style.cursor = "none"; });
-});
+const crosshair=document.getElementById("crosshair");
+document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; crosshair.style.top=e.clientY+"px";});
+["mousemove","mousedown","mouseup"].forEach(evt=>{document.addEventListener(evt,()=>{document.body.style.cursor="none";});});
 
 // Settings bar
 const settingsBar = document.getElementById("settings-bar");
@@ -49,29 +31,33 @@ if(savedColor){
 // Renk değiştiğinde uygula ve kaydet
 themeInput.addEventListener("input", (e) => {
   const color = e.target.value;
-  localStorage.setItem("themeColor", color);
+  localStorage.setItem("themeColor", color); // kaydet
   applyThemeColor(color);
 });
 
 // Renk uygulama fonksiyonu
 function applyThemeColor(color){
+  // Yumuşak geçiş için önce eski rengi kaldırıp yeni renk ekle
   document.documentElement.style.setProperty("--theme-color", color);
   const r = parseInt(color.slice(1,3),16);
   const g = parseInt(color.slice(3,5),16);
   const b = parseInt(color.slice(5,7),16);
   document.documentElement.style.setProperty("--theme-rgb", `${r},${g},${b}`);
   
+  // Header logosu ve glow
   const logo = document.querySelector(".header-logo");
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 }
-
 // Canvas setup
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
+
 let canvasWidth = window.innerWidth;
 let canvasHeight = window.innerHeight;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
+
+// Canvas arka planda
 canvas.style.pointerEvents = 'none'; // UI elementleri etkilenmez
 
 // Window resize
@@ -93,12 +79,14 @@ class Particle {
     this.x = Math.random() * canvasWidth;
     this.y = Math.random() * canvasHeight;
     this.size = Math.random() * 2 + 1;
-    this.speedX = (Math.random() - 0.5) * 0.8;
+    this.speedX = (Math.random() - 0.5) * 0.8; // hareketi daha belirgin
     this.speedY = (Math.random() - 0.5) * 0.8;
   }
   update() {
     this.x += this.speedX;
     this.y += this.speedY;
+
+    // Ekran sınırlarında sarmala
     if(this.x > canvasWidth) this.x = 0;
     if(this.x < 0) this.x = canvasWidth;
     if(this.y > canvasHeight) this.y = 0;
@@ -116,15 +104,23 @@ class Particle {
 const particlesArray = [];
 function initParticles(num = 100) {
   particlesArray.length = 0;
-  for(let i = 0; i < num; i++) particlesArray.push(new Particle());
+  for(let i = 0; i < num; i++) {
+    particlesArray.push(new Particle());
+  }
 }
 initParticles();
 
-// Animate particles
+// Animate function
 function animateParticles() {
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-  particlesArray.forEach(p => { p.update(); p.draw(); });
 
+  // Particles çiz
+  particlesArray.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  // Particles arası çizgiler
   const themeRGB = getThemeRGB();
   for(let i = 0; i < particlesArray.length; i++) {
     for(let j = i + 1; j < particlesArray.length; j++) {
@@ -143,9 +139,11 @@ function animateParticles() {
       }
     }
   }
+
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
+
 // Faceit Widget
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
@@ -215,32 +213,17 @@ async function loadWidget(){
       }
     }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const table = document.getElementById("faceit-stats"); // Tablo id’sini kendine göre değiştir
-  if(!table) return;
-
-  const matchCount = totalMatches; // Toplam maç sayısı değişkenin
-  if(matchCount > 0){
-    const avgKills = (totalKills / matchCount).toFixed(1);
-    const avgDeaths = (totalDeaths / matchCount).toFixed(1);
-    const avgKD = (totalKills / totalDeaths).toFixed(2);
-    const avgADR = (totalADR / matchCount).toFixed(1);
-    const avgHS = (totalHS / matchCount).toFixed(1) + "%";
-
-    const avgRow = document.createElement("tr");
-    avgRow.classList.add("avg-row");
-
-    avgRow.innerHTML = `
-      <td colspan="${table.rows[0].cells.length}">
-        AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}
-      </td>
-    `;
-
-    table.appendChild(avgRow);
-  }
-});
-
-  }
+    if(matchCount>0){
+      const avgKills=(totalKills/matchCount).toFixed(1);
+      const avgDeaths=(totalDeaths/matchCount).toFixed(1);
+      const avgKD=(totalKills/totalDeaths).toFixed(2);
+      const avgADR=(totalADR/matchCount).toFixed(1);
+      const avgHS=(totalHS/matchCount).toFixed(1)+"%";
+      const avgRow=document.createElement("tr");
+      avgRow.classList.add("avg-row");
+      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 1px #00ffff;border-top:1px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
+      tbody.appendChild(avgRow);
+    }
 
   }catch{
     document.getElementById("elo").innerText="ELO alınamadı";
