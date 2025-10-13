@@ -6,26 +6,30 @@ document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; c
 ["mousemove","mousedown","mouseup"].forEach(evt=>{document.addEventListener(evt,()=>{document.body.style.cursor="none";});});
 
 /* #theme-js */
+
+// Tema uygulama fonksiyonu
 function applyTheme(color){
   document.documentElement.style.setProperty("--theme-color", color);
   const r = parseInt(color.slice(1,3),16);
   const g = parseInt(color.slice(3,5),16);
   const b = parseInt(color.slice(5,7),16);
   document.documentElement.style.setProperty("--theme-rgb", `${r},${g},${b}`);
+  
   const logo = document.querySelector(".header-logo");
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 }
 
-// Sayfa açılınca kaydedilmiş temayı uygula
+// Sayfa açılınca localStorage’dan temayı uygula
 document.addEventListener("DOMContentLoaded", () => {
   const savedTheme = localStorage.getItem("themeColor") || "#00ffff";
   applyTheme(savedTheme);
 
+  // input kutusunu da güncelle
   const themeInput = document.getElementById("themeColor");
   if(themeInput){
     themeInput.value = savedTheme;
 
-    // Renk değişince localStorage'a kaydet
+    // Renk değişince kaydet ve uygula
     themeInput.addEventListener("input", (e) => {
       const color = e.target.value;
       applyTheme(color);
@@ -77,5 +81,6 @@ async function loadWidget(){
     document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
   }
 }
+
 
 
