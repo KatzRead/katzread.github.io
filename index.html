@@ -30,6 +30,20 @@
       <a href="https://kick.com/katzread" target="_blank">Kick</a>
       <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
     </div>
+    <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
+  </div>
+  <div class="widget" id="katzWidget">
+    <h2>KatzRead</h2>
+    <div class="stat" id="elo">ELO: Yükleniyor...</div>
+    <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+    <table id="stats-table">
+      <thead>
+        <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="5">Yükleniyor...</td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -48,43 +62,9 @@
 </div>
 
 <div id="settings" class="tab-content">
-  <div class="settings-panel">
-    <h2>CS2 Ayarları</h2>
-    <div class="settings-category">
-      <button class="category-toggle">Mouse</button>
-      <div class="category-content">
-        <label>DPI: <input type="number" value="400" min="100" max="16000"></label>
-        <label>Hassasiyet: <input type="number" value="2.0" step="0.01"></label>
-      </div>
-    </div>
-
-    <div class="settings-category">
-      <button class="category-toggle">Video</button>
-      <div class="category-content">
-        <label>Çözünürlük: 
-          <select>
-            <option value="1920x1080">1920x1080</option>
-            <option value="1280x720">1280x720</option>
-          </select>
-        </label>
-        <label>FPS Limiti: <input type="number" value="300" min="30"></label>
-      </div>
-    </div>
-
-    <div class="settings-category">
-      <button class="category-toggle">Crosshair</button>
-      <div class="category-content">
-        <label>Renk: <input type="color" value="#00ffff"></label>
-        <label>Boyut: <input type="range" min="1" max="10" value="5"></label>
-      </div>
-    </div>
-
-    <div class="settings-category">
-      <button class="category-toggle">Launch Options</button>
-      <div class="category-content">
-        <label><input type="text" value="-novid -high +fps_max 300"> Launch Parametreleri</label>
-      </div>
-    </div>
+  <div class="section-box">
+    <h2>Ayarlar</h2>
+    <p>Buradan tema rengi ve arka plan efektini değiştirebilirsiniz. Crosshair aç/kapa ve renk ayarı da burada uygulanacaktır.</p>
   </div>
 </div>
 
@@ -92,15 +72,41 @@
   <div class="section-box">
     <h2>Ekipmanlarım</h2>
     <div class="equip-grid">
-      <div class="equip-card"><img src="mouse.png" alt="Mouse"><div>Logitech G Pro X</div></div>
-      <div class="equip-card"><img src="keyboard.png" alt="Keyboard"><div>SteelSeries Apex 7</div></div>
-      <div class="equip-card"><img src="headset.png" alt="Headset"><div>HyperX Cloud II</div></div>
-      <div class="equip-card"><img src="monitor.png" alt="Monitor"><div>BenQ Zowie XL2546</div></div>
+      <div class="equip-card">
+        <img src="mouse.png" alt="Mouse">
+        <div>Logitech G Pro X</div>
+      </div>
+      <div class="equip-card">
+        <img src="keyboard.png" alt="Keyboard">
+        <div>SteelSeries Apex 7</div>
+      </div>
+      <div class="equip-card">
+        <img src="headset.png" alt="Headset">
+        <div>HyperX Cloud II</div>
+      </div>
+      <div class="equip-card">
+        <img src="monitor.png" alt="Monitor">
+        <div>BenQ Zowie XL2546</div>
+      </div>
     </div>
   </div>
 </div>
 
+<div id="crosshair">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
+
 <footer>© 2025 KatzRead</footer>
+
+<div id="settings-bar">
+  <div class="settings-group">
+    <label for="themeColor">Tema Rengi:</label>
+    <input type="color" id="themeColor" value="#00ffff">
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
