@@ -66,8 +66,42 @@
 
 <div id="settings" class="tab-content">
   <div class="section-box">
-    <h2>Ayarlar</h2>
-    <p>Buradan tema rengi ve arka plan efektini değiştirebilirsiniz. Crosshair aç/kapa ve renk ayarı da burada uygulanacaktır.</p>
+     <button class="active" data-tab="graphics">Görüntü Ayarları</button>
+  <button data-tab="hud">HUD Ayarları</button>
+  <button data-tab="radar">Radar</button>
+  <button data-tab="crosshair">Crosshair</button>
+  <button data-tab="mouse">Mouse</button>
+  <button data-tab="binds">Binds</button>
+</div>
+
+<div class="tab-content active" id="graphics">
+  <div class="settings-grid">
+    <div class="setting-block">
+      <span class="setting-name">Parlaklık</span>
+      <span class="setting-value">93%</span>
+    </div>
+    <div class="setting-block">
+      <span class="setting-name">Scaling Mode</span>
+      <span class="setting-value">Stretched</span>
+    </div>
+    <div class="setting-block">
+      <span class="setting-name">Çözünürlük</span>
+      <span class="setting-value">1280x960</span>
+    </div>
+    <!-- Diğer ayarlar -->
+  </div>
+
+  <h3>Gelişmiş Görüntü Ayarları</h3>
+  <div class="settings-grid">
+    <div class="setting-block">
+      <span class="setting-name">Oyuncu Kontrastı</span>
+      <span class="setting-value">Etkin</span>
+    </div>
+    <div class="setting-block">
+      <span class="setting-name">Dikey Eşitleme</span>
+      <span class="setting-value">Devre Dışı</span>
+    </div>
+    <!-- Diğer gelişmiş ayarlar -->
   </div>
 </div>
 
@@ -166,6 +200,7 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
