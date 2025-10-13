@@ -14,6 +14,8 @@ document.addEventListener("mousemove", e => {
   crosshair.style.left = e.clientX + "px";
   crosshair.style.top = e.clientY + "px";
 });
+/* Tüm tıklamaları ve sağ tıklamayı iptal et */
+document.addEventListener("contextmenu", e => e.preventDefault());
 ["mousemove","mousedown","mouseup"].forEach(evt=>{document.addEventListener(evt,()=>{document.body.style.cursor="none";});});
 
 // Settings bar
