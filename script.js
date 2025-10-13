@@ -48,45 +48,20 @@ function applyThemeColor(color){
   const logo = document.querySelector(".header-logo");
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 }
-// Canvas setup
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-let canvasWidth = window.innerWidth;
-let canvasHeight = window.innerHeight;
-canvas.width = canvasWidth;
-canvas.height = canvasHeight;
-
-// Canvas arka planda olacak şekilde z-index
-canvas.style.zIndex = 0;  // UI elementlerin arkasında
-canvas.style.position = 'fixed';
-canvas.style.top = '0';
-canvas.style.left = '0';
-
-// Window resize
-window.addEventListener('resize', () => {
-  canvasWidth = window.innerWidth;
-  canvasHeight = window.innerHeight;
-  canvas.width = canvasWidth;
-  canvas.height = canvasHeight;
-});
-
-// Theme helper
-function getThemeRGB() { return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim(); }
-
 // Particle class
 class Particle {
   constructor(x, y, size) {
     this.x = x || Math.random() * canvasWidth;
     this.y = y || Math.random() * canvasHeight;
-    this.size = size || Math.random() * 3 + 1;
-    this.speedX = (Math.random() - 0.5) * 0.3; // yavaş hareket
-    this.speedY = (Math.random() - 0.5) * 0.3;
-    this.baseSize = this.size;
+    this.size = size || Math.random() * 2 + 1;  // daha küçük ve hafif
+    this.speedX = (Math.random() - 0.5) * 1;   // ±0.5-1 arası hız
+    this.speedY = (Math.random() - 0.5) * 1;
   }
   update() {
     this.x += this.speedX;
     this.y += this.speedY;
 
+    // Ekrandan çıkınca sarma
     if(this.x > canvasWidth) this.x = 0;
     if(this.x < 0) this.x = canvasWidth;
     if(this.y > canvasHeight) this.y = 0;
@@ -100,31 +75,36 @@ class Particle {
   }
 }
 
-// Particles array
+// Particle array
 let particlesArray = [];
-function initParticles(num=80){
+function initParticles(num = 80) {
   particlesArray = [];
-  for(let i=0;i<num;i++) particlesArray.push(new Particle());
+  for(let i = 0; i < num; i++) {
+    particlesArray.push(new Particle());
+  }
 }
 initParticles();
 
-// Animate
+// Animate function
 function animateParticles() {
-  ctx.clearRect(0,0,canvasWidth,canvasHeight);
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-  particlesArray.forEach(p => { p.update(); p.draw(); });
+  particlesArray.forEach(p => {
+    p.update();
+    p.draw();
+  });
 
-  // Lines
+  // Particles arası çizgiler (opsiyonel)
   const themeRGB = getThemeRGB();
-  for(let i=0;i<particlesArray.length;i++){
-    for(let j=i+1;j<particlesArray.length;j++){
+  for(let i = 0; i < particlesArray.length; i++){
+    for(let j = i + 1; j < particlesArray.length; j++){
       const p1 = particlesArray[i];
       const p2 = particlesArray[j];
       const dx = p1.x - p2.x;
       const dy = p1.y - p2.y;
       const dist = Math.sqrt(dx*dx + dy*dy);
-      if(dist < 120){
-        ctx.strokeStyle = `rgba(${themeRGB},${(1 - dist/120)*0.2})`;
+      if(dist < 100){ // bağlantı mesafesi
+        ctx.strokeStyle = `rgba(${themeRGB},${(1 - dist/100) * 0.2})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(p1.x,p1.y);
@@ -134,11 +114,11 @@ function animateParticles() {
     }
   }
 
-  drawCrosshairHalo();
-
   requestAnimationFrame(animateParticles);
 }
+
 animateParticles();
+
 
 
 
