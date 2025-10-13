@@ -130,7 +130,7 @@ th{ background:#4B4B4B; font-size:12px; }
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-top: 15px;
-  align-items: stretch; /* blokların yüksekliği eşitlensin */
+  align-items: start; /* stretch yerine start */
 
 }
 
@@ -147,9 +147,9 @@ th{ background:#4B4B4B; font-size:12px; }
 .equip-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;      /* Yatayda ortala */
+  justify-content: center;  /* Dikeyde ortala */
   text-decoration: none;
-  justify-content: space-between; /* içerik dikeyde dengelensin */
   color: inherit;
   background: radial-gradient(circle at center, rgba(var(--theme-rgb),0.15) 0%, rgba(0,0,0,0.5) 100%);
   border: 1px solid var(--theme-color);
@@ -167,10 +167,14 @@ th{ background:#4B4B4B; font-size:12px; }
   width: 80px;
   height: auto;
   margin-bottom: 6px;
-  margin: 0 auto; /* yatay ortalama */
-  max-height: 160px; /* tüm resim boylarını dengeler */
+  margin: 0 auto 10px auto; /* üstte boşluk bırak, ortala */
+  height: 140px;            /* tüm resimler aynı yükseklikte olur */
 }
-
+.equip-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #d0d0d0;
+}
 /* Responsive */
 @media (max-width: 900px) {
   .ekipman-grid { grid-template-columns: repeat(2, 1fr); }
