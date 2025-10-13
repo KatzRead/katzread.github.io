@@ -124,16 +124,22 @@ th{ background:#4B4B4B; font-size:12px; }
   margin-top: 15px;
 }
 
-/* Ekipman kısmı: 1. satır 4 blok, 2. satır tek blok ortalı */
+/* Ekipman kısmı: 1. satır 4 blok, 2. satır 2 blok ortalı */
 .ekipman-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-top: 15px;
 }
-.ekipman-grid .solo {
-  grid-column: 2 / span 2; /* ortala */
+
+/* 2. satır ortalama için solo sınıfı */
+.ekipman-grid .solo:nth-child(n+5) {
+  grid-column: span 1; /* Her biri 1 sütun kaplar */
 }
+
+/* Ortalamak için grid-template-areas veya margin auto kullanabiliriz */
+.ekipman-grid .solo:nth-child(5) { grid-column-start: 2; }
+.ekipman-grid .solo:nth-child(6) { grid-column-start: 3; }
 
 /* Equip-card tıklanabilir link */
 .equip-card {
@@ -162,13 +168,14 @@ th{ background:#4B4B4B; font-size:12px; }
 
 /* Responsive */
 @media (max-width: 900px) {
-  .sistem-grid, .ekipman-grid { grid-template-columns: repeat(2, 1fr); }
-  .ekipman-grid .solo { grid-column: 1 / -1; }
+  .ekipman-grid { grid-template-columns: repeat(2, 1fr); }
+  .ekipman-grid .solo:nth-child(n+5) { grid-column-start: auto; }
 }
 @media (max-width: 500px) {
-  .sistem-grid, .ekipman-grid { grid-template-columns: 1fr; }
-  .ekipman-grid .solo { grid-column: 1 / -1; }
+  .ekipman-grid { grid-template-columns: 1fr; }
+  .ekipman-grid .solo:nth-child(n+5) { grid-column-start: auto; }
 }
+
 
 /* Particle canvas */
 canvas#particle-canvas {
