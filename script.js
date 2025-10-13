@@ -72,16 +72,20 @@ window.addEventListener('resize', () => {
 function getThemeRGB() {
   return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim();
 }
-document.querySelectorAll(".accordion-btn").forEach(button => {
-  button.addEventListener("click", () => {
-    const content = button.nextElementSibling;
-    if (content.style.maxHeight) {
+// Accordion aç/kapa
+const acc = document.querySelectorAll('.accordion-btn');
+acc.forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('active');
+    const content = btn.nextElementSibling;
+    if (content.style.maxHeight){
       content.style.maxHeight = null;
     } else {
       content.style.maxHeight = content.scrollHeight + "px";
     }
   });
 });
+
 
 // Particle class
 class Particle {
