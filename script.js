@@ -48,6 +48,25 @@ function applyThemeColor(color){
   const logo = document.querySelector(".header-logo");
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 }
+function updateFavicon(color) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <text x="50%" y="70%" font-size="80" text-anchor="middle" fill="${color}" font-family="Orbitron">K</text>
+  </svg>`;
+  const blob = new Blob([svg], {type: 'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  document.getElementById('favicon').href = url;
+}
+
+// Tema değiştiğinde otomatik güncelle
+const themeInput = document.getElementById("themeColor");
+themeInput.addEventListener("input", (e) => {
+  const color = e.target.value;
+  updateFavicon(color);
+});
+
+// Sayfa yüklenirken mevcut renk ile favicon ayarla
+updateFavicon(getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim());
+
 // Canvas setup
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
