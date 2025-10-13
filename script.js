@@ -7,7 +7,7 @@ tabs.forEach(btn => btn.addEventListener('click', () => {
   btn.classList.add('active');
   document.getElementById(btn.dataset.tab).classList.add('active');
 }));
-421321
+
 // Crosshair
 const crosshair = document.getElementById("crosshair");
 
@@ -146,3 +146,90 @@ function animateParticles() {
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
+// Faceit Widget
+const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
+const nickname = "KatzRead";
+const MATCH_LIMIT = 30;
+const toggleBtn = document.getElementById("toggleBtn");
+const widgetDiv = document.getElementById("katzWidget");
+
+toggleBtn.addEventListener("click", () => {
+  if(widgetDiv.style.display === "none" || widgetDiv.style.display === ""){
+    widgetDiv.style.display = "block"; loadWidget();
+  } else { widgetDiv.style.display = "none"; }
+});
+
+setInterval(()=>{ if(widgetDiv.style.display==="block"){ loadWidget(); } },30000);
+
+async function fetchJSON(url){
+  const res = await fetch(url,{ headers:{ Authorization: "Bearer "+apiKey } });
+  return await res.json();
+}
+
+async function loadWidget(){
+  try{
+    const playerData = await fetchJSON(`https://open.faceit.com/data/v4/players?nickname=${nickname}&game=cs2`);
+    const elo = playerData.games?.cs2?.faceit_elo || "N/A";
+    document.getElementById("elo").innerText = "ELO: "+elo;
+    const playerId = playerData.player_id;
+    const stats = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/stats/cs2`);
+    const matches = stats.lifetime?.Matches || "N/A";
+    document.getElementById("matches").innerText = "Toplam Maç: "+matches;
+
+    const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
+    const tbody = document.querySelector("#stats-table tbody");
+    tbody.innerHTML="";
+    let totalKills=0,totalDeaths=0,totalADR=0,totalHS=0,totalRounds=0,matchCount=0;
+
+    for(let i=0;i<history.items.length;i++){
+      const match = history.items[i];
+      try{
+        const matchData = await fetchJSON(`https://open.faceit.com/data/v4/matches/${match.match_id}/stats`);
+        let kills=0,deaths=0,adrSum=0,hsSum=0,roundsPlayed=0;
+        matchData.rounds?.forEach(r=>{
+          r.teams.forEach(t=>{
+            t.players.forEach(p=>{
+              if(p.nickname===nickname){
+                kills+=Number(p.player_stats.Kills||0);
+                deaths+=Number(p.player_stats.Deaths||0);
+                adrSum+=Number(p.player_stats.ADR||0);
+                hsSum+=Number(p.player_stats.Headshots||0);
+                roundsPlayed++;
+              }
+            });
+          });
+        });
+        if(roundsPlayed>0){
+          const KD = deaths>0?(kills/deaths).toFixed(2):kills;
+          const hsPercent = kills>0?((hsSum/kills)*100).toFixed(1)+"%":"-";
+          const tr=document.createElement("tr");
+          tr.innerHTML=`<td>${kills}</td><td>${deaths}</td><td>${KD}</td><td>${(adrSum/roundsPlayed).toFixed(1)}</td><td>${hsPercent}</td>`;
+          tbody.appendChild(tr);
+          totalKills+=kills; totalDeaths+=deaths; totalADR+=(adrSum/roundsPlayed); totalHS+=kills>0?(hsSum/kills)*100:0;
+          totalRounds+=roundsPlayed; matchCount++;
+        }
+      }catch{ 
+        const tr=document.createElement("tr"); 
+        tr.innerHTML=`<td colspan="5">Veri yok</td>`; 
+        tbody.appendChild(tr); 
+      }
+    }
+
+    if(matchCount>0){
+      const avgKills=(totalKills/matchCount).toFixed(1);
+      const avgDeaths=(totalDeaths/matchCount).toFixed(1);
+      const avgKD=(totalKills/totalDeaths).toFixed(2);
+      const avgADR=(totalADR/matchCount).toFixed(1);
+      const avgHS=(totalHS/matchCount).toFixed(1)+"%";
+      const avgRow=document.createElement("tr");
+      avgRow.classList.add("avg-row");
+      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 1px #00ffff;border-top:1px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
+      tbody.appendChild(avgRow);
+    }
+
+  }catch{
+    document.getElementById("elo").innerText="ELO alınamadı";
+    document.getElementById("matches").innerText="Toplam Maç: N/A";
+    document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
+  }
+}
