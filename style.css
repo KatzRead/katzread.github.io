@@ -69,12 +69,7 @@ footer{ font-size:0.9em; color:#555; margin-top:40px; }
 table{ width:100%; margin-top:8px; border-collapse: collapse; font-size:13px; }
 th, td{ border:1px solid var(--theme-color); padding:4px; text-align:center; }
 th{ background:#4B4B4B; font-size:12px; }
-.avg-row {
-  font-weight: bold;
-  background: radial-gradient(circle at center, rgba(var(--theme-rgb),0.15) 0%, rgba(0,0,0,0.5) 100%);
-  color: var(--theme-color);
-  box-shadow: 0 0 12px var(--theme-color)aa;
-  transition: 0.4s ease;
+.avg-row{ font-weight:bold; background:#1a1a1a; color: var(--theme-color); }
 
 /* About */
 .about-section {
