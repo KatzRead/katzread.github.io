@@ -223,14 +223,14 @@ async function loadWidget(){
       const avgHS=(totalHS/matchCount).toFixed(1)+"%";
       const avgRow=document.createElement("tr");
       avgRow.classList.add("avg-row");
-avgRow.innerHTML = `
-<td colspan="5" style="
-    text-align:center;
-    font-weight:bold;
-    color: var(--theme-color);
-    text-shadow: 0 0 2px var(--theme-color);
-    border-top: 1px solid var(--theme-color);
-    padding-top:6px;
+      avgRow.innerHTML = `
+       <td colspan="5" style="
+       text-align:center;
+       font-weight:bold;
+       color: var(--theme-color);
+       text-shadow: 0 0 2px var(--theme-color);
+       border-top: 1px solid var(--theme-color);
+       padding-top:6px;
 ">
     AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}
 </td>
