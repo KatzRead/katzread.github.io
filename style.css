@@ -1,8 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
-:root { 
+:root {
   --theme-color: #00ffff; 
   --theme-rgb: 0,255,255; 
+  transition: --theme-color 0.5s ease, --theme-rgb 0.5s ease;
+}
+
+/* Glow ve hover efektleri için de transition ekleyelim */
+.header-logo {
+  transition: transform 0.3s, box-shadow 0.5s ease;
+}
+.about-photo img {
+  transition: transform 0.3s, box-shadow 0.5s ease;
+}
+.equip-card {
+  transition: 0.3s, box-shadow 0.5s ease, background 0.5s ease;
+}
+.links a, .tab-menu button {
+  transition: 0.3s, background 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+}
 }
 
 * { cursor: none !important; }
