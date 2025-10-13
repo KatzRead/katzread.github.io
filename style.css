@@ -142,6 +142,10 @@ th{ background:#4B4B4B; font-size:12px; }
   border: 1px solid var(--theme-color);
   background: rgba(var(--theme-rgb),0.15);
   text-align: center;
+    /* Tek satır ve taşmayı gizle */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
