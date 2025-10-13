@@ -106,7 +106,6 @@ th{ background:#4B4B4B; font-size:12px; }
   text-decoration: none;
   transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
   overflow: hidden;
-  cursor: none; /* sadece crosshair aktif */
 }
 
 /* Hover efekti */
