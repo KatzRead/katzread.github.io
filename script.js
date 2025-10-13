@@ -224,19 +224,17 @@ async function loadWidget(){
 avgRow.innerHTML = `
 <td colspan="5" style="
     text-align:center;
-    font-weight:900; /* daha kalın */
-    font-size:1.05em; /* biraz daha büyük */
+    font-weight:bold;
+    font-size:1.1em; /* Daha büyük yazı */
     color: var(--theme-color);
-    text-shadow:
-        0 0 4px var(--theme-color),
-        0 0 8px var(--theme-color),
-        0 0 12px var(--theme-color);
+    text-shadow: 0 0 4px var(--theme-color), 0 0 8px var(--theme-color);
     border-top: 1px solid var(--theme-color);
     padding-top:6px;
 ">
     AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}
 </td>
 `;
+
       tbody.appendChild(avgRow);
     }
 
