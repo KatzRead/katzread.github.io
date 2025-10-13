@@ -79,9 +79,8 @@ class Particle {
     this.x = x || Math.random() * canvasWidth;
     this.y = y || Math.random() * canvasHeight;
     this.size = size || Math.random() * 3 + 1;
-    this.speedX = (Math.random() - 0.5) * 0.3; // yavaş hareket
-    this.speedY = (Math.random() - 0.5) * 0.3;
-    this.baseSize = this.size;
+    this.speedX = (Math.random() - 0.5) * 0.5; // biraz daha hızlı hareket
+    this.speedY = (Math.random() - 0.5) * 0.5;
   }
   update() {
     this.x += this.speedX;
@@ -108,33 +107,14 @@ function initParticles(num=80){
 }
 initParticles();
 
-// Crosshair halo particle
-const crosshairEl = document.getElementById("crosshair");
-function drawCrosshairHalo() {
-  const rect = crosshairEl.getBoundingClientRect();
-  const cx = rect.left + rect.width/2;
-  const cy = rect.top + rect.height/2;
-  
-  for(let i=0;i<5;i++){
-    const angle = Math.random() * 2 * Math.PI;
-    const radius = Math.random() * 12 + 6;
-    const x = cx + Math.cos(angle) * radius;
-    const y = cy + Math.sin(angle) * radius;
-    const size = Math.random() * 1.5 + 0.5;
-    ctx.fillStyle = `rgba(${getThemeRGB()},0.9)`;
-    ctx.beginPath();
-    ctx.arc(x, y, size, 0, Math.PI*2);
-    ctx.fill();
-  }
-}
-
 // Animate
 function animateParticles() {
   ctx.clearRect(0,0,canvasWidth,canvasHeight);
 
+  // Particles çiz
   particlesArray.forEach(p => { p.update(); p.draw(); });
 
-  // Lines
+  // Particles arası çizgiler
   const themeRGB = getThemeRGB();
   for(let i=0;i<particlesArray.length;i++){
     for(let j=i+1;j<particlesArray.length;j++){
@@ -153,8 +133,6 @@ function animateParticles() {
       }
     }
   }
-
-  drawCrosshairHalo();
 
   requestAnimationFrame(animateParticles);
 }
