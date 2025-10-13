@@ -65,30 +65,30 @@
 </div>
 
 <div id="settings" class="tab-content">
- <div class="section-box">
-  <h2>CS2 Ayarlar</h2>
-
-  <div class="cfg-controls">
-    <input type="file" id="cfgUpload" accept=".cfg">
-    <button id="downloadCfg">CFG Olarak İndir</button>
-  </div>
-
-  <div class="tab-menu cfg-tab-menu">
-    <button class="tab-btn active" data-tab="game">Oyun Ayarları</button>
-    <button class="tab-btn" data-tab="video">Görüntü Ayarları</button>
-    <button class="tab-btn" data-tab="mouse">Mouse Ayarları</button>
-    <button class="tab-btn" data-tab="map">Map Ayarları</button>
-    <button class="tab-btn" data-tab="keybind">Keybind</button>
-  </div>
-
-  <div class="cfg-tabs">
-    <div id="game" class="cfg-tab active"></div>
-    <div id="video" class="cfg-tab"></div>
-    <div id="mouse" class="cfg-tab"></div>
-    <div id="map" class="cfg-tab"></div>
-    <div id="keybind" class="cfg-tab"></div>
+  <div class="section-box">
+    <h2>Ayarlar</h2>
+    <div class="cfg-upload">
+      <label for="cfgUpload" class="upload-btn">CFG Yükle</label>
+      <input type="file" id="cfgUpload" accept=".cfg">
+      <button id="downloadCfg">CFG İndir</button>
+    </div>
+    <div class="cfg-tab-container">
+      <div class="cfg-tab" id="cfg-game"></div>
+      <div class="cfg-tab" id="cfg-video"></div>
+      <div class="cfg-tab" id="cfg-mouse"></div>
+      <div class="cfg-tab" id="cfg-map"></div>
+      <div class="cfg-tab" id="cfg-keybind"></div>
+      <div class="cfg-tab-menu">
+        <button class="cfg-tab-btn active" data-tab="cfg-game">Oyun</button>
+        <button class="cfg-tab-btn" data-tab="cfg-video">Görüntü</button>
+        <button class="cfg-tab-btn" data-tab="cfg-mouse">Mouse</button>
+        <button class="cfg-tab-btn" data-tab="cfg-map">Map</button>
+        <button class="cfg-tab-btn" data-tab="cfg-keybind">Keybind</button>
+      </div>
+    </div>
   </div>
 </div>
+
 
 
 <div id="equipment" class="tab-content">
@@ -134,6 +134,7 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
