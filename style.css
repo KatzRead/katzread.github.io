@@ -36,6 +36,16 @@ body { margin:0; font-family:'Orbitron',sans-serif; background: radial-gradient(
 .tab-content.active { display:block; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
 
+/* Crosshair */
+#crosshair { position: fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%, -50%); z-index:9999; }
+#crosshair div { position:absolute; background: var(--theme-color); }
+#crosshair .top, #crosshair .bottom { width:2px; height:8px; }
+#crosshair .left, #crosshair .right { width:8px; height:2px; }
+#crosshair .top { top:0; left:50%; transform:translateX(-50%);}
+#crosshair .bottom { bottom:0; left:50%; transform:translateX(-50%);}
+#crosshair .left { left:0; top:50%; transform:translateY(-50%);}
+#crosshair .right { right:0; top:50%; transform:translateY(-50%); }
+
 /* Header */
 .header { padding-top:30px; }
 .header-logo { width:120px; margin:0 auto 12px auto; border-radius:10%; padding:5px; background: rgba(var(--theme-rgb), 0.2); box-shadow:0 0 5px var(--theme-color),0 0 15px var(--theme-color),0 0 25px var(--theme-color); animation:glow 1.5s infinite; transition:0.3s; display:block; }
@@ -138,21 +148,6 @@ th{ background:#4B4B4B; font-size:12px; }
 }
 
 
-/* Crosshair */
-#crosshair { position: fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%, -50%); z-index:9999; }
-#crosshair div { position:absolute; background: var(--theme-color); }
-#crosshair .top, #crosshair .bottom { width:2px; height:8px; }
-#crosshair .left, #crosshair .right { width:8px; height:2px; }
-#crosshair .top { top:0; left:50%; transform:translateX(-50%);}
-#crosshair .bottom { bottom:0; left:50%; transform:translateX(-50%);}
-#crosshair .left { left:0; top:50%; transform:translateY(-50%);}
-#crosshair .right { right:0; top:50%; transform:translateY(-50%); }
-<div id="crosshair">
-  <div class="top"></div>
-  <div class="bottom"></div>
-  <div class="left"></div>
-  <div class="right"></div>
-</div>
 
 
 /* Particle canvas */
