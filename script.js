@@ -61,7 +61,7 @@ function applyThemeColor(color){
   const b = parseInt(color.slice(5,7),16);
   document.documentElement.style.setProperty("--theme-rgb", `${r},${g},${b}`);
   
-  const logo = document.querySelector(".header-logo");
+  const logo = document.querySelector(".header-logo");sb
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 }
 
@@ -224,7 +224,7 @@ async function loadWidget(){
       const avgHS=(totalHS/matchCount).toFixed(1)+"%";
       const avgRow=document.createElement("tr");
       avgRow.classList.add("avg-row");
-      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;color:#00ffff;text-shadow:0 0 1px #00ffff;border-top:1px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
+      avgRow.innerHTML=`<td colspan="5" style="text-align:center;font-weight:bold;var(--theme-color);text-shadow:0 0 1px #00ffff;border-top:1px solid #00ffff;padding-top:6px;">AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}</td>`;
       tbody.appendChild(avgRow);
     }
 
