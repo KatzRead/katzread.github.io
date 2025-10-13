@@ -135,4 +135,70 @@ async function loadWidget(){
     document.getElementById("matches").innerText="Toplam Maç: N/A";
     document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
   }
+// Crosshair referansı
+const crosshairEl = document.getElementById("crosshair");
+
+// Crosshair halo particle ekleme
+function addCrosshairParticles(){
+  const rect = crosshairEl.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  
+  // Her frame crosshair etrafına birkaç particle ekle
+  for(let i=0;i<3;i++){
+    const p = new Particle();
+    const angle = Math.random() * Math.PI * 2;
+    const radius = Math.random() * 15 + 5; // crosshair etrafındaki halo yarıçapı
+    p.x = cx + Math.cos(angle) * radius;
+    p.y = cy + Math.sin(angle) * radius;
+    p.size = Math.random() * 2 + 1;
+    p.speedX = (Math.random() - 0.5) * 0.5;
+    p.speedY = (Math.random() - 0.5) * 0.5;
+    particlesArray.push(p);
+
+    // Fazla particle’leri temizle
+    if(particlesArray.length > 200) particlesArray.shift();
+  }
+}
+
+// animateParticles içinde ekle
+function animateParticles(){
+  ctx.clearRect(0,0,canvasWidth,canvasHeight);
+  const themeRGB = getThemeRGB();
+
+  addMouseParticles();      // fare etrafı aura
+  addCrosshairParticles();  // crosshair halo
+
+  for(let i=0;i<particlesArray.length;i++){
+    const p = particlesArray[i];
+
+    // Update hareket ve fare interaksiyonu
+    p.update();
+
+    // Scale particle yoğunluğu
+    ctx.globalAlpha = particleScale;
+    p.draw();
+    ctx.globalAlpha = 1;
+
+    // Bağlantılar
+    for(let j=i;j<particlesArray.length;j++){
+      const p2 = particlesArray[j];
+      const dx = p.x - p2.x;
+      const dy = p.y - p2.y;
+      const distance = Math.sqrt(dx*dx + dy*dy);
+      if(distance < 120){
+        ctx.strokeStyle = `rgba(${themeRGB},${particleScale * (1-distance/120)})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(animateParticles);
+}
+
+  
 }
