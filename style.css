@@ -86,14 +86,27 @@ th{ background:#4B4B4B; font-size:12px; }
 .equip-card img{ width:80px; height:auto; margin-bottom:6px; }
 
 /* Crosshair */
-#crosshair { position: fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%, -50%); z-index:9999; }
-#crosshair div { position:absolute; background: var(--theme-color); }
-#crosshair .top, #crosshair .bottom { width:2px; height:8px; }
-#crosshair .left, #crosshair .right { width:8px; height:2px; }
+#crosshair {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  pointer-events: none; /* tıklamaları engelleme */
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  z-index: 9999; /* her şeyin üstünde */
+}
+#crosshair div {
+  position: absolute;
+  background: var(--theme-color);
+}
+#crosshair .top, #crosshair .bottom { width: 2px; height: 8px; }
+#crosshair .left, #crosshair .right { width: 8px; height: 2px; }
 #crosshair .top { top:0; left:50%; transform:translateX(-50%);}
 #crosshair .bottom { bottom:0; left:50%; transform:translateX(-50%);}
 #crosshair .left { left:0; top:50%; transform:translateY(-50%);}
-#crosshair .right { right:0; top:50%; transform:translateY(-50%); }
+#crosshair .right { right:0; top:50%; transform:translateY(-50%);}
+
 
 /* Particle canvas */
 canvas#particle-canvas {
