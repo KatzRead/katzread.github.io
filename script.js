@@ -30,6 +30,38 @@ document.querySelectorAll("button, input, select, textarea, a").forEach(el => {
   el.addEventListener("mouseenter", () => { el.style.cursor = "none"; });
   el.addEventListener("mouseleave", () => { el.style.cursor = "none"; });
 });
+// Tüm color inputları seç
+const colorInputs = document.querySelectorAll('.color-picker input');
+
+// Her inputa listener ekle
+colorInputs.forEach(input => {
+  input.addEventListener('input', (e) => {
+    const color = e.target.value;
+    const r = parseInt(color.slice(1,3),16);
+    const g = parseInt(color.slice(3,5),16);
+    const b = parseInt(color.slice(5,7),16);
+
+    // Değişkenleri root'a uygula
+    document.documentElement.style.setProperty('--theme-color', color);
+    document.documentElement.style.setProperty('--theme-rgb', `${r},${g},${b}`);
+  });
+});
+colorInputs.forEach(input => {
+  input.addEventListener('input', (e) => {
+    const color = e.target.value;
+    const r = parseInt(color.slice(1,3),16);
+    const g = parseInt(color.slice(3,5),16);
+    const b = parseInt(color.slice(5,7),16);
+
+    document.documentElement.style.setProperty('--theme-color', color);
+    document.documentElement.style.setProperty('--theme-rgb', `${r},${g},${b}`);
+
+    // Tüm diğer inputları aynı değere ayarla
+    colorInputs.forEach(otherInput => {
+      if(otherInput !== input) otherInput.value = color;
+    });
+  });
+});
 
 // Settings bar
 const settingsBar = document.getElementById("settings-bar");
