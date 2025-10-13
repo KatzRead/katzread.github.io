@@ -229,6 +229,5 @@ async function loadWidget(){
     document.getElementById("elo").innerText="ELO alınamadı";
     document.getElementById("matches").innerText="Toplam Maç: N/A";
     document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
-
   }
 }
