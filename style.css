@@ -108,7 +108,7 @@ th{ background:#4B4B4B; font-size:12px; }
   }
 
   .equip-content {
-    background: rgba(0,255,255,0.1);
+    background: rgba(--theme-color, #00ffff);
     padding: 15px;
     border-radius: 12px;
     text-align: center;
@@ -117,7 +117,7 @@ th{ background:#4B4B4B; font-size:12px; }
 
   .equip-content:hover {
     transform: scale(1.05);
-    background: rgba(0,255,255,0.3);
+    background: rgba(--theme-color, #00ffff);
   }
 
   .equip-content img {
