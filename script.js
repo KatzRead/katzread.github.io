@@ -48,6 +48,170 @@ function applyThemeColor(color){
   const logo = document.querySelector(".header-logo");
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 }
+// Particle canvas setup
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particlesArray = [];
+let canvasWidth = window.innerWidth;
+let canvasHeight = window.innerHeight;
+
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
+
+window.addEventListener('resize', () => {
+  canvasWidth = window.innerWidth;
+  canvasHeight = window.innerHeight;
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+});
+
+// Mouse tracking
+const mouse = { x: null, y: null, radius: 100 };
+window.addEventListener('mousemove', (e) => {
+  mouse.x = e.x;
+  mouse.y = e.y;
+});
+
+// Crosshair element
+const crosshairEl = document.getElementById("crosshair");
+
+// UI hover ile particle yoğunluk azaltma
+const uiElements = document.querySelectorAll('.tab-menu button, .links a, #toggleBtn, #settings-bar');
+let particleScale = 1; // 1 = normal yoğunluk
+uiElements.forEach(el => {
+  el.addEventListener('mouseenter', () => { particleScale = 0.2; });
+  el.addEventListener('mouseleave', () => { particleScale = 1; });
+});
+
+// Helper: get theme RGB
+function getThemeRGB(){
+  return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim();
+}
+
+// Particle class
+class Particle {
+  constructor(){
+    this.x = Math.random() * canvasWidth;
+    this.y = Math.random() * canvasHeight;
+    this.size = Math.random() * 3 + 1;
+    this.speedX = (Math.random() - 0.5) * 1.5;
+    this.speedY = (Math.random() - 0.5) * 1.5;
+    this.color = `rgba(${getThemeRGB()},${Math.random()*0.7 + 0.3})`;
+  }
+  update(){
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    // Screen wrap
+    if(this.x > canvasWidth) this.x = 0;
+    if(this.x < 0) this.x = canvasWidth;
+    if(this.y > canvasHeight) this.y = 0;
+    if(this.y < 0) this.y = canvasHeight;
+
+    // Fareye yakınsa hız ve boyut artışı
+    if(mouse.x && mouse.y){
+      const dx = this.x - mouse.x;
+      const dy = this.y - mouse.y;
+      const distance = Math.sqrt(dx*dx + dy*dy);
+      if(distance < mouse.radius){
+        const force = (mouse.radius - distance) / mouse.radius; // 0-1
+        this.x += dx * 0.01 * force;
+        this.y += dy * 0.01 * force;
+        this.size = Math.min(6, this.size + 0.05 * force);
+      } else {
+        this.size = Math.max(1, this.size - 0.02);
+      }
+    }
+  }
+  draw(){
+    this.color = `rgba(${getThemeRGB()},${this.color.split(',')[3]})`;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fill();
+  }
+}
+
+// Create initial particles
+function initParticles(num=80){
+  particlesArray = [];
+  for(let i=0;i<num;i++){
+    particlesArray.push(new Particle());
+  }
+}
+initParticles();
+
+// Fare etrafı ekstra particle
+function addMouseParticles(){
+  if(!mouse.x || !mouse.y) return;
+  const extraParticles = Math.floor(5 * particleScale);
+  for(let i=0;i<extraParticles;i++){
+    const p = new Particle();
+    p.x = mouse.x + (Math.random() - 0.5) * mouse.radius;
+    p.y = mouse.y + (Math.random() - 0.5) * mouse.radius;
+    p.size = Math.random() * 2 + 1.5;
+    p.speedX = (Math.random() - 0.5) * 1;
+    p.speedY = (Math.random() - 0.5) * 1;
+    particlesArray.push(p);
+    if(particlesArray.length > 200) particlesArray.shift();
+  }
+}
+
+// Crosshair halo particle
+function addCrosshairParticles(){
+  const rect = crosshairEl.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  for(let i=0;i<3;i++){
+    const p = new Particle();
+    const angle = Math.random() * Math.PI * 2;
+    const radius = Math.random() * 15 + 5;
+    p.x = cx + Math.cos(angle) * radius;
+    p.y = cy + Math.sin(angle) * radius;
+    p.size = Math.random() * 2 + 1;
+    p.speedX = (Math.random() - 0.5) * 0.5;
+    p.speedY = (Math.random() - 0.5) * 0.5;
+    particlesArray.push(p);
+    if(particlesArray.length > 200) particlesArray.shift();
+  }
+}
+
+// Animate particles
+function animateParticles(){
+  ctx.clearRect(0,0,canvasWidth,canvasHeight);
+  const themeRGB = getThemeRGB();
+
+  addMouseParticles();
+  addCrosshairParticles();
+
+  for(let i=0;i<particlesArray.length;i++){
+    const p = particlesArray[i];
+    p.update();
+
+    ctx.globalAlpha = particleScale;
+    p.draw();
+    ctx.globalAlpha = 1;
+
+    // Lines
+    for(let j=i;j<particlesArray.length;j++){
+      const p2 = particlesArray[j];
+      const dx = p.x - p2.x;
+      const dy = p.y - p2.y;
+      const distance = Math.sqrt(dx*dx + dy*dy);
+      if(distance < 120){
+        ctx.strokeStyle = `rgba(${themeRGB},${particleScale * (1-distance/120)})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
 
 // Faceit Widget
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
@@ -135,70 +299,4 @@ async function loadWidget(){
     document.getElementById("matches").innerText="Toplam Maç: N/A";
     document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
   }
-// Crosshair referansı
-const crosshairEl = document.getElementById("crosshair");
-
-// Crosshair halo particle ekleme
-function addCrosshairParticles(){
-  const rect = crosshairEl.getBoundingClientRect();
-  const cx = rect.left + rect.width/2;
-  const cy = rect.top + rect.height/2;
-  
-  // Her frame crosshair etrafına birkaç particle ekle
-  for(let i=0;i<3;i++){
-    const p = new Particle();
-    const angle = Math.random() * Math.PI * 2;
-    const radius = Math.random() * 15 + 5; // crosshair etrafındaki halo yarıçapı
-    p.x = cx + Math.cos(angle) * radius;
-    p.y = cy + Math.sin(angle) * radius;
-    p.size = Math.random() * 2 + 1;
-    p.speedX = (Math.random() - 0.5) * 0.5;
-    p.speedY = (Math.random() - 0.5) * 0.5;
-    particlesArray.push(p);
-
-    // Fazla particle’leri temizle
-    if(particlesArray.length > 200) particlesArray.shift();
-  }
-}
-
-// animateParticles içinde ekle
-function animateParticles(){
-  ctx.clearRect(0,0,canvasWidth,canvasHeight);
-  const themeRGB = getThemeRGB();
-
-  addMouseParticles();      // fare etrafı aura
-  addCrosshairParticles();  // crosshair halo
-
-  for(let i=0;i<particlesArray.length;i++){
-    const p = particlesArray[i];
-
-    // Update hareket ve fare interaksiyonu
-    p.update();
-
-    // Scale particle yoğunluğu
-    ctx.globalAlpha = particleScale;
-    p.draw();
-    ctx.globalAlpha = 1;
-
-    // Bağlantılar
-    for(let j=i;j<particlesArray.length;j++){
-      const p2 = particlesArray[j];
-      const dx = p.x - p2.x;
-      const dy = p.y - p2.y;
-      const distance = Math.sqrt(dx*dx + dy*dy);
-      if(distance < 120){
-        ctx.strokeStyle = `rgba(${themeRGB},${particleScale * (1-distance/120)})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
-      }
-    }
-  }
-
-  requestAnimationFrame(animateParticles);
-}
-
-  
 }
