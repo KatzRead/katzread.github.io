@@ -225,7 +225,7 @@ avgRow.innerHTML = `
 <td colspan="5" style="
     text-align:center;
     font-weight:bold;
-    font-size:1.8em; /* Daha büyük yazı */
+    font-size:1.6em; /* Daha büyük yazı */
     color: var(--theme-color);
     text-shadow: 0 0 1px var(--theme-color), 0 0 4px var(--theme-color);
     border-top: 1px solid var(--theme-color);
