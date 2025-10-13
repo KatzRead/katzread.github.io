@@ -24,7 +24,7 @@ document.addEventListener("mousemove", e => {
 
 // Sağ tıklamayı engelle
 document.addEventListener("contextmenu", e => e.preventDefault());
-
+["mousemove","mousedown","mouseup"].forEach(evt=>{document.addEventListener(evt,()=>{document.body.style.cursor="none";});});
 
 // Settings bar
 const settingsBar = document.getElementById("settings-bar");
