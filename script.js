@@ -259,6 +259,4 @@ setInterval(() => {
     loadWidget();
   }
 }, 30000);
-
-  }
 }
