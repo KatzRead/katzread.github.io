@@ -109,13 +109,13 @@ th{ background:#4B4B4B; font-size:12px; }
 .accordion-btn {
   cursor: pointer;
   background: rgba(var(--theme-rgb), 0.2);
-  padding: 12px 16px;
+  font-size: 1em;          /* Daha küçük yazı */
+  padding: 8px 12px;       /* Daha dar blok */
   border-radius: 10px;
   margin-bottom: 6px;
   border: 1px solid var(--theme-color);
   color: var(--theme-color);
   text-align: left;
-  font-size: 1.2em;
   transition: 0.3s;
 }
 
@@ -174,7 +174,8 @@ th{ background:#4B4B4B; font-size:12px; }
   background: radial-gradient(circle at center, rgba(var(--theme-rgb),0.15) 0%, rgba(0,0,0,0.5) 100%);
   border: 1px solid var(--theme-color);
   border-radius: 16px;
-  padding: 12px;
+  padding: 8px 10px;       /* İçerik kenar boşlukları küçüldü */
+  font-size: 0.85em;       /* Yazı boyutu küçüldü */
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -188,7 +189,9 @@ th{ background:#4B4B4B; font-size:12px; }
   height: auto;
   margin-bottom: 6px;
 }
-
+.settings-grid {
+  gap: 8px;                /* Bloklar arası boşluğu azalt */
+}
 /* Responsive */
 @media (max-width: 900px) {
   .ekipman-grid { grid-template-columns: repeat(2, 1fr); }
