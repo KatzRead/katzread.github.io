@@ -8,22 +8,6 @@ tabs.forEach(btn=>btn.addEventListener('click',()=>{
   document.getElementById(btn.dataset.tab).classList.add('active');
 }));
 
-const crosshair = document.getElementById("crosshair");
-
-// Crosshair hareketi
-document.addEventListener("mousemove", e => {
-  crosshair.style.left = e.clientX + "px";
-  crosshair.style.top = e.clientY + "px";
-
-  // Her move'da cursor'u gizle
-  document.body.style.cursor = "none";
-  document.querySelectorAll("button, input, select, a, textarea").forEach(el => {
-    el.style.cursor = "none";
-  });
-});
-
-// Sağ tıklamayı engelle
-document.addEventListener("contextmenu", e => e.preventDefault());
 ["mousemove","mousedown","mouseup"].forEach(evt=>{document.addEventListener(evt,()=>{document.body.style.cursor="none";});});
 
 // Settings bar
