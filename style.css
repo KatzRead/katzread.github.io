@@ -99,51 +99,70 @@ th{ background:#4B4B4B; font-size:12px; }
 .section-box p{ color:#ccc; line-height:1.6; font-size:1.05em; }
 .highlight{ color: var(--theme-color); text-shadow:0 0 8px var(--theme-color); font-weight:bold; }
 
-  .equip-grid {
-    display: grid;
-    gap: 20px;
-    margin: 0 auto 60px auto;
-    max-width: 1200px;
-  }
+/* Ekipman ve Sistem Blokları */
+.equip-grid {
+  display: grid;
+  gap: 20px;
+  margin: 0 auto 60px auto;
+  max-width: 1200px;
+}
 
-  .equip-item {
-    text-decoration: none;
-    color: inherit;
-  }
+.equip-item {
+  text-decoration: none;
+  color: inherit;
+}
 
-  .equip-content {
-    background: rgba(0,255,255,0.1);
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-    transition: transform 0.2s, background 0.2s;
-  }
+.equip-content {
+  /* Ayarlar sekmesindeki section-box ile aynı stil */
+  background: radial-gradient(circle at center, rgba(var(--theme-rgb),0.15) 0%, rgba(0,0,0,0.5) 100%);
+  border: 1px solid var(--theme-color);
+  border-radius: 16px;
+  padding: 15px;
+  text-align: center;
+  color: #e0e0e0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-  .equip-content:hover {
-    transform: scale(1.05);
-    background: rgba(0,255,255,0.3);
-  }
+.equip-content:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--theme-color)66;
+}
 
-  .equip-content img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin-bottom: 10px;
-  }
+/* Görseller */
+.equip-content img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
 
-  /* Sistem kısmı: 2 satır 4 sütun */
-  .sistem-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+/* Sistem kısmı: 2 satır 4 sütun */
+.sistem-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
 
-  /* Ekipman kısmı: 1. satır 4 sütun, 2. satır 1 blok ortada */
-  .ekipman-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+/* Ekipman kısmı: 1. satır 4 sütun, 2. satır 1 blok ortada */
+.ekipman-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
 
-  .ekipman-grid .solo {
-    grid-column: 2 / span 2; /* 2. satır ortalama */
-  }
+.ekipman-grid .solo {
+  grid-column: 2 / span 2; /* 2. satır ortalama */
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .sistem-grid,
+  .ekipman-grid { grid-template-columns: repeat(2, 1fr); }
+  .ekipman-grid .solo { grid-column: 1 / -1; }
+}
+
+@media (max-width: 500px) {
+  .sistem-grid,
+  .ekipman-grid { grid-template-columns: 1fr; }
+  .ekipman-grid .solo { grid-column: 1 / -1; }
+}
+
 
 
 
