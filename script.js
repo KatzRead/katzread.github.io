@@ -7,7 +7,7 @@ tabs.forEach(btn => btn.addEventListener('click', () => {
   btn.classList.add('active');
   document.getElementById(btn.dataset.tab).classList.add('active');
 }));
-
+421321
 // Crosshair
 const crosshair = document.getElementById("crosshair");
 
