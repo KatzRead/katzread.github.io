@@ -223,25 +223,18 @@ async function loadWidget(){
       const avgHS=(totalHS/matchCount).toFixed(1)+"%";
       const avgRow=document.createElement("tr");
       avgRow.classList.add("avg-row");
-avgRow.innerHTML = `
+      avgRow.innerHTML = `
 <td colspan="5" style="
     text-align:center;
-    font-weight:900; /* daha kalın */
-    font-size:1.05em; /* biraz daha büyük */
+    font-weight:bold;
     color: var(--theme-color);
-    text-shadow:
-        0 0 4px var(--theme-color),
-        0 0 8px var(--theme-color),
-        0 0 12px var(--theme-color);
+    text-shadow: 0 0 2px var(--theme-color);
     border-top: 1px solid var(--theme-color);
     padding-top:6px;
 ">
     AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}
 </td>
 `;
-
-`;      tbody.appendChild(avgRow);
-    }
 
   }catch{
     document.getElementById("elo").innerText="ELO alınamadı";
