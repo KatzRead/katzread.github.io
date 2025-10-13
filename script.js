@@ -108,26 +108,6 @@ function initParticles(num=80){
 }
 initParticles();
 
-// Crosshair halo particle
-const crosshairEl = document.getElementById("crosshair");
-function drawCrosshairHalo() {
-  const rect = crosshairEl.getBoundingClientRect();
-  const cx = rect.left + rect.width/2;
-  const cy = rect.top + rect.height/2;
-  
-  for(let i=0;i<5;i++){
-    const angle = Math.random() * 2 * Math.PI;
-    const radius = Math.random() * 12 + 6;
-    const x = cx + Math.cos(angle) * radius;
-    const y = cy + Math.sin(angle) * radius;
-    const size = Math.random() * 1.5 + 0.5;
-    ctx.fillStyle = `rgba(${getThemeRGB()},0.9)`;
-    ctx.beginPath();
-    ctx.arc(x, y, size, 0, Math.PI*2);
-    ctx.fill();
-  }
-}
-
 // Animate
 function animateParticles() {
   ctx.clearRect(0,0,canvasWidth,canvasHeight);
