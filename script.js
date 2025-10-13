@@ -48,14 +48,6 @@ function applyThemeColor(color){
   const logo = document.querySelector(".header-logo");
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 }
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-
-let canvasWidth = window.innerWidth;
-let canvasHeight = window.innerHeight;
-canvas.width = canvasWidth;
-canvas.height = canvasHeight;
-
 // Canvas setup
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
@@ -117,6 +109,12 @@ function initParticles(num=80){
 initParticles();
 
 // Crosshair halo particle
+const crosshairEl = document.getElementById("crosshair");
+function drawCrosshairHalo() {
+  const rect = crosshairEl.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  
   for(let i=0;i<5;i++){
     const angle = Math.random() * 2 * Math.PI;
     const radius = Math.random() * 12 + 6;
