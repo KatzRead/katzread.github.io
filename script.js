@@ -37,18 +37,18 @@ themeInput.addEventListener("input", (e) => {
 
 // Renk uygulama fonksiyonu
 function applyThemeColor(color){
+  // Yumuşak geçiş için önce eski rengi kaldırıp yeni renk ekle
   document.documentElement.style.setProperty("--theme-color", color);
   const r = parseInt(color.slice(1,3),16);
   const g = parseInt(color.slice(3,5),16);
   const b = parseInt(color.slice(5,7),16);
   document.documentElement.style.setProperty("--theme-rgb", `${r},${g},${b}`);
   
-  // Header logosu ve glow güncelle
+  // Header logosu ve glow
   const logo = document.querySelector(".header-logo");
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
-
-  // Widget tablo ve diğer glow’lar otomatik CSS üzerinden var(--theme-color) kullanıyor, update otomatik
 }
+
 // Faceit Widget
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
 const nickname = "KatzRead";
