@@ -51,16 +51,18 @@ function applyThemeColor(color){
 // Canvas setup
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
+
 let canvasWidth = window.innerWidth;
 let canvasHeight = window.innerHeight;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
-// Canvas arka planda olacak şekilde z-index
-canvas.style.zIndex = 0;  // UI elementlerin arkasında
+// Canvas arka planda
+canvas.style.zIndex = 0;
 canvas.style.position = 'fixed';
 canvas.style.top = '0';
 canvas.style.left = '0';
+canvas.style.pointerEvents = 'none'; // UI elementleri etkilenmez
 
 // Window resize
 window.addEventListener('resize', () => {
@@ -71,21 +73,24 @@ window.addEventListener('resize', () => {
 });
 
 // Theme helper
-function getThemeRGB() { return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim(); }
+function getThemeRGB() {
+  return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim();
+}
 
 // Particle class
 class Particle {
-  constructor(x, y, size) {
-    this.x = x || Math.random() * canvasWidth;
-    this.y = y || Math.random() * canvasHeight;
-    this.size = size || Math.random() * 3 + 1;
-    this.speedX = (Math.random() - 0.5) * 0.5; // biraz daha hızlı hareket
-    this.speedY = (Math.random() - 0.5) * 0.5;
+  constructor() {
+    this.x = Math.random() * canvasWidth;
+    this.y = Math.random() * canvasHeight;
+    this.size = Math.random() * 2 + 1;
+    this.speedX = (Math.random() - 0.5) * 0.8; // hareketi daha belirgin
+    this.speedY = (Math.random() - 0.5) * 0.8;
   }
   update() {
     this.x += this.speedX;
     this.y += this.speedY;
 
+    // Ekran sınırlarında sarmala
     if(this.x > canvasWidth) this.x = 0;
     if(this.x < 0) this.x = canvasWidth;
     if(this.y > canvasHeight) this.y = 0;
@@ -100,35 +105,40 @@ class Particle {
 }
 
 // Particles array
-let particlesArray = [];
-function initParticles(num=80){
-  particlesArray = [];
-  for(let i=0;i<num;i++) particlesArray.push(new Particle());
+const particlesArray = [];
+function initParticles(num = 100) {
+  particlesArray.length = 0;
+  for(let i = 0; i < num; i++) {
+    particlesArray.push(new Particle());
+  }
 }
 initParticles();
 
-// Animate
+// Animate function
 function animateParticles() {
-  ctx.clearRect(0,0,canvasWidth,canvasHeight);
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
   // Particles çiz
-  particlesArray.forEach(p => { p.update(); p.draw(); });
+  particlesArray.forEach(p => {
+    p.update();
+    p.draw();
+  });
 
   // Particles arası çizgiler
   const themeRGB = getThemeRGB();
-  for(let i=0;i<particlesArray.length;i++){
-    for(let j=i+1;j<particlesArray.length;j++){
+  for(let i = 0; i < particlesArray.length; i++) {
+    for(let j = i + 1; j < particlesArray.length; j++) {
       const p1 = particlesArray[i];
       const p2 = particlesArray[j];
       const dx = p1.x - p2.x;
       const dy = p1.y - p2.y;
       const dist = Math.sqrt(dx*dx + dy*dy);
-      if(dist < 120){
-        ctx.strokeStyle = `rgba(${themeRGB},${(1 - dist/120)*0.2})`;
+      if(dist < 120) {
+        ctx.strokeStyle = `rgba(${themeRGB},${(1 - dist/120) * 0.2})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(p1.x,p1.y);
-        ctx.lineTo(p2.x,p2.y);
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
         ctx.stroke();
       }
     }
