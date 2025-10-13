@@ -234,7 +234,7 @@ avgRow.innerHTML = `
     AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}
 </td>
 `;
-
+123213213
       tbody.appendChild(avgRow);
     }
 
