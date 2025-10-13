@@ -145,6 +145,37 @@ function animateParticles() {
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
+// CFG Data
+let cfgData = { game: [], video: [], mouse: [], map: [], keybind: [] };
+
+// Mini tab geçişleri
+const cfgTabBtns = document.querySelectorAll('.cfg-tab-btn');
+const cfgTabs = document.querySelectorAll('.cfg-tab');
+cfgTabBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    cfgTabBtns.forEach(b=>b.classList.remove('active'));
+    cfgTabs.forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// CFG yükleme
+const cfgInput = document.getElementById('cfgUpload');
+cfgInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    parseCfg(reader.result);
+    renderCfgTabs();
+    localStorage.setItem("myCS2Cfg", reader.result);
+  };
+  reader.readAsText(file);
+});
+
+// Sayfa açılışında localStorage’dan yükle
+const savedCfg = local
 
 
 // Faceit Widget
