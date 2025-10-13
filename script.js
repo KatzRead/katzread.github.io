@@ -234,7 +234,8 @@ async function loadWidget(){
 ">
     AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}
 </td>
-`;}
+`;    
+  }
 
   }catch{
     document.getElementById("elo").innerText="ELO alınamadı";
