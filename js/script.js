@@ -6,8 +6,6 @@ document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; c
 ["mousemove","mousedown","mouseup"].forEach(evt=>{document.addEventListener(evt,()=>{document.body.style.cursor="none";});});
 
 /* #theme-js */
-const themeInput = document.getElementById("themeColor");
-
 function applyTheme(color){
   document.documentElement.style.setProperty("--theme-color", color);
   const r = parseInt(color.slice(1,3),16);
@@ -18,19 +16,23 @@ function applyTheme(color){
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 }
 
-// Sayfa yüklenince localStorage’dan temayı uygula
-const savedTheme = localStorage.getItem("themeColor");
-if(savedTheme) applyTheme(savedTheme);
-if(themeInput) themeInput.value = savedTheme || "#00ffff";
+// Sayfa açılınca kaydedilmiş temayı uygula
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("themeColor") || "#00ffff";
+  applyTheme(savedTheme);
 
-// Tema rengi değişince localStorage’a kaydet
-if(themeInput){
-  themeInput.addEventListener("input", (e) => {
-    const color = e.target.value;
-    applyTheme(color);
-    localStorage.setItem("themeColor", color);
-  });
-}
+  const themeInput = document.getElementById("themeColor");
+  if(themeInput){
+    themeInput.value = savedTheme;
+
+    // Renk değişince localStorage'a kaydet
+    themeInput.addEventListener("input", (e) => {
+      const color = e.target.value;
+      applyTheme(color);
+      localStorage.setItem("themeColor", color);
+    });
+  }
+});
 
 /* #settings-bar-js */
 const settingsBar = document.getElementById("settings-bar");
@@ -75,4 +77,5 @@ async function loadWidget(){
     document.querySelector("#stats-table tbody").innerHTML=`<tr><td colspan="5">Veri alınamadı</td></tr>`;
   }
 }
+
 
