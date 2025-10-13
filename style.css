@@ -219,17 +219,24 @@ canvas#particle-canvas {
   text-shadow: 0 0 6px var(--theme-color);
 }
 
-.setting-card pre, .setting-card ul {
+.setting-card pre {
   margin: 0;
   font-size: 0.9em;
   color: #d0d0d0;
   white-space: pre-wrap;
-  line-height: 1.4em;
+  line-height: 1.6em; /* okunaklı satır aralığı */
 }
 
 .setting-card ul {
   list-style: none;
   padding-left: 0;
+  margin: 0;
+}
+
+.setting-card ul li {
+  margin-bottom: 6px; /* ayar adı ile değeri arası boşluk */
+  line-height: 1.4em;
+  word-spacing: 2px;
 }
 
 @media (max-width: 900px) {
