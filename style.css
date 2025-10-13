@@ -81,6 +81,61 @@ th{ background:#4B4B4B; font-size:12px; }
 .equip-card{ background: rgba(0,255,255,0.08); border:1px solid var(--theme-color); padding:12px; border-radius:10px; transition:0.3s; color:#e0e0e0; font-size:0.95em; text-align:center; }
 .equip-card:hover{ background: rgba(0,255,255,0.2); box-shadow:0 0 12px var(--theme-color)aa; transform:scale(1.05); }
 .equip-card img{ width:80px; height:auto; margin-bottom:6px; }
+.ekipmanlar {
+  text-align: center;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  padding: 20px;
+}
+
+.equip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+/* Her kart komple link */
+.equip-item {
+  display: block;
+  width: 180px;
+  height: 180px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--theme-color, #00ffff);
+  border-radius: 15px;
+  text-decoration: none;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  overflow: hidden;
+  cursor: none; /* sadece crosshair aktif */
+}
+
+/* Hover efekti */
+.equip-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px var(--theme-color, #00ffff);
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.equip-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.equip-item img {
+  width: 50px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 5px var(--theme-color, #00ffff));
+}
+
+.equip-item h3 {
+  font-size: 0.9rem;
+  color: var(--theme-color, #00ffff);
+  text-shadow: 0 0 3px var(--theme-color, #00ffff);
+}
+
 
 /* Crosshair */
 #crosshair { position: fixed; width:24px; height:24px; pointer-events:none; top:0; left:0; transform:translate(-50%, -50%); z-index:9999; }
