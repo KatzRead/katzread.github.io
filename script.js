@@ -215,28 +215,31 @@ async function loadWidget(){
       }
     }
 
-    if(matchCount>0){
-      const avgKills=(totalKills/matchCount).toFixed(1);
-      const avgDeaths=(totalDeaths/matchCount).toFixed(1);
-      const avgKD=(totalKills/totalDeaths).toFixed(2);
-      const avgADR=(totalADR/matchCount).toFixed(1);
-      const avgHS=(totalHS/matchCount).toFixed(1)+"%";
-      const avgRow=document.createElement("tr");
-      avgRow.classList.add("avg-row");
-      avgRow.innerHTML = `
-       <td colspan="5" style="
-       text-align:center;
-       font-weight:bold;
-       color: var(--theme-color);
-       text-shadow: 0 0 2px var(--theme-color);
-       border-top: 1px solid var(--theme-color);
-       padding-top:6px;
-">
-    AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}
-</td>
-`;
+document.addEventListener("DOMContentLoaded", () => {
+  const table = document.getElementById("faceit-stats"); // Tablo id’sini kendine göre değiştir
+  if(!table) return;
 
-  
+  const matchCount = totalMatches; // Toplam maç sayısı değişkenin
+  if(matchCount > 0){
+    const avgKills = (totalKills / matchCount).toFixed(1);
+    const avgDeaths = (totalDeaths / matchCount).toFixed(1);
+    const avgKD = (totalKills / totalDeaths).toFixed(2);
+    const avgADR = (totalADR / matchCount).toFixed(1);
+    const avgHS = (totalHS / matchCount).toFixed(1) + "%";
+
+    const avgRow = document.createElement("tr");
+    avgRow.classList.add("avg-row");
+
+    avgRow.innerHTML = `
+      <td colspan="${table.rows[0].cells.length}">
+        AVG — ${avgKills} / ${avgDeaths} / ${avgKD} / ${avgADR} / ${avgHS}
+      </td>
+    `;
+
+    table.appendChild(avgRow);
+  }
+});
+
   }
 
   }catch{
