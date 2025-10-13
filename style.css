@@ -167,6 +167,8 @@ th{ background:#4B4B4B; font-size:12px; }
   width: 80px;
   height: auto;
   margin-bottom: 6px;
+  margin: 0 auto; /* yatay ortalama */
+  max-height: 160px; /* tüm resim boylarını dengeler */
 }
 
 /* Responsive */
