@@ -109,7 +109,7 @@ th{ background:#4B4B4B; font-size:12px; }
 
   .equip-content {
   background-color: var(--theme-color);
-  opacity: 0.1; /* saydamlık */
+  opacity: 1; /* saydamlık */
   box-shadow: 0 0 10px var(--theme-color), 0 0 20px var(--theme-color);
   padding: 15px;
   border-radius: 12px;
