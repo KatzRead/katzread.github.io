@@ -48,6 +48,101 @@ function applyThemeColor(color){
   const logo = document.querySelector(".header-logo");
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
 }
+// Canvas setup
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+
+let canvasWidth = window.innerWidth;
+let canvasHeight = window.innerHeight;
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
+
+// Canvas arka planda
+canvas.style.pointerEvents = 'none'; // UI elementleri etkilenmez
+
+// Window resize
+window.addEventListener('resize', () => {
+  canvasWidth = window.innerWidth;
+  canvasHeight = window.innerHeight;
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+});
+
+// Theme helper
+function getThemeRGB() {
+  return getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim();
+}
+
+// Particle class
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvasWidth;
+    this.y = Math.random() * canvasHeight;
+    this.size = Math.random() * 2 + 1;
+    this.speedX = (Math.random() - 0.5) * 0.8; // hareketi daha belirgin
+    this.speedY = (Math.random() - 0.5) * 0.8;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    // Ekran sınırlarında sarmala
+    if(this.x > canvasWidth) this.x = 0;
+    if(this.x < 0) this.x = canvasWidth;
+    if(this.y > canvasHeight) this.y = 0;
+    if(this.y < 0) this.y = canvasHeight;
+  }
+  draw() {
+    ctx.fillStyle = `rgba(${getThemeRGB()},0.7)`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+// Particles array
+const particlesArray = [];
+function initParticles(num = 100) {
+  particlesArray.length = 0;
+  for(let i = 0; i < num; i++) {
+    particlesArray.push(new Particle());
+  }
+}
+initParticles();
+
+// Animate function
+function animateParticles() {
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+  // Particles çiz
+  particlesArray.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  // Particles arası çizgiler
+  const themeRGB = getThemeRGB();
+  for(let i = 0; i < particlesArray.length; i++) {
+    for(let j = i + 1; j < particlesArray.length; j++) {
+      const p1 = particlesArray[i];
+      const p2 = particlesArray[j];
+      const dx = p1.x - p2.x;
+      const dy = p1.y - p2.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < 120) {
+        ctx.strokeStyle = `rgba(${themeRGB},${(1 - dist/120) * 0.2})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
 
 // Faceit Widget
 const apiKey = "dc63f5ce-1360-4c87-882a-c3c988115063";
