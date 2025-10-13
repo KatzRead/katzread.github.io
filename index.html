@@ -66,28 +66,29 @@
 
 <div id="settings" class="tab-content">
   <div class="section-box">
-    <h2>Ayarlar</h2>
+    <h2>CS2 Ayarlarım</h2>
     <div class="cfg-upload">
-      <label for="cfgUpload" class="upload-btn">CFG Yükle</label>
-      <input type="file" id="cfgUpload" accept=".cfg">
+      <label for="cfgUpload" class="upload-btn">CFG Yükle (.cfg veya .zip)</label>
+      <input type="file" id="cfgUpload" accept=".cfg,.zip" multiple>
       <button id="downloadCfg">CFG İndir</button>
     </div>
-    <div class="cfg-tab-container">
-      <div class="cfg-tab" id="cfg-game"></div>
-      <div class="cfg-tab" id="cfg-video"></div>
-      <div class="cfg-tab" id="cfg-mouse"></div>
-      <div class="cfg-tab" id="cfg-map"></div>
-      <div class="cfg-tab" id="cfg-keybind"></div>
+    <div class="cfg-tabs">
       <div class="cfg-tab-menu">
-        <button class="cfg-tab-btn active" data-tab="cfg-game">Oyun</button>
-        <button class="cfg-tab-btn" data-tab="cfg-video">Görüntü</button>
-        <button class="cfg-tab-btn" data-tab="cfg-mouse">Mouse</button>
-        <button class="cfg-tab-btn" data-tab="cfg-map">Map</button>
-        <button class="cfg-tab-btn" data-tab="cfg-keybind">Keybind</button>
+        <button class="tab-btn active" data-tab="game">Oyun</button>
+        <button class="tab-btn" data-tab="video">Görüntü</button>
+        <button class="tab-btn" data-tab="mouse">Mouse</button>
+        <button class="tab-btn" data-tab="map">Map</button>
+        <button class="tab-btn" data-tab="keybind">Keybind</button>
       </div>
+      <div class="cfg-tab active" id="game"></div>
+      <div class="cfg-tab" id="video"></div>
+      <div class="cfg-tab" id="mouse"></div>
+      <div class="cfg-tab" id="map"></div>
+      <div class="cfg-tab" id="keybind"></div>
     </div>
   </div>
 </div>
+
 
 
 
@@ -134,6 +135,7 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
