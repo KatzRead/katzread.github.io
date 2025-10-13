@@ -159,7 +159,48 @@ th{ background:#4B4B4B; font-size:12px; }
 
 
 /* Section Box */
-.section-box { max-width:800px; margin:40px auto; background: rgba(0,10,20,0.5); border:1px solid var(--theme-color); border-radius:16px; box-shadow:0 0 15px var(--theme-color)66; padding:30px; }
+.section-box { 
+  max-width:800px; 
+  margin:40px auto; 
+  background: rgba(0,10,20,0.5); 
+  border:1px solid var(--theme-color); 
+  border-radius:16px; 
+  box-shadow:0 0 15px var(--theme-color)66; 
+  padding:30px; 
+}
+
+.cfg-upload {
+  display:flex; align-items:center; gap:10px; margin-bottom:20px;
+}
+.upload-btn {
+  background:var(--theme-color); color:#000; padding:8px 15px; border-radius:8px;
+  cursor:pointer; font-weight:bold; text-transform:uppercase;
+}
+#cfgUpload { display:none; }
+#downloadCfg {
+  background:transparent; color:var(--theme-color); border:2px solid var(--theme-color);
+  padding:6px 12px; border-radius:8px; cursor:pointer;
+}
+#downloadCfg:hover { background:var(--theme-color); color:#000; }
+
+.cfg-tab-menu {
+  display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;
+}
+.cfg-tab-menu button {
+  background:transparent; border:2px solid var(--theme-color); color:var(--theme-color);
+  padding:6px 12px; border-radius:8px; cursor:pointer;
+  transition:0.3s;
+}
+.cfg-tab-menu button.active, .cfg-tab-menu button:hover {
+  background:var(--theme-color); color:#000;
+}
+
+.cfg-tab {
+  display:none; background: rgba(0,0,0,0.3); border-radius:12px; padding:15px;
+  max-height:400px; overflow:auto; color:#fff; font-family:'Orbitron',sans-serif;
+}
+.cfg-tab.active { display:block; }
+.cfg-line { font-family:monospace; color:#0ff; margin:2px 0; }
 .section-box h2{ color:var(--theme-color); font-size:1.8em; text-shadow:0 0 10px var(--theme-color); margin-bottom:15px; }
 .section-box p{ color:#ccc; line-height:1.6; font-size:1.05em; }
 .highlight{ color: var(--theme-color); text-shadow:0 0 8px var(--theme-color); font-weight:bold; }
