@@ -7,18 +7,6 @@ tabs.forEach(btn => btn.addEventListener('click', () => {
   btn.classList.add('active');
   document.getElementById(btn.dataset.tab).classList.add('active');
 }));
-const themePicker = document.getElementById("themeColor");
-
-themePicker.addEventListener("input", (e) => {
-  const hex = e.target.value;
-  // Hex → RGB
-  const r = parseInt(hex.slice(1,3),16);
-  const g = parseInt(hex.slice(3,5),16);
-  const b = parseInt(hex.slice(5,7),16);
-
-  document.documentElement.style.setProperty("--theme-color", hex);
-  document.documentElement.style.setProperty("--theme-rgb", `${r},${g},${b}`);
-});
 
 // Crosshair
 const crosshair = document.getElementById("crosshair");
