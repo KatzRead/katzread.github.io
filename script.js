@@ -47,26 +47,6 @@ function applyThemeColor(color){
   // Header logosu ve glow
   const logo = document.querySelector(".header-logo");
   if(logo) logo.style.boxShadow = `0 0 5px ${color}, 0 0 15px ${color}, 0 0 25px ${color}`;
-function updateFavicon(color) {
-  const svg = `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-    <defs>
-      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="4" result="blur"/>
-        <feMerge>
-          <feMergeNode in="blur"/>
-          <feMergeNode in="blur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-    <text x="50%" y="70%" font-size="80" text-anchor="middle" fill="${color}" font-family="Orbitron, sans-serif" filter="url(#glow)">K</text>
-  </svg>`;
-  
-  const blob = new Blob([svg], {type: 'image/svg+xml'});
-  const url = URL.createObjectURL(blob);
-  document.getElementById('favicon').href = url;
-}
 
 }
 
