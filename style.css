@@ -5,6 +5,16 @@
   --theme-rgb: 0,255,255; 
   transition: --theme-color 0.5s ease, --theme-rgb 0.5s ease;
 }
+/* FORCE HIDING CURSOR SITE-WIDE
+   Put this at the TOP of your style.css so it can't be overridden by later rules. */
+html, body, * {
+  cursor: none !important;
+}
+
+/* also ensure interactive elements don't force pointer */
+a, button, input, select, textarea {
+  cursor: none !important;
+}
 
 /* Glow ve hover efektleri için de transition ekleyelim */
 .header-logo {
