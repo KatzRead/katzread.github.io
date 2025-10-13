@@ -109,11 +109,12 @@ th{ background:#4B4B4B; font-size:12px; }
 
   .equip-content {
   background-color: var(--theme-color);
-  opacity: 1; /* saydamlık */
+  opacity: 0.2; /* saydamlık */
   box-shadow: 0 0 10px var(--theme-color), 0 0 20px var(--theme-color);
   padding: 15px;
   border-radius: 12px;
   text-align: center;
+  color: #fff; /* yazılar saydam olmasın, beyaz veya istediğin renk */
   transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s;
   }
 
