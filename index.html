@@ -11,7 +11,6 @@
 
 <canvas id="particle-canvas"></canvas>
 
-<!-- Sekme Menüsü -->
 <div class="tab-menu">
   <button class="tab-btn active" data-tab="home">Ana Sayfa</button>
   <button class="tab-btn" data-tab="about">Hakkımda</button>
@@ -19,7 +18,6 @@
   <button class="tab-btn" data-tab="equipment">Ekipmanlar</button>
 </div>
 
-<!-- Ana Sayfa -->
 <div id="home" class="tab-content active">
   <div class="header">
     <img src="katz.png" alt="KatzRead Logo" class="header-logo">
@@ -34,9 +32,21 @@
     </div>
     <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
   </div>
+  <div class="widget" id="katzWidget">
+    <h2>KatzRead</h2>
+    <div class="stat" id="elo">ELO: Yükleniyor...</div>
+    <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+    <table id="stats-table">
+      <thead>
+        <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="5">Yükleniyor...</td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<!-- Hakkımda -->
 <div id="about" class="tab-content">
   <div class="about-section">
     <div class="about-photo">
@@ -51,21 +61,13 @@
   </div>
 </div>
 
-<!-- Ayarlar -->
 <div id="settings" class="tab-content">
   <div class="section-box">
     <h2>Ayarlar</h2>
-    <p>Buradan tema rengi ve crosshair ayarını değiştirebilirsiniz.</p>
-    <label for="themeColor">Tema Rengi:</label>
-    <input type="color" id="themeColor" value="#00ffff">
-    
-    <p>CS2 CFG Dosyaları Yükle:</p>
-    <input type="file" id="cfgInput" multiple accept=".cfg,.txt">
-    <div id="cfgDisplay"></div>
+    <p>Buradan tema rengi ve arka plan efektini değiştirebilirsiniz. Crosshair aç/kapa ve renk ayarı da burada uygulanacaktır.</p>
   </div>
 </div>
 
-<!-- Ekipmanlar -->
 <div id="equipment" class="tab-content">
   <div class="section-box">
     <h2>Ekipmanlarım</h2>
@@ -90,7 +92,6 @@
   </div>
 </div>
 
-<!-- Crosshair -->
 <div id="crosshair">
   <div class="top"></div>
   <div class="bottom"></div>
@@ -100,8 +101,15 @@
 
 <footer>© 2025 KatzRead</footer>
 
-<div id="settings-bar"></div>
+<div id="settings-bar">
+  <div class="settings-group">
+    <label for="themeColor">Tema Rengi:</label>
+    <input type="color" id="themeColor" value="#00ffff">
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
 </html>
+
+
