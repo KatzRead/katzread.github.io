@@ -152,14 +152,20 @@ const toggleBtn = document.getElementById("toggleBtn");
 const widgetDiv = document.getElementById("katzWidget");
 const tbody = document.querySelector("#stats-table tbody");
 
+let widgetLoading = false; // yükleme flag'i
+
 // JSON fetch helper
 async function fetchJSON(url) {
   const res = await fetch(url, { headers: { Authorization: "Bearer " + apiKey } });
   return await res.json();
 }
 
-// Widget yükleme
+// Widget yükleme fonksiyonu
 async function loadWidget() {
+  if (widgetLoading) return; // zaten yükleniyorsa iptal
+  widgetLoading = true;
+
+  // Önce tabloyu temizle
   tbody.innerHTML = `<tr><td colspan="5">Yükleniyor...</td></tr>`;
   document.getElementById("elo").innerText = "ELO: Yükleniyor...";
   document.getElementById("matches").innerText = "Toplam Maç: Yükleniyor...";
@@ -175,8 +181,8 @@ async function loadWidget() {
     document.getElementById("matches").innerText = "Toplam Maç: " + matches;
 
     const history = await fetchJSON(`https://open.faceit.com/data/v4/players/${playerId}/history?game=cs2&limit=${MATCH_LIMIT}`);
-    tbody.innerHTML = ""; // önce temizle
 
+    tbody.innerHTML = ""; // eski tablo temizlendi
     let totalKills = 0, totalDeaths = 0, totalADR = 0, totalHS = 0, totalRounds = 0, matchCount = 0;
 
     for (let i = 0; i < history.items.length; i++) {
@@ -237,6 +243,8 @@ async function loadWidget() {
     document.getElementById("elo").innerText = "ELO alınamadı";
     document.getElementById("matches").innerText = "Toplam Maç: N/A";
     tbody.innerHTML = `<tr><td colspan="5">Veri alınamadı</td></tr>`;
+  } finally {
+    widgetLoading = false;
   }
 }
 
@@ -244,20 +252,21 @@ async function loadWidget() {
 toggleBtn.addEventListener("click", () => {
   if (widgetDiv.style.display === "none" || widgetDiv.style.display === "") {
     widgetDiv.style.display = "block";
-    loadWidget(); // yükle
+    loadWidget();
   } else {
     widgetDiv.style.display = "none";
-    tbody.innerHTML = `<tr><td colspan="5">Yükleniyor...</td></tr>`; // tabloyu temizle
+    tbody.innerHTML = `<tr><td colspan="5">Yükleniyor...</td></tr>`;
     document.getElementById("elo").innerText = "ELO: Yükleniyor...";
     document.getElementById("matches").innerText = "Toplam Maç: Yükleniyor...";
   }
 });
 
-// Otomatik her 30 saniyede yenile
+// Otomatik yenileme (widget açıkken)
 setInterval(() => {
-  if(widgetDiv.style.display === "block"){
+  if (widgetDiv.style.display === "block") {
     loadWidget();
   }
 }, 30000);
+
   }
 }
