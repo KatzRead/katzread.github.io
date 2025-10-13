@@ -1,0 +1,72 @@
+<!-- #anasayfa-html -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KatzRead - Ana Sayfa</title>
+<link rel="icon" href="logo.svg">
+<link rel="stylesheet" href="css/style.css"> <!-- #ortak-css -->
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<!-- #tab-menu-html -->
+<div class="tab-menu">
+  <a href="index.html" class="tab-btn active">Ana Sayfa</a>
+  <a href="about.html" class="tab-btn">Hakkımda</a>
+  <a href="settings.html" class="tab-btn">Ayarlar</a>
+  <a href="equipment.html" class="tab-btn">Ekipmanlar</a>
+</div>
+
+<!-- #header-html -->
+<div class="header">
+  <img src="katz.png" alt="KatzRead Logo" class="header-logo">
+  <h1>KatzRead</h1>
+  <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
+  <div class="links">
+    <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
+    <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
+    <a href="https://x.com/katzread" target="_blank">Twitter</a>
+    <a href="https://kick.com/katzread" target="_blank">Kick</a>
+    <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
+  </div>
+  <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
+</div>
+
+<div class="widget" id="katzWidget">
+  <h2>KatzRead</h2>
+  <div class="stat" id="elo">ELO: Yükleniyor...</div>
+  <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+  <table id="stats-table">
+    <thead>
+      <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="5">Yükleniyor...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- #crosshair-html -->
+<div id="crosshair">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
+
+<footer>© 2025 KatzRead</footer>
+
+<!-- #settings-bar-html -->
+<div id="settings-bar">
+  <div class="settings-group">
+    <label for="themeColor">Tema Rengi:</label>
+    <input type="color" id="themeColor" value="#00ffff">
+  </div>
+</div>
+
+<script src="js/script.js"></script> <!-- #ortak-js -->
+</body>
+</html>
