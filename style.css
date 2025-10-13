@@ -127,22 +127,20 @@ th{ background:#4B4B4B; font-size:12px; }
   transition: max-height 0.4s ease;
 }
 
-/* Grid */
 .settings-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 8px;
-  margin-top: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  justify-items: stretch;
 }
 
 .equip-card {
+  background: rgba(var(--theme-rgb), 0.15);
+  border: 1px solid var(--theme-color);
+  border-radius: 10px;
   padding: 8px;
   font-size: 0.85em;
-  border-radius: 10px;
-  border: 1px solid var(--theme-color);
-  background: rgba(var(--theme-rgb),0.15);
   text-align: center;
-    /* Tek satır ve taşmayı gizle */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
