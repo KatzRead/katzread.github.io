@@ -1,55 +1,97 @@
-<!-- #anasayfa-html -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KatzRead - Ana Sayfa</title>
-<link rel="icon" href="logo.svg">
-<link rel="stylesheet" href="css/style.css"> <!-- #ortak-css -->
+<title>KatzRead</title>
+<link rel="icon" type="image/x-icon" href="logo.svg">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <canvas id="particle-canvas"></canvas>
 
-<!-- #tab-menu-html -->
 <div class="tab-menu">
-  <a href="index.html" class="tab-btn active">Ana Sayfa</a>
-  <a href="about.html" class="tab-btn">Hakkımda</a>
-  <a href="settings.html" class="tab-btn">Ayarlar</a>
-  <a href="equipment.html" class="tab-btn">Ekipmanlar</a>
+  <button class="tab-btn active" data-tab="home">Ana Sayfa</button>
+  <button class="tab-btn" data-tab="about">Hakkımda</button>
+  <button class="tab-btn" data-tab="settings">Ayarlar</button>
+  <button class="tab-btn" data-tab="equipment">Ekipmanlar</button>
 </div>
 
-<!-- #header-html -->
-<div class="header">
-  <img src="katz.png" alt="KatzRead Logo" class="header-logo">
-  <h1>KatzRead</h1>
-  <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
-  <div class="links">
-    <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
-    <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
-    <a href="https://x.com/katzread" target="_blank">Twitter</a>
-    <a href="https://kick.com/katzread" target="_blank">Kick</a>
-    <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
+<div id="home" class="tab-content active">
+  <div class="header">
+    <img src="katz.png" alt="KatzRead Logo" class="header-logo">
+    <h1>KatzRead</h1>
+    <p>CS2 oyuncusu • In Game Leader • FUT Turkuaz</p>
+    <div class="links">
+      <a href="https://www.twitch.tv/katzread" target="_blank">Twitch</a>
+      <a href="https://www.faceit.com/en/players/KatzRead" target="_blank">Faceit</a>
+      <a href="https://x.com/katzread" target="_blank">Twitter</a>
+      <a href="https://kick.com/katzread" target="_blank">Kick</a>
+      <a href="https://steamcommunity.com/id/faceitkatzread/" target="_blank">Steam</a>
+    </div>
+    <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
   </div>
-  <img id="toggleBtn" src="https://corporate.faceit.com/wp-content/uploads/icon-pheasant-preview-2-268x151.png" alt="Faceit Logo">
+  <div class="widget" id="katzWidget">
+    <h2>KatzRead</h2>
+    <div class="stat" id="elo">ELO: Yükleniyor...</div>
+    <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
+    <table id="stats-table">
+      <thead>
+        <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="5">Yükleniyor...</td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<div class="widget" id="katzWidget">
-  <h2>KatzRead</h2>
-  <div class="stat" id="elo">ELO: Yükleniyor...</div>
-  <div class="stat" id="matches">Toplam Maç: Yükleniyor...</div>
-  <table id="stats-table">
-    <thead>
-      <tr><th>Kills</th><th>Deaths</th><th>K/D</th><th>ADR</th><th>HS%</th></tr>
-    </thead>
-    <tbody>
-      <tr><td colspan="5">Yükleniyor...</td></tr>
-    </tbody>
-  </table>
+<div id="about" class="tab-content">
+  <div class="about-section">
+    <div class="about-photo">
+      <img src="katzread.jpg" alt="Profil Fotoğrafı">
+      <div class="aura"></div>
+    </div>
+    <div class="about-text">
+      <h2>Hakkımda</h2>
+      <p>Ben <strong>KatzRead</strong>, 21 yaşında profesyonel düzeyde <strong>CS2</strong> oyuncusuyum. 
+      <span class="highlight">FUT Turkuaz</span> takımında oynuyorum. Takımımda genellikle <span class="highlight">IGL</span> ve <span class="highlight">lurker</span> rollerinde oynuyorum.</p>
+    </div>
+  </div>
 </div>
 
-<!-- #crosshair-html -->
+<div id="settings" class="tab-content">
+  <div class="section-box">
+    <h2>Ayarlar</h2>
+    <p>Buradan tema rengi ve arka plan efektini değiştirebilirsiniz. Crosshair aç/kapa ve renk ayarı da burada uygulanacaktır.</p>
+  </div>
+</div>
+
+<div id="equipment" class="tab-content">
+  <div class="section-box">
+    <h2>Ekipmanlarım</h2>
+    <div class="equip-grid">
+      <div class="equip-card">
+        <img src="mouse.png" alt="Mouse">
+        <div>Logitech G Pro X</div>
+      </div>
+      <div class="equip-card">
+        <img src="keyboard.png" alt="Keyboard">
+        <div>SteelSeries Apex 7</div>
+      </div>
+      <div class="equip-card">
+        <img src="headset.png" alt="Headset">
+        <div>HyperX Cloud II</div>
+      </div>
+      <div class="equip-card">
+        <img src="monitor.png" alt="Monitor">
+        <div>BenQ Zowie XL2546</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="crosshair">
   <div class="top"></div>
   <div class="bottom"></div>
@@ -59,17 +101,13 @@
 
 <footer>© 2025 KatzRead</footer>
 
-<!-- #settings-bar-html -->
 <div id="settings-bar">
   <div class="settings-group">
     <label for="themeColor">Tema Rengi:</label>
-    <input type="color" id="themeColor">
+    <input type="color" id="themeColor" value="#00ffff">
   </div>
 </div>
 
-<script src="js/script.js"></script> <!-- #ortak-js -->
+<script src="script.js"></script>
 </body>
 </html>
-
-
-
