@@ -65,10 +65,11 @@
 </div>
 
 <div id="settings" class="tab-content">
-
-  <!-- Görüntü Ayarları -->
   <div class="section-box">
-    <h2 class="accordion-btn">Görüntü Ayarları</h2>
+    <h2>Ayarlarım</h2>
+
+    <!-- Accordion Başlangıç -->
+    <button class="accordion-btn">Görüntü Ayarları</button>
     <div class="accordion-content">
       <div class="equip-grid settings-grid">
         <div class="equip-card"><h3>Parlaklık</h3><strong>93%</strong></div>
@@ -78,31 +79,19 @@
         <div class="equip-card"><h3>Yenileme Hızı</h3><strong>400 Hz</strong></div>
       </div>
     </div>
-  </div>
 
-  <!-- Gelişmiş Görüntü -->
-  <div class="section-box">
-    <h2 class="accordion-btn">Gelişmiş Görüntü</h2>
+    <button class="accordion-btn">Gelişmiş Görüntü</button>
     <div class="accordion-content">
       <div class="equip-grid settings-grid">
         <div class="equip-card"><h3>Oyuncu Kontrastı</h3><strong>Etkin</strong></div>
         <div class="equip-card"><h3>Dikey Eşitleme</h3><strong>Devre Dışı</strong></div>
         <div class="equip-card"><h3>Keskinlik Yumuşatma</h3><strong>2x MSAA</strong></div>
         <div class="equip-card"><h3>Model / Doku Detayı</h3><strong>Düşük</strong></div>
-        <div class="equip-card"><h3>Toku Filtreleme</h3><strong>Üç Doğrusal Süzme</strong></div>
-        <div class="equip-card"><h3>Shader Detayı</h3><strong>Düşük</strong></div>
         <div class="equip-card"><h3>Parçacık Detayı</h3><strong>Düşük</strong></div>
-        <div class="equip-card"><h3>Çevre Emilimi</h3><strong>Devre Dışı</strong></div>
-        <div class="equip-card"><h3>HDR</h3><strong>Kaliteli</strong></div>
-        <div class="equip-card"><h3>FidelityFX Super Resolution</h3><strong>Devre Dışı</strong></div>
-        <div class="equip-card"><h3>NVIDIA Reflex</h3><strong>Devre Dışı</strong></div>
       </div>
     </div>
-  </div>
 
-  <!-- HUD Ayarları -->
-  <div class="section-box">
-    <h2 class="accordion-btn">HUD Ayarları</h2>
+    <button class="accordion-btn">HUD Ayarları</button>
     <div class="accordion-content">
       <div class="equip-grid settings-grid">
         <div class="equip-card"><h3>cl_hud_color</h3><strong>10</strong></div>
@@ -111,67 +100,36 @@
         <div class="equip-card"><h3>safezoney</h3><strong>1</strong></div>
       </div>
     </div>
-  </div>
 
-  <!-- Radar Ayarları -->
-  <div class="section-box">
-    <h2 class="accordion-btn">Radar Ayarları</h2>
+    <button class="accordion-btn">Radar Ayarları</button>
     <div class="accordion-content">
       <div class="equip-grid settings-grid">
         <div class="equip-card"><h3>cl_hud_radar_scale</h3><strong>1</strong></div>
         <div class="equip-card"><h3>cl_radar_scale</h3><strong>0.398048</strong></div>
         <div class="equip-card"><h3>cl_radar_always_centered</h3><strong>True</strong></div>
         <div class="equip-card"><h3>cl_radar_rotate</h3><strong>True</strong></div>
-        <div class="equip-card"><h3>cl_radar_icon_scale_min</h3><strong>0.6</strong></div>
       </div>
     </div>
-  </div>
 
-  <!-- Crosshair Ayarları -->
-  <div class="section-box">
-    <h2 class="accordion-btn">Crosshair Ayarları</h2>
+    <button class="accordion-btn">Crosshair Ayarları</button>
     <div class="accordion-content">
       <div class="equip-grid settings-grid">
         <div class="equip-card"><h3>Nişangâh</h3><strong>CSGO-yKYf9-r8qtQ-aBvKW-E8NmG-orFKO</strong></div>
       </div>
     </div>
-  </div>
 
-  <!-- Mouse Ayarları -->
-  <div class="section-box">
-    <h2 class="accordion-btn">Mouse Ayarları</h2>
+    <button class="accordion-btn">Mouse Ayarları</button>
     <div class="accordion-content">
       <div class="equip-grid settings-grid">
         <div class="equip-card"><h3>DPI</h3><strong>8000</strong></div>
         <div class="equip-card"><h3>Fare Hassasiyeti</h3><strong>1.15</strong></div>
         <div class="equip-card"><h3>Zoom Hassasiyeti Çarpanı</h3><strong>0.9</strong></div>
         <div class="equip-card"><h3>Polling Rate</h3><strong>1000 Hz</strong></div>
-        <div class="equip-card"><h3>m_yaw</h3><strong>0.022</strong></div>
       </div>
     </div>
-  </div>
 
-  <!-- Viewmodel Ayarları -->
-  <div class="section-box">
-    <h2 class="accordion-btn">Viewmodel Ayarları</h2>
-    <div class="accordion-content">
-      <div class="equip-grid settings-grid">
-        <div class="equip-card"><h3>viewmodel_fov</h3><strong>68</strong></div>
-        <div class="equip-card"><h3>viewmodel_offset_x</h3><strong>2.5</strong></div>
-        <div class="equip-card"><h3>viewmodel_offset_z</h3><strong>-1.5</strong></div>
-      </div>
-    </div>
   </div>
-
-  <!-- Başlatma Seçenekleri -->
-  <div class="section-box">
-    <h2 class="accordion-btn">Başlatma Seçenekleri</h2>
-    <div class="accordion-content">
-      <div class="equip-card">
-        <strong>-novid -tickrate 128 +cl_interp_ratio 1 +cl_interp 0 +cl_cmdrate 128 +cl_updaterate 128 +rate 786432 -freq 400 -high -language english -allow_third_party_software</strong>
-      </div>
-    </div>
-  </div>
+</div>
 
 </div>
 
@@ -271,6 +229,7 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
