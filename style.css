@@ -104,9 +104,32 @@ canvas#particle-canvas {
 }
 
 /* Settings Bar */
-#settings-bar { position: fixed; top: 100px; right: 0; width: 40px; height: 50px; background: rgba(0,0,0,0.35); backdrop-filter: blur(1px); border-radius: 16px 0 0 16px; border: 1px solid var(--theme-color); display: flex; flex-direction: column; align-items: center; overflow: hidden; z-index: 10000; transition: width 0.4s ease, background 0.4s ease, box-shadow 0.4s ease; box-shadow: -2px 0 10px var(--theme-color)44; }
-#settings-bar.open { width: 220px; background: rgba(0,0,0,0.6); box-shadow: -2px 0 25px var(--theme-color), -2px 0 50px var(--theme-color)aa; }
+#settings-bar .settings-group {
+  background: radial-gradient(circle at center, rgba(var(--theme-rgb),0.1) 0%, rgba(0,0,0,0.4) 100%);
+  border-radius: 12px;
+  padding: 6px 8px;
+  margin: 8px 0;
+  box-shadow: 0 0 12px var(--theme-color)44 inset;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.section-box:hover,
+.about-section:hover,
+.widget:hover,
+.equip-card:hover,
+#settings-bar.open:hover {
+  box-shadow: 0 0 30px var(--theme-color)88, 0 0 50px var(--theme-color)55 inset;
+}
 #settings-bar .settings-group { opacity: 0; transform: translateX(20px); margin: 10px 0; width: 80%; transition: opacity 0.4s ease, transform 0.4s ease; }
-#settings-bar.open .settings-group { opacity: 1; transform: translateX(0); }
+.section-box,
+.about-section,
+.widget,
+.equip-card,
+#settings-bar.open {
+  background: radial-gradient(circle at center, rgba(var(--theme-rgb),0.15) 0%, rgba(0,0,0,0.5) 100%);
+  border: 1px solid var(--theme-color);
+  box-shadow: 0 0 20px var(--theme-color)66, 0 0 40px var(--theme-color)33 inset;
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  transition: background 0.4s ease, box-shadow 0.4s ease;
 #settings-bar input, #settings-bar select { background: rgba(0,0,0,0.5); border: 1px solid var(--theme-color); border-radius: 8px; color: #fff; padding: 4px 8px; transition: 0.3s; }
 #settings-bar input:hover, #settings-bar select:hover { border-color: #fff; box-shadow: 0 0 8px var(--theme-color); }
