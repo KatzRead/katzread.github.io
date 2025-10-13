@@ -147,6 +147,13 @@ th{ background:#4B4B4B; font-size:12px; }
 #crosshair .bottom { bottom:0; left:50%; transform:translateX(-50%);}
 #crosshair .left { left:0; top:50%; transform:translateY(-50%);}
 #crosshair .right { right:0; top:50%; transform:translateY(-50%); }
+<div id="crosshair">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
+
 
 /* Particle canvas */
 canvas#particle-canvas {
