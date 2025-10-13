@@ -21,7 +21,9 @@
 }
 }
 
-* { cursor: none !important; }
+html, body, * {
+  cursor: none !important;
+}
 body { margin:0; font-family:'Orbitron',sans-serif; background: radial-gradient(circle at top, #0a0a0f, #000); color:#e0e0e0; text-align:center; min-height:100vh; overflow-x:hidden; position:relative; }
 
 /* Sekme Menüsü */
