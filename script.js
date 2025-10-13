@@ -9,8 +9,11 @@ tabs.forEach(btn=>btn.addEventListener('click',()=>{
 }));
 
 // Crosshair
-const crosshair=document.getElementById("crosshair");
-document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; crosshair.style.top=e.clientY+"px";});
+const crosshair = document.getElementById("crosshair");
+document.addEventListener("mousemove", e => {
+  crosshair.style.left = e.clientX + "px";
+  crosshair.style.top = e.clientY + "px";
+});
 ["mousemove","mousedown","mouseup"].forEach(evt=>{document.addEventListener(evt,()=>{document.body.style.cursor="none";});});
 
 // Settings bar
