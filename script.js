@@ -58,10 +58,6 @@ canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
 // Canvas arka planda
-canvas.style.zIndex = 0;
-canvas.style.position = 'fixed';
-canvas.style.top = '0';
-canvas.style.left = '0';
 canvas.style.pointerEvents = 'none'; // UI elementleri etkilenmez
 
 // Window resize
