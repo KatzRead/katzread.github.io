@@ -17,23 +17,6 @@ document.addEventListener("mousemove",e=>{crosshair.style.left=e.clientX+"px"; c
 const settingsBar = document.getElementById("settings-bar");
 settingsBar.addEventListener("mouseenter", () => { settingsBar.classList.add("open"); });
 settingsBar.addEventListener("mouseleave", () => { settingsBar.classList.remove("open"); });
-const themeInput = document.querySelector("#themeColor");
-themeInput.addEventListener("input", e => {
-  const color = e.target.value;
-  document.documentElement.style.setProperty("--theme-color", color);
-  const rgb = hexToRgb(color);
-  document.documentElement.style.setProperty("--theme-rgb", `${rgb.r},${rgb.g},${rgb.b}`);
-});
-
-function hexToRgb(hex) {
-  const sanitized = hex.replace("#", "");
-  const bigint = parseInt(sanitized, 16);
-  return {
-    r: (bigint >> 16) & 255,
-    g: (bigint >> 8) & 255,
-    b: bigint & 255
-  };
-}
 
 // Tema rengi input
 const themeInput = document.getElementById("themeColor");
